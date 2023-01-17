@@ -58,7 +58,7 @@ class ServiceDetail extends StatelessWidget {
                     )),
                     collapsed: nil,
                     expanded: Column(
-                      children: List.generate(
+                      children: List<Widget>.generate(
                           serviceData.benefits.length,
                           (int index) => Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
@@ -106,7 +106,7 @@ class ServiceDetail extends StatelessWidget {
                     )),
                     collapsed: nil,
                     expanded: Column(
-                      children: List.generate(
+                      children: List<Widget>.generate(
                           serviceData.useCases.length,
                           (int index) => Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
