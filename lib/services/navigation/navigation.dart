@@ -5,6 +5,7 @@ import '../../../models/cloud_data_model.dart';
 import '../../../screens/detail_screen.dart';
 import '../../../screens/home.dart';
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
+import '../../screens/detail_tab_screen.dart';
 import '../../screens/gcloud_detail_screen.dart';
 
 ///Go router navigation
@@ -21,7 +22,7 @@ final GoRouter router = GoRouter(
           path: 'details',
           builder: (BuildContext context, GoRouterState state) {
             final CloudData serviceData = state.extra! as CloudData;
-            return ServiceDetail(serviceData: serviceData);
+            return DetailTabScreen(serviceData: serviceData);
           },
         ),
         GoRoute(
