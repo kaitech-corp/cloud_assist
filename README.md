@@ -1,6 +1,12 @@
-# cloud_assist
+# GPC Cloud reference app Cloud Assist
 
-A cloud learning database app.
+Welcome to the GCP Cloud reference app! 
+
+This app is designed to provide you with a comprehensive overview of the various Google Cloud Platform (GCP) services. It includes a comprehensive list of GCP services, their pros and cons, and relevant use cases. Additionally, it includes various command line tools and detailed information on Cloud positions. 
+
+This app is the perfect reference guide for anyone who wants to become more familiar with the GCP offering. It will help you make an informed decision when choosing and implementing a cloud platform. 
+
+Thanks for visiting and we hope you get the most out of the app!
 
 
 
