@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../models/cloud_data_model.dart';
-import '../../../screens/detail_screen.dart';
-import '../../../screens/home.dart';
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
 import '../../screens/detail_tab_screen.dart';
 import '../../screens/gcloud_detail_screen.dart';
+import '../../screens/home.dart';
+import '../../screens/service_details_screen.dart';
 
 ///Go router navigation
 final GoRouter router = GoRouter(
@@ -23,6 +23,14 @@ final GoRouter router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             final CloudData serviceData = state.extra! as CloudData;
             return DetailTabScreen(serviceData: serviceData);
+          },
+        ),
+                GoRoute(
+          name: 'serviceDetails',
+          path: 'serviceDetails',
+          builder: (BuildContext context, GoRouterState state) {
+            final CloudData serviceData = state.extra! as CloudData;
+            return ServiceDetails(serviceData: serviceData);
           },
         ),
         GoRoute(
