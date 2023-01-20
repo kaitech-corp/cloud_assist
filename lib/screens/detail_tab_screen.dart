@@ -83,7 +83,8 @@ class Description extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SizedBox(
+      height: SizeConfig.screenHeight*.8,
       child: Column(
         children: <Widget>[
           Padding(
@@ -201,15 +202,18 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: serviceDetailCard(Padding(
+    return SizedBox(
+      height: SizeConfig.screenHeight*.5,
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(
-          example,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      )),
+        child: serviceDetailCard(Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            example,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        )),
+      ),
     );
   }
 }
