@@ -16,3 +16,11 @@ Widget card(Widget child) => Styled.widget(child: child)
   borderRadius: BorderRadius.circular(10),
 )
     .elevation(10);
+
+Widget funFactCard(Widget child) => Styled.widget(child: child)
+    .padding(all: 30)
+    .decorated(
+  color: Colors.amber,
+  borderRadius: BorderRadius.circular(25),
+)
+    .elevation(15);
