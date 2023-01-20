@@ -6,7 +6,6 @@ part of 'gcloud_data_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-// ignore: non_constant_identifier_names
 _$_GCloudData _$$_GCloudDataFromJson(Map<String, dynamic> json) =>
     _$_GCloudData(
       topic: json['topic'] as String,
@@ -16,7 +15,6 @@ _$_GCloudData _$$_GCloudDataFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-// ignore: non_constant_identifier_names
 Map<String, dynamic> _$$_GCloudDataToJson(_$_GCloudData instance) =>
     <String, dynamic>{
       'topic': instance.topic,

@@ -23,6 +23,7 @@ mixin _$CloudData {
   String get service => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get detail => throw _privateConstructorUsedError;
+  String get link => throw _privateConstructorUsedError;
   List<String> get benefits => throw _privateConstructorUsedError;
   List<String> get cons => throw _privateConstructorUsedError;
   List<String> get useCases => throw _privateConstructorUsedError;
@@ -43,6 +44,7 @@ abstract class $CloudDataCopyWith<$Res> {
       {String service,
       String description,
       String detail,
+      String link,
       List<String> benefits,
       List<String> cons,
       List<String> useCases,
@@ -65,6 +67,7 @@ class _$CloudDataCopyWithImpl<$Res, $Val extends CloudData>
     Object? service = null,
     Object? description = null,
     Object? detail = null,
+    Object? link = null,
     Object? benefits = null,
     Object? cons = null,
     Object? useCases = null,
@@ -82,6 +85,10 @@ class _$CloudDataCopyWithImpl<$Res, $Val extends CloudData>
       detail: null == detail
           ? _value.detail
           : detail // ignore: cast_nullable_to_non_nullable
+              as String,
+      link: null == link
+          ? _value.link
+          : link // ignore: cast_nullable_to_non_nullable
               as String,
       benefits: null == benefits
           ? _value.benefits
@@ -114,6 +121,7 @@ abstract class _$$_CloudDataCopyWith<$Res> implements $CloudDataCopyWith<$Res> {
       {String service,
       String description,
       String detail,
+      String link,
       List<String> benefits,
       List<String> cons,
       List<String> useCases,
@@ -134,6 +142,7 @@ class __$$_CloudDataCopyWithImpl<$Res>
     Object? service = null,
     Object? description = null,
     Object? detail = null,
+    Object? link = null,
     Object? benefits = null,
     Object? cons = null,
     Object? useCases = null,
@@ -151,6 +160,10 @@ class __$$_CloudDataCopyWithImpl<$Res>
       detail: null == detail
           ? _value.detail
           : detail // ignore: cast_nullable_to_non_nullable
+              as String,
+      link: null == link
+          ? _value.link
+          : link // ignore: cast_nullable_to_non_nullable
               as String,
       benefits: null == benefits
           ? _value._benefits
@@ -179,6 +192,7 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
       {required this.service,
       required this.description,
       required this.detail,
+      required this.link,
       required final List<String> benefits,
       required final List<String> cons,
       required final List<String> useCases,
@@ -196,6 +210,8 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
   final String description;
   @override
   final String detail;
+  @override
+  final String link;
   final List<String> _benefits;
   @override
   List<String> get benefits {
@@ -225,7 +241,7 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CloudData(service: $service, description: $description, detail: $detail, benefits: $benefits, cons: $cons, useCases: $useCases, example: $example)';
+    return 'CloudData(service: $service, description: $description, detail: $detail, link: $link, benefits: $benefits, cons: $cons, useCases: $useCases, example: $example)';
   }
 
   @override
@@ -236,6 +252,7 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
       ..add(DiagnosticsProperty('service', service))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('detail', detail))
+      ..add(DiagnosticsProperty('link', link))
       ..add(DiagnosticsProperty('benefits', benefits))
       ..add(DiagnosticsProperty('cons', cons))
       ..add(DiagnosticsProperty('useCases', useCases))
@@ -251,6 +268,7 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.detail, detail) || other.detail == detail) &&
+            (identical(other.link, link) || other.link == link) &&
             const DeepCollectionEquality().equals(other._benefits, _benefits) &&
             const DeepCollectionEquality().equals(other._cons, _cons) &&
             const DeepCollectionEquality().equals(other._useCases, _useCases) &&
@@ -264,6 +282,7 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
       service,
       description,
       detail,
+      link,
       const DeepCollectionEquality().hash(_benefits),
       const DeepCollectionEquality().hash(_cons),
       const DeepCollectionEquality().hash(_useCases),
@@ -288,6 +307,7 @@ abstract class _CloudData implements CloudData {
       {required final String service,
       required final String description,
       required final String detail,
+      required final String link,
       required final List<String> benefits,
       required final List<String> cons,
       required final List<String> useCases,
@@ -302,6 +322,8 @@ abstract class _CloudData implements CloudData {
   String get description;
   @override
   String get detail;
+  @override
+  String get link;
   @override
   List<String> get benefits;
   @override
