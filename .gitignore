@@ -48,3 +48,6 @@ app.*.map.json
 # IOS
 /ios/
 /ios/build/Pods.build/Release-iphonesimulator/
+
+# API
+/lib/services/api/
