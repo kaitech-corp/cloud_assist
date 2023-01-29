@@ -25,8 +25,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
       widget.serviceData.useCases
     ];
     return Scaffold(
-        body: SafeArea(
-      child: SizedBox(
+      body: SafeArea(
+        child: SizedBox(
           height: SizeConfig.screenHeight,
           width: SizeConfig.screenWidth,
           child: Column(
@@ -43,23 +43,75 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.only(left:24.0,right:24,bottom:24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                          widget.serviceData.service,
-                          style: headline4(context),
-                        ),
+                    children: <Widget>[
+                      Text(
+                        widget.serviceData.service,
+                        style: headline4(context),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
+                        padding: const EdgeInsets.only(top: 16.0,bottom: 5),
                         child: Text(widget.serviceData.description,
                             style: subtitle1(context)),
                       ),
+                      Container(
+                        height: 2,
+                        width: SizeConfig.screenWidth,
+                        color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top:16.0,bottom: 16.0),
+                        child: SizedBox(
+                            height: SizeConfig.screenHeight * .15,
+                            width: SizeConfig.screenWidth,
+                            child: funFactCard(const Text('Fun Facts'))),
+                      ),
                       SizedBox(height: SizeConfig.screenHeight * .05),
+                      SizedBox(
+                        height: SizeConfig.screenHeight * .1,
+                        width: SizeConfig.screenWidth,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: List<Widget>.generate(
+                              serviceDetailItems.length,
+                              (int index) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          child: IconButton(
+                                              onPressed: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ServiceDetailsBottomSheet(
+                                                            index: index,
+                                                            data:
+                                                                serviceDataList[
+                                                                    index]),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)));
+                                              },
+                                              icon: serviceDetailIcons[index]),
+                                        ),
+                                        Text(serviceDetailItems[index])
+                                      ],
+                                    ),
+                                  )),
+                        ),
+                      ),
+                    Container(
+                        height: 2,
+                        width: SizeConfig.screenWidth,
+                        color: Colors.grey,
+                      ),
                       Text('Full Description', style: headline6(context)),
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0),
@@ -73,49 +125,6 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                           colorClickableText: Colors.pinkAccent,
                         ),
                       ),
-                      SizedBox(height: SizeConfig.screenHeight * .05),
-                      SizedBox(
-                        height: SizeConfig.screenHeight * .1,
-                        width: SizeConfig.screenWidth,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List<Widget>.generate(
-                                serviceDetailItems.length,
-                                (int index) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: <Widget>[
-                                          CircleAvatar(
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  showModalBottomSheet(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          ServiceDetailsBottomSheet(
-                                                              index: index,
-                                                              data:
-                                                                  serviceDataList[
-                                                                      index]),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)));
-                                                },
-                                                icon:
-                                                    serviceDetailIcons[index]),
-                                          ),
-                                          Text(serviceDetailItems[index])
-                                        ],
-                                      ),
-                                    ))),
-                      ),
-                      SizedBox(
-                          height: SizeConfig.screenHeight * .15,
-                          width: SizeConfig.screenWidth,
-                          child: funFactCard(const Text('Fun Facts'))),
                       Expanded(
                         child: Align(
                             alignment: Alignment.bottomCenter,
@@ -123,10 +132,20 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                 onPressed: () {
                                   launchUrlFunc(widget.serviceData.link);
                                 },
-                                child: Text(
-                                  'Learn More',
-                                  style: subtitle1(context),
-                                ))),   ), ],  ), ),  ) ],  )),));}}
+                                child: Text('Learn More',
+                                    style: subtitle1(context)))),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class ServiceDetailsBottomSheet extends StatelessWidget {
   const ServiceDetailsBottomSheet(

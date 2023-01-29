@@ -13,6 +13,11 @@ List<String> serviceDetailItems = <String>[
   'Cons',
   'Use Cases',
 ];
+List<String> quickLinks = <String>[
+  'Database Comparison',
+  'Networking',
+  'Case Studios',
+];
 List<Icon> bottomNavIcons = const <Icon>[
   Icon(Icons.home),
   Icon(Icons.search),
