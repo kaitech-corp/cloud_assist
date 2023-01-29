@@ -4,6 +4,7 @@ import '../models/cloud_data_model.dart';
 import '../services/service_config/service_config.dart';
 import '../widgets/service_detail_card.dart';
 
+/// Main screen for Service details.
 class DetailTabScreen extends StatefulWidget {
   const DetailTabScreen({super.key, required this.serviceData});
   final CloudData serviceData;

@@ -37,6 +37,11 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              Container(
+                        height: 2,
+                        width: SizeConfig.screenWidth,
+                        color: Colors.grey,
+                      ),
               const SizedBox(height: 10),
               SizedBox(
                   height: SizeConfig.screenHeight * .06,
@@ -44,21 +49,26 @@ class HomeScreen extends StatelessWidget {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: List<Widget>.generate(
-                        quickLinkItems.length,
+                        quickLinks.length,
                         (int index) => Padding(
                               padding:
                                   const EdgeInsets.only(left: 16, bottom: 8),
                               child: ElevatedButton(
                                   onPressed: () {},
                                   child: Text(
-                                    quickLinkItems[index],
+                                    quickLinks[index],
                                     style:
                                         Theme.of(context).textTheme.subtitle2,
                                   )),
                             )),
                   )),
+                  Container(
+                        height: 2,
+                        width: SizeConfig.screenWidth,
+                        color: Colors.grey,
+                      ),
               Column(
-                children: List.generate(
+                children: List<Widget>.generate(
                     3,
                     (int index) => SizedBox(
                           height: SizeConfig.screenHeight * .2,

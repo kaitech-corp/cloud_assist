@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/flip_animation.dart';
+
 class ResourcesScreen extends StatelessWidget {
-  const ResourcesScreen({Key? key}) : super(key: key);
+  const ResourcesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const CardFlipAnimation();
   }
 }
