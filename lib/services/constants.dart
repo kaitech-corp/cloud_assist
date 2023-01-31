@@ -25,11 +25,18 @@ List<Icon> bottomNavIcons = const <Icon>[
   Icon(Icons.list)
 ];
 
-List<String> quickLinkItems = <String>['Quick Link 1','Quick Link 2','Quick Link 3','Quick Link 4','Quick Link 5'];
-
+List<String> quickLinkItems = <String>[
+  'Quick Link 1',
+  'Quick Link 2',
+  'Quick Link 3',
+  'Quick Link 4',
+  'Quick Link 5'
+];
 
 List<Icon> serviceDetailIcons = const <Icon>[
   Icon(Icons.check),
   Icon(Icons.close),
   Icon(Icons.lightbulb),
 ];
+
+List<String> flagTypes = <String>['Incorrect', 'Outdated'];
