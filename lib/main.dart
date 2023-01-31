@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'services/navigation/navigation.dart';
-import 'services/responsive.dart';
-import 'services/theme.dart';
+import 'services/project_initializer.dart';
+import 'services/ui/responsive.dart';
+import 'services/ui/theme.dart';
 
-void main() {
+
+void main() async {
+  await projectInitializer();
   runApp(const MyApp());
 }
 
