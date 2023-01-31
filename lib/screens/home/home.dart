@@ -1,12 +1,16 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../services/constants.dart';
-import '../services/service_config/service_config.dart';
-import 'gcloud_screen.dart';
-import 'search_screen.dart';
+import '../../../services/service_config/service_config.dart';
+import '../../bloc/generics/generic_bloc.dart';
+import '../../models/quick_fact_model/quick_fact_model.dart';
+import '../../repositories/quick_facts_repository.dart';
+import '../../services/constants.dart';
+import '../gcloud/gcloud_screen.dart';
+import '../resources_screen.dart';
+import '../services/search_screen.dart';
 import 'home_screen.dart';
-import 'resources_screen.dart';
 
 /// Home Screen
 class Home extends StatefulWidget {
@@ -21,7 +25,11 @@ class _HomeState extends State<Home> {
   SelectedTabList _selectedTab = SelectedTabList.home;
 
   final List<Widget> _widgetOptions = <Widget>[
-    const HomeScreen(),
+    BlocProvider<GenericBloc<QuickFact, QuickFactsRepository>>(
+        create: (BuildContext context) =>
+            GenericBloc<QuickFact, QuickFactsRepository>(
+                repository: QuickFactsRepository()),
+        child: const HomeScreen()),
     const SearchServices(),
     const GCloudScreen(),
     const ResourcesScreen()
@@ -43,11 +51,10 @@ class _HomeState extends State<Home> {
             .elementAt(SelectedTabList.values.indexOf(_selectedTab)),
         bottomNavigationBar: CurvedNavigationBar(
           buttonBackgroundColor: Colors.transparent,
-          items: List.generate(
-              bottomNavItems.length,
-              (int index) => 
-                    bottomNavIcons[index],
-                    ),
+          items: List<Widget>.generate(
+            bottomNavItems.length,
+            (int index) => bottomNavIcons[index],
+          ),
           onTap: _handleIndexChanged,
           index: SelectedTabList.values.indexOf(_selectedTab),
         ));

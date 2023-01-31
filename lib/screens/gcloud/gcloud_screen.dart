@@ -2,15 +2,19 @@ import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../models/gcloud_data_model/gcloud_data_model.dart';
+import '../../services/api/api.dart';
+import '../../services/service_config/service_config.dart';
+import '../../widgets/service_detail_card.dart';
 
-import '../models/gcloud_data_model/gcloud_data_model.dart';
-import '../services/api/api.dart';
-import '../services/service_config/service_config.dart';
-import '../widgets/service_detail_card.dart';
+class GCloudScreen extends StatefulWidget {
+  const GCloudScreen({super.key});
 
-class GCloudScreen extends StatelessWidget {
-  const GCloudScreen({Key? key}) : super(key: key);
+  @override
+  State<GCloudScreen> createState() => _GCloudScreenState();
+}
 
+class _GCloudScreenState extends State<GCloudScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<GCloudData>?>(
@@ -27,11 +31,11 @@ class GCloudScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                         onTap: () {
-                          context.goNamed('gcloud',extra: gCloudData);
+                          context.goNamed('gcloud', extra: gCloudData);
                         },
                         child: card(Text(
                           gCloudData.topic,
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ))),
                   );
@@ -39,7 +43,7 @@ class GCloudScreen extends StatelessWidget {
             // } else if(snapshot.connectionState==ConnectionState.waiting){
           } else {
             return Column(
-              children: List.generate(
+              children: List<Widget>.generate(
                   8,
                   (int index) => Expanded(
                         child: Padding(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../services/constants.dart';
-import '../services/service_config/service_config.dart';
-import '../widgets/service_detail_card.dart';
+import '../../../services/constants.dart';
+import '../../../services/service_config/service_config.dart';
+import '../../services/ui/text_styles.dart';
+import 'bloc/quick_facts_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,31 +18,23 @@ class HomeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: SizedBox(
-                    height: SizeConfig.screenHeight * .15,
-                    width: SizeConfig.screenWidth,
-                    child: funFactCard(const Text('Fun Facts'))),
-              ),
+              const QuickFactBloc(),
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Quick Links',
-                        style: Theme.of(context).textTheme.headline6),
-                    Text('View More',
-                        style: Theme.of(context).textTheme.subtitle2)
+                    Text('Quick Links', style: headlineSmall(context)),
+                    Text('View More', style: titleSmall(context))
                   ],
                 ),
               ),
               Container(
-                        height: 2,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.grey,
-                      ),
+                height: 2,
+                width: SizeConfig.screenWidth,
+                color: Colors.grey,
+              ),
               const SizedBox(height: 10),
               SizedBox(
                   height: SizeConfig.screenHeight * .06,
@@ -57,16 +50,15 @@ class HomeScreen extends StatelessWidget {
                                   onPressed: () {},
                                   child: Text(
                                     quickLinks[index],
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
+                                    style: titleSmall(context),
                                   )),
                             )),
                   )),
-                  Container(
-                        height: 2,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.grey,
-                      ),
+              Container(
+                height: 2,
+                width: SizeConfig.screenWidth,
+                color: Colors.grey,
+              ),
               Column(
                 children: List<Widget>.generate(
                     3,
@@ -86,20 +78,23 @@ class HomeScreen extends StatelessWidget {
                                       Expanded(
                                         flex: 3,
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Expanded(
                                               child: SizedBox(
                                                 height:
-                                                    SizeConfig.screenHeight * .05,
-                                                width:
-                                                    SizeConfig.screenHeight * .05,
+                                                    SizeConfig.screenHeight *
+                                                        .05,
+                                                width: SizeConfig.screenHeight *
+                                                    .05,
                                                 child: Card(
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               15)),
-                                                  child: const Icon(Icons.computer),
+                                                  child: const Icon(
+                                                      Icons.computer),
                                                 ),
                                               ),
                                             ),
@@ -108,16 +103,12 @@ class HomeScreen extends StatelessWidget {
                                               child: ListTile(
                                                 title: Text(
                                                   'Service $index',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle1,
+                                                  style: titleMedium(context),
                                                 ),
                                                 // trailing: const Icon(Icons.star),
                                                 subtitle: Text(
                                                   'Random description of data',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle2,
+                                                  style: titleSmall(context),
                                                 ),
                                               ),
                                             )
@@ -126,17 +117,22 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children:<Widget>[
-                                            ElevatedButton(onPressed: (){}, child: Text('Button 1',style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle1,)),
-                                            ElevatedButton(onPressed: (){}, child: Text('Button 2',style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle1,)),
-                                      
-                                          ]
-                                        ),
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              ElevatedButton(
+                                                  onPressed: () {},
+                                                  child: Text(
+                                                    'Button 1',
+                                                    style: titleMedium(context),
+                                                  )),
+                                              ElevatedButton(
+                                                  onPressed: () {},
+                                                  child: Text(
+                                                    'Button 2',
+                                                    style: titleMedium(context),
+                                                  )),
+                                            ]),
                                       )
                                     ],
                                   )),
