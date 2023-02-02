@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
 import '../../services/service_config/service_config.dart';
+import '../../services/ui/text_styles.dart';
 
 ///Screen showing detail information for service provided
 class GCloudDetailScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class GCloudDetailScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     gCloudData.title,
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: headlineSmall(context),
                   )),
               Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -40,14 +41,12 @@ class GCloudDetailScreen extends StatelessWidget {
                                         .elementAt(0)
                                         .keys
                                         .elementAt(index),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall,
+                                    style: headlineSmall(context)
                                   ),
                                   Text(
                                     'Description: ${gCloudData.commands.elementAt(0).values.elementAt(index)}',
                                     style:
-                                        Theme.of(context).textTheme.labelMedium,
+                                        labelMedium(context)
                                   ),
                                 ],
                               ),

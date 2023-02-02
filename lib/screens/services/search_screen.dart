@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../services/api/api.dart';
 import '../../services/service_config/service_config.dart';
+import '../../services/ui/text_styles.dart';
 import '../../widgets/service_detail_card.dart';
 
 ///Data class for home
@@ -36,7 +37,7 @@ class _SearchServicesState extends State<SearchServices> {
                         },
                         child: card(Text(
                           cloudData.service,
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          style: headlineSmall(context),
                           textAlign: TextAlign.center,
                         ))),
                   );

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
 import '../../services/api/api.dart';
 import '../../services/service_config/service_config.dart';
+import '../../services/ui/text_styles.dart';
 import '../../widgets/service_detail_card.dart';
 
 class GCloudScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _GCloudScreenState extends State<GCloudScreen> {
                         },
                         child: card(Text(
                           gCloudData.topic,
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          style: headlineSmall(context),
                           textAlign: TextAlign.center,
                         ))),
                   );

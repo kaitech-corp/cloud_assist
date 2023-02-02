@@ -33,7 +33,7 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             data[index],
-                            style: Theme.of(context).textTheme.headlineSmall,
+                            style: headlineSmall(context),
                           ),
                         )),
                       )),
