@@ -10,8 +10,10 @@ This app is the perfect reference guide for anyone who wants to become more fami
 - [Twitter](https://twitter.com/RandyNolden)
 
 ## UI
+<div>
 Home Screen
 <img src="assets/images/image_2.png" width="300" height="600">
+</>
 Service List
 <img src="assets/images/image_1.png" width="300" height="600">
 Service Details
