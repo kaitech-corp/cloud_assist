@@ -9,7 +9,7 @@ This app is the perfect reference guide for anyone who wants to become more fami
 ## Social Media ✨
 - [Twitter](https://twitter.com/RandyNolden)
 
-![App UI](assets/images/image_0.png)
+<img src="assets/images/image_0.png" width="150" height=300>
 ![App UI](assets/images/image_1.png)
 ![App UI](assets/images/image_2.png)
 ![App UI](assets/images/image_3.png)
