@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
               Container(
                 height: 2,
                 width: SizeConfig.screenWidth,
-                color: Colors.grey,
+                color: Colors.orangeAccent,
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -47,7 +47,9 @@ class HomeScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.only(left: 16, bottom: 8),
                               child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // FirestoreDatabase().saveFacts();
+                                  },
                                   child: Text(
                                     quickLinks[index],
                                     style: titleSmall(context),
@@ -57,7 +59,7 @@ class HomeScreen extends StatelessWidget {
               Container(
                 height: 2,
                 width: SizeConfig.screenWidth,
-                color: Colors.grey,
+                color: Colors.orangeAccent,
               ),
               Column(
                 children: List<Widget>.generate(
