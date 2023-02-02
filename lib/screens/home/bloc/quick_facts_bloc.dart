@@ -45,7 +45,7 @@ class _QuickFactBlocState extends State<QuickFactBloc> {
           );
         } else if (state is HasDataState) {
           final List<QuickFact> facts = state.data as List<QuickFact>;
-          return QuickFactCarousel(facts: facts);
+          return QuickFactCarousel(facts: facts,bloc: bloc,);
         } else {
           return Padding(
             padding: const EdgeInsets.all(8),

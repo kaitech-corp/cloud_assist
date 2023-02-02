@@ -3,16 +3,18 @@ import 'package:flutter/foundation.dart';
 
 import '../bloc/generics/generic_bloc.dart';
 import '../models/quick_fact_model/quick_fact_model.dart';
+import '../screens/home/home.dart';
 
 class QuickFactsRepository extends GenericBlocRepository<QuickFact> {
   @override
   Stream<List<QuickFact>> data() {
-    final Query<Object> anthosCollection = FirebaseFirestore.instance
+    final Query<Object> quickFactsCollection = FirebaseFirestore.instance
         .collection('quickFacts')
-        .orderBy('timestamp');
+        .orderBy('timestamp')
+        .limit(fetchCount.value);
 
-    // Get all Activities
-    List<QuickFact> activitiesListFromSnapshot(QuerySnapshot<Object> snapshot) {
+    // Get all Quick Facts
+    List<QuickFact> factListFromSnapshot(QuerySnapshot<Object> snapshot) {
       try {
         final List<QuickFact> factList =
             snapshot.docs.map((QueryDocumentSnapshot<Object> doc) {
@@ -28,6 +30,6 @@ class QuickFactsRepository extends GenericBlocRepository<QuickFact> {
       }
     }
 
-    return anthosCollection.snapshots().map(activitiesListFromSnapshot);
+    return quickFactsCollection.snapshots().map(factListFromSnapshot);
   }
 }

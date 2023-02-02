@@ -12,6 +12,9 @@ import '../resources_screen.dart';
 import '../services/search_screen.dart';
 import 'home_screen.dart';
 
+// Global fetchCount
+ValueNotifier<int> fetchCount = ValueNotifier<int>(3);
+
 /// Home Screen
 class Home extends StatefulWidget {
   @override
