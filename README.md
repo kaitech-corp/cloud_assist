@@ -6,6 +6,14 @@ This app is designed to provide you with a comprehensive overview of the various
 
 This app is the perfect reference guide for anyone who wants to become more familiar with the GCP offering. It will help you make an informed decision when choosing and implementing a cloud platform. 
 
+## Social Media ✨
+- [Twitter](https://twitter.com/RandyNolden)
+
+![App UI](assets/images/image_0.png)
+![App UI](assets/images/image_1.png)
+![App UI](assets/images/image_2.png)
+![App UI](assets/images/image_3.png)
+
 Thanks for visiting and we hope you get the most out of the app!
 
 
