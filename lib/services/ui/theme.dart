@@ -32,7 +32,8 @@ ThemeData themeDataBuilder() {
           style: ButtonStyle(
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30))),
-              backgroundColor: MaterialStateProperty.all(Colors.white)
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+              elevation: MaterialStateProperty.all(10)
                   ),
                   ));
 }

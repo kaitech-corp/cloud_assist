@@ -6,7 +6,7 @@ List<String> bottomNavItems = <String>[
   'Home',
   'Services',
   'GCloud',
-  'Resources'
+  // 'Resources'
 ];
 List<String> serviceDetailItems = <String>[
   'Benefits',
@@ -23,14 +23,6 @@ List<Icon> bottomNavIcons = const <Icon>[
   Icon(Icons.search),
   Icon(Icons.computer_sharp),
   Icon(Icons.list)
-];
-
-List<String> quickLinkItems = <String>[
-  'Quick Link 1',
-  'Quick Link 2',
-  'Quick Link 3',
-  'Quick Link 4',
-  'Quick Link 5'
 ];
 
 List<Icon> serviceDetailIcons = const <Icon>[

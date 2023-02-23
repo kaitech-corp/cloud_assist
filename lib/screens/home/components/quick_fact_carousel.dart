@@ -1,24 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../bloc/generics/generic_bloc.dart';
-import '../../../bloc/generics/generics_event.dart';
-import '../../../models/quick_fact_model/quick_fact_model.dart';
-import '../../../repositories/quick_facts_repository.dart';
+
 import '../../../services/service_config/service_config.dart';
-import '../../../services/ui/text_styles.dart';
 import '../../../widgets/service_detail_card.dart';
-import '../home.dart';
 
 class QuickFactCarousel extends StatefulWidget {
   const QuickFactCarousel({
     super.key,
     required this.facts,
-    required this.bloc
   });
 
-  final List<QuickFact> facts;
-  final GenericBloc<QuickFact, QuickFactsRepository> bloc;
+  final List<String> facts;
 
   @override
   State<QuickFactCarousel> createState() => _QuickFactCarouselState();
@@ -32,8 +25,9 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
     return Column(
       children: <Widget>[
         CarouselSlider(
+          carouselController: _controller,
           options: CarouselOptions(
-            height: SizeConfig.screenHeight * .155,
+            height: SizeConfig.screenHeight * .18,
             viewportFraction: 1,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 10),
@@ -43,20 +37,17 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
               });
             },
           ),
-          items: widget.facts.map((QuickFact fact) {
-            return Padding(
-              padding: const EdgeInsets.all(8),
-              child: SizedBox(
-                  height: SizeConfig.screenHeight * .15,
-                  width: SizeConfig.screenWidth,
-                  child: funFactCard(Text(fact.fact))),
-            );
+          items: widget.facts.map((String fact) {
+            return SizedBox(
+                // height: SizeConfig.screenHeight * .15,
+                width: SizeConfig.screenWidth,
+                child: funFactCard(Text(fact)));
           }).toList(),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children:
-              widget.facts.asMap().entries.map((MapEntry<int, QuickFact> fact) {
+              widget.facts.asMap().entries.map((MapEntry<int, String> fact) {
             return GestureDetector(
               child: Container(
                 width: 12.0,
@@ -72,14 +63,7 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
               ),
             );
           }).toList(),
-        ),
-        GestureDetector(
-            onTap: () {
-              fetchCount.value = fetchCount.value + 3;
-              widget.bloc.add(LoadingGenericData());
-
-            },
-            child: Text('More',style: titleSmall(context),))
+        )
       ],
     );
   }

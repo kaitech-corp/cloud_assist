@@ -8,7 +8,6 @@ import '../../models/quick_fact_model/quick_fact_model.dart';
 import '../../repositories/quick_facts_repository.dart';
 import '../../services/constants.dart';
 import '../gcloud/gcloud_screen.dart';
-import '../resources_screen.dart';
 import '../services/search_screen.dart';
 import 'home_screen.dart';
 
@@ -35,7 +34,7 @@ class _HomeState extends State<Home> {
         child: const HomeScreen()),
     const SearchServices(),
     const GCloudScreen(),
-    const ResourcesScreen()
+    // const ResourcesScreen()
   ];
   void _handleIndexChanged(int i) {
     setState(() {

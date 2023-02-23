@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -54,6 +54,38 @@ class CloudDataAPI {
       if (kDebugMode) {
         // ignore: noop_primitive_operations
         print('Error in gcloud data api call: ${e.toString()}');
+      }
+    }
+    return null;
+  }
+
+  ///API for quick facts
+  Future<List<String>?> getQuickFactData() async {
+    const String url =
+        'https://storage.googleapis.com/api-project-371618.appspot.com/facts.json';
+
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+      if (200 == response.statusCode) {
+        final dynamic result = json.decode(utf8.decode(response.bodyBytes));
+        final List<String> factData = (result as Iterable<dynamic>)
+            // ignore: avoid_dynamic_calls
+            .map((dynamic e) => e['Fact'] as String)
+            .toList();
+        //Only return three facts randomly chosen
+        final Random random = Random();
+        final List<String> selectedFacts = <String>[];
+        for (int i = 0; i < 3; i++) {
+          selectedFacts.add(factData[random.nextInt(factData.length - 1)]);
+        }
+        return selectedFacts;
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        // ignore: noop_primitive_operations
+        print('Error in fact data api call: ${e.toString()}');
       }
     }
     return null;

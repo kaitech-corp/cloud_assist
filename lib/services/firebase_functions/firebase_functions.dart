@@ -9,10 +9,10 @@ class FirestoreDatabase {
       FirebaseFirestore.instance.collection('quickFacts');
 
   void saveFacts() {
-    for (String fact in factList.getRange(3, 6)) {
+    for (final String fact in factList.getRange(3, 6)) {
       try {
-        String docID = quickFactsCollection.doc().id;
-        QuickFact quickFact = QuickFact(
+        final String docID = quickFactsCollection.doc().id;
+        final QuickFact quickFact = QuickFact(
             docID: docID,
             fact: fact,
             flag: 'none',
