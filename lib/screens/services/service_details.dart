@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:readmore/readmore.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../services/constants.dart';
@@ -121,14 +120,7 @@ class ServiceDetailsScreen extends StatelessWidget {
             Text('Full Description', style: headlineSmall(context)),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: ReadMoreText(
-                serviceData.detail,
-                trimMode: TrimMode.Line,
-                trimCollapsedText: 'More',
-                trimExpandedText: 'Less',
-                style: titleMedium(context),
-                colorClickableText: Colors.pinkAccent,
-              ),
+              child: Text(serviceData.detail, style:titleMedium(context)),
             ),
             Expanded(
               child: Align(

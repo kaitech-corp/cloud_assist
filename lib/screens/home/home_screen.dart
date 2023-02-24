@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nil/nil.dart';
 
 import '../../../services/constants.dart';
@@ -107,56 +108,61 @@ class FeaturedService extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: SizeConfig.screenHeight * .2,
-      width: SizeConfig.screenWidth,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8, top: 8, right: 8),
-        child: SizedBox(
-          height: SizeConfig.screenHeight * .15,
-          width: SizeConfig.screenWidth * .8,
-          child: Card(
-            color: const Color(0xFFFAFAFA),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            elevation: 30,
-            shadowColor: Colors.orangeAccent,
-            child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: SizedBox(
-                              height: SizeConfig.screenHeight * .05,
-                              width: SizeConfig.screenHeight * .05,
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: const Icon(Icons.computer),
+    return GestureDetector(
+      onTap: (){
+        context.goNamed('serviceDetails', extra: cloudData);
+      },
+      child: SizedBox(
+        height: SizeConfig.screenHeight * .2,
+        width: SizeConfig.screenWidth,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8, top: 8, right: 8),
+          child: SizedBox(
+            height: SizeConfig.screenHeight * .15,
+            width: SizeConfig.screenWidth * .8,
+            child: Card(
+              color: const Color(0xFFFAFAFA),
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              elevation: 30,
+              shadowColor: Colors.orangeAccent,
+              child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: SizedBox(
+                                height: SizeConfig.screenHeight * .05,
+                                width: SizeConfig.screenHeight * .05,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: const Icon(Icons.computer),
+                                ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              cloudData.service,
-                              style: titleMedium(context),
-                            ),
-                          )
-                        ],
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                cloudData.service,
+                                style: titleMedium(context),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                        flex: 3,
-                        child: Text(
-                          cloudData.detail,
-                          style: titleSmall(context),
-                        ))
-                  ],
-                )),
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            cloudData.detail,
+                            style: titleSmall(context),
+                          ))
+                    ],
+                  )),
+            ),
           ),
         ),
       ),
