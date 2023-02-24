@@ -27,8 +27,16 @@ class GCloudDetailScreen extends StatelessWidget {
                     style: headlineSmall(context),
                   )),
               Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 2,
+                  color: Colors.orangeAccent,
+                ),
+              ),
+              Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: List<Widget>.generate(
                         gCloudData.commands[0].length,
                         (int index) => Padding(
@@ -37,17 +45,17 @@ class GCloudDetailScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    gCloudData.commands
-                                        .elementAt(0)
-                                        .keys
-                                        .elementAt(index),
-                                    style: headlineSmall(context)
-                                  ),
+                                      gCloudData.commands
+                                          .elementAt(0)
+                                          .keys
+                                          .elementAt(index),
+                                      style: headlineSmall(context)),
                                   Text(
-                                    'Description: ${gCloudData.commands.elementAt(0).values.elementAt(index)}',
-                                    style:
-                                        labelMedium(context)
-                                  ),
+                                      gCloudData.commands
+                                          .elementAt(0)
+                                          .values
+                                          .elementAt(index),
+                                      style: labelMedium(context)),
                                 ],
                               ),
                             )),

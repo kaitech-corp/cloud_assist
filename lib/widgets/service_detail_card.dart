@@ -10,7 +10,7 @@ Widget serviceDetailCard(Widget child) => Styled.widget(child: child)
     .elevation(10);
 
 Widget card(Widget child) => Styled.widget(child: child)
-    .padding(all: 30)
+    .padding(all: 20)
     .decorated(
       color: Colors.white70,
       borderRadius: BorderRadius.circular(10),

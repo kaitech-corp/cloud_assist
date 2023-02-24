@@ -32,7 +32,7 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
                         child: card(Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            data[index],
+                            '${index +1 }) ${data[index]}',
                             style: headlineSmall(context),
                           ),
                         )),
