@@ -11,7 +11,5 @@ Future<String> projectInitializer() async {
 
   Bloc.observer = CustomBlocObserver();
 
-  Bloc.observer = CustomBlocObserver();
-
   return 'initialized';
 }

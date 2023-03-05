@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+import '../services/service_config/service_config.dart';
+
 Widget serviceDetailCard(Widget child) => Styled.widget(child: child)
     .padding(all: 10)
     .decorated(
@@ -28,3 +30,35 @@ Widget funFactCard(Widget child) => Styled.widget(child: child)
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ));
+
+Widget terminalView(String text,String text2) {
+  return Container(
+    width: SizeConfig.screenWidth,
+    color: Colors.black,
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'cloud@cloudassist: $text',
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'Courier',
+              fontSize: 14.0,
+            ),
+          ),
+          SizedBox(height: 16,),
+                    Text(
+            text2,
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'Courier',
+              fontSize: 12.0,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}

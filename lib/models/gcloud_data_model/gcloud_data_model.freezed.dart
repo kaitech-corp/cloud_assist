@@ -22,7 +22,7 @@ GCloudData _$GCloudDataFromJson(Map<String, dynamic> json) {
 mixin _$GCloudData {
   String get topic => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  List<Map<String, String>> get commands => throw _privateConstructorUsedError;
+  Map<String, String> get commands => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $GCloudDataCopyWith<$Res> {
           GCloudData value, $Res Function(GCloudData) then) =
       _$GCloudDataCopyWithImpl<$Res, GCloudData>;
   @useResult
-  $Res call({String topic, String title, List<Map<String, String>> commands});
+  $Res call({String topic, String title, Map<String, String> commands});
 }
 
 /// @nodoc
@@ -68,7 +68,7 @@ class _$GCloudDataCopyWithImpl<$Res, $Val extends GCloudData>
       commands: null == commands
           ? _value.commands
           : commands // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, String>>,
+              as Map<String, String>,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$_GCloudDataCopyWith<$Res>
       __$$_GCloudDataCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String topic, String title, List<Map<String, String>> commands});
+  $Res call({String topic, String title, Map<String, String> commands});
 }
 
 /// @nodoc
@@ -111,7 +111,7 @@ class __$$_GCloudDataCopyWithImpl<$Res>
       commands: null == commands
           ? _value._commands
           : commands // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, String>>,
+              as Map<String, String>,
     ));
   }
 }
@@ -122,7 +122,7 @@ class _$_GCloudData with DiagnosticableTreeMixin implements _GCloudData {
   const _$_GCloudData(
       {required this.topic,
       required this.title,
-      required final List<Map<String, String>> commands})
+      required final Map<String, String> commands})
       : _commands = commands;
 
   factory _$_GCloudData.fromJson(Map<String, dynamic> json) =>
@@ -132,12 +132,12 @@ class _$_GCloudData with DiagnosticableTreeMixin implements _GCloudData {
   final String topic;
   @override
   final String title;
-  final List<Map<String, String>> _commands;
+  final Map<String, String> _commands;
   @override
-  List<Map<String, String>> get commands {
-    if (_commands is EqualUnmodifiableListView) return _commands;
+  Map<String, String> get commands {
+    if (_commands is EqualUnmodifiableMapView) return _commands;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_commands);
+    return EqualUnmodifiableMapView(_commands);
   }
 
   @override
@@ -188,7 +188,7 @@ abstract class _GCloudData implements GCloudData {
   const factory _GCloudData(
       {required final String topic,
       required final String title,
-      required final List<Map<String, String>> commands}) = _$_GCloudData;
+      required final Map<String, String> commands}) = _$_GCloudData;
 
   factory _GCloudData.fromJson(Map<String, dynamic> json) =
       _$_GCloudData.fromJson;
@@ -198,7 +198,7 @@ abstract class _GCloudData implements GCloudData {
   @override
   String get title;
   @override
-  List<Map<String, String>> get commands;
+  Map<String, String> get commands;
   @override
   @JsonKey(ignore: true)
   _$$_GCloudDataCopyWith<_$_GCloudData> get copyWith =>

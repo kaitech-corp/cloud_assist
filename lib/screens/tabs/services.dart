@@ -6,7 +6,7 @@ import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../services/api/api.dart';
 import '../../services/service_config/service_config.dart';
 import '../../services/ui/text_styles.dart';
-import '../../widgets/service_detail_card.dart';
+
 
 ///Data class for home
 class SearchServices extends StatefulWidget {
@@ -35,11 +35,21 @@ class _SearchServicesState extends State<SearchServices> {
                         onTap: () {
                           context.goNamed('serviceDetails', extra: cloudData);
                         },
-                        child: card(Text(
-                          cloudData.service,
-                          style: headlineSmall(context),
-                          textAlign: TextAlign.center,
-                        ))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                cloudData.service,
+                                style: titleMedium(context),
+                                textAlign: TextAlign.start,
+                              ),
+                              const SizedBox(height: 8),
+                              Container(height: 2, color: Colors.grey[400]),
+                            ],
+                          ),
+                        )),
                   );
                 });
             // } else if(snapshot.connectionState==ConnectionState.waiting){
@@ -50,14 +60,12 @@ class _SearchServicesState extends State<SearchServices> {
                   (int index) => Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: card(
-                            FadeShimmer(
-                              height: 8,
-                              width: SizeConfig.screenWidth,
-                              radius: 4,
-                              highlightColor: const Color(0xffF9F9FB),
-                              baseColor: const Color(0xffE6E8EB),
-                            ),
+                          child: FadeShimmer(
+                            height: 8,
+                            width: SizeConfig.screenWidth,
+                            radius: 4,
+                            highlightColor: const Color(0xffF9F9FB),
+                            baseColor: const Color(0xffE6E8EB),
                           ),
                         ),
                       )),

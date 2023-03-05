@@ -33,3 +33,6 @@ CloudData defaultCloudData = const CloudData(
     cons: <String>['Cons'],
     useCases: <String>['Use Cases'],
     example: 'Example');
+
+    
+// flutter pub run build_runner build --delete-conflicting-outputs

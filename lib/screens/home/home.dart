@@ -7,8 +7,9 @@ import '../../bloc/generics/generic_bloc.dart';
 import '../../models/quick_fact_model/quick_fact_model.dart';
 import '../../repositories/quick_facts_repository.dart';
 import '../../services/constants.dart';
-import '../gcloud/gcloud_screen.dart';
-import '../services/search_screen.dart';
+
+import '../tabs/command_lines.dart';
+import '../tabs/services.dart';
 import 'home_screen.dart';
 
 // Global fetchCount
@@ -46,9 +47,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Cloud Assist'),
-        ),
         body: _widgetOptions
             .elementAt(SelectedTabList.values.indexOf(_selectedTab)),
         bottomNavigationBar: CurvedNavigationBar(

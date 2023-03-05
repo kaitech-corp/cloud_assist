@@ -12,6 +12,7 @@ List<String> serviceDetailItems = <String>[
   'Benefits',
   'Cons',
   'Use Cases',
+  'Docs'
 ];
 List<String> quickLinks = <String>[
   'Database Comparison',
@@ -29,6 +30,7 @@ List<Icon> serviceDetailIcons = const <Icon>[
   Icon(Icons.check),
   Icon(Icons.close),
   Icon(Icons.lightbulb),
+  Icon(Icons.link)
 ];
 
 List<String> flagTypes = <String>['Incorrect', 'Outdated'];

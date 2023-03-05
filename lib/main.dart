@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         return responsiveWrapperBuilder(context, widget!);
       },
       theme: themeDataBuilder(),
+      darkTheme: ThemeData.dark(),
       routerConfig: router,
     );
   }

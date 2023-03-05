@@ -33,7 +33,7 @@ class CloudDataAPI {
     return null;
   }
 
-  ///API for gcloud data
+  ///API for gcloud command line data
   Future<List<GCloudData>?> getGCloudData() async {
     const String url =
         'https://storage.googleapis.com/api-project-371618.appspot.com/cmd_line_cheat_sheet.json';
@@ -86,6 +86,58 @@ class CloudDataAPI {
       if (kDebugMode) {
         // ignore: noop_primitive_operations
         print('Error in fact data api call: ${e.toString()}');
+      }
+    }
+    return null;
+  }
+
+    ///API for cloud networking data
+  Future<List<CloudData>?> getNetworkingData() async {
+    const String url =
+        'https://storage.googleapis.com/api-project-371618.appspot.com/cloud_networking.json';
+
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+      if (200 == response.statusCode) {
+        final dynamic result = json.decode(utf8.decode(response.bodyBytes));
+        final Iterable<dynamic> list = result as Iterable<dynamic>;
+        final List<CloudData> cloudData = list
+            .map((dynamic e) => CloudData.fromJson(e as Map<String, Object?>))
+            .toList();
+        return cloudData;
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        // ignore: noop_primitive_operations
+        print('Error in networking data api call: ${e.toString()}');
+      }
+    }
+    return null;
+  }
+
+      ///API for cloud database data
+  Future<List<CloudData>?> getDatabaseData() async {
+    const String url =
+        'https://storage.googleapis.com/api-project-371618.appspot.com/database_data.json';
+
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+      if (200 == response.statusCode) {
+        final dynamic result = json.decode(utf8.decode(response.bodyBytes));
+        final Iterable<dynamic> list = result as Iterable<dynamic>;
+        final List<CloudData> cloudData = list
+            .map((dynamic e) => CloudData.fromJson(e as Map<String, Object?>))
+            .toList();
+        return cloudData;
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        // ignore: noop_primitive_operations
+        print('Error in networking data api call: ${e.toString()}');
       }
     }
     return null;

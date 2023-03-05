@@ -6,7 +6,6 @@ import '../../models/gcloud_data_model/gcloud_data_model.dart';
 import '../../services/api/api.dart';
 import '../../services/service_config/service_config.dart';
 import '../../services/ui/text_styles.dart';
-import '../../widgets/service_detail_card.dart';
 
 class GCloudScreen extends StatefulWidget {
   const GCloudScreen({super.key});
@@ -31,14 +30,24 @@ class _GCloudScreenState extends State<GCloudScreen> {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
-                        onTap: () {
-                          context.goNamed('gcloud', extra: gCloudData);
-                        },
-                        child: card(Text(
-                          gCloudData.topic,
-                          style: headlineSmall(context),
-                          textAlign: TextAlign.center,
-                        ))),
+                      onTap: () {
+                        context.goNamed('gcloud', extra: gCloudData);
+                      },
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                gCloudData.topic,
+                                style: titleMedium(context),
+                                textAlign: TextAlign.start,
+                              ),
+                              const SizedBox(height: 8),
+                              Container(height: 2, color: Colors.grey[400]),
+                            ],
+                          )),
+                    ),
                   );
                 });
             // } else if(snapshot.connectionState==ConnectionState.waiting){
@@ -49,14 +58,12 @@ class _GCloudScreenState extends State<GCloudScreen> {
                   (int index) => Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: card(
-                            FadeShimmer(
-                              height: 8,
-                              width: SizeConfig.screenWidth,
-                              radius: 4,
-                              highlightColor: const Color(0xffF9F9FB),
-                              baseColor: const Color(0xffE6E8EB),
-                            ),
+                          child: FadeShimmer(
+                            height: 8,
+                            width: SizeConfig.screenWidth,
+                            radius: 4,
+                            highlightColor: const Color(0xffF9F9FB),
+                            baseColor: const Color(0xffE6E8EB),
                           ),
                         ),
                       )),

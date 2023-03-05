@@ -1,9 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-
-import '../../../services/service_config/service_config.dart';
-import '../../../widgets/service_detail_card.dart';
+import '../../../services/ui/text_styles.dart';
 
 class QuickFactCarousel extends StatefulWidget {
   const QuickFactCarousel({
@@ -22,49 +20,54 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        CarouselSlider(
-          carouselController: _controller,
-          options: CarouselOptions(
-            height: SizeConfig.screenHeight * .18,
-            viewportFraction: 1,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 10),
-            onPageChanged: (int index, CarouselPageChangedReason reason) {
-              setState(() {
-                _current = index;
-              });
-            },
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: <Widget>[
+          CarouselSlider(
+            carouselController: _controller,
+            options: CarouselOptions(
+              aspectRatio: 2.8,
+              viewportFraction: 1,
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 20),
+              onPageChanged: (int index, _) {
+                setState(() => _current = index);
+              },
+            ),
+            items: widget.facts.map((fact) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  fact,
+                  style: titleMedium(context),
+                  textAlign: TextAlign.start,
+                ),
+              );
+            }).toList(),
           ),
-          items: widget.facts.map((String fact) {
-            return SizedBox(
-                // height: SizeConfig.screenHeight * .15,
-                width: SizeConfig.screenWidth,
-                child: funFactCard(Text(fact)));
-          }).toList(),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children:
-              widget.facts.asMap().entries.map((MapEntry<int, String> fact) {
-            return GestureDetector(
-              child: Container(
-                width: 12.0,
-                height: 12.0,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black)
-                        .withOpacity(_current == fact.key ? 0.9 : 0.4)),
-              ),
-            );
-          }).toList(),
-        )
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.facts
+                .map((String fact) => GestureDetector(
+                      child: Container(
+                        width: 12.0,
+                        height: 12.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: (Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black)
+                                .withOpacity(_current == fact ? 0.9 : 0.4)),
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
     );
   }
 }

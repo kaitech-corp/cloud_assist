@@ -6,7 +6,6 @@ part of 'quick_fact_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-// ignore: non_constant_identifier_names
 _$_QuickFact _$$_QuickFactFromJson(Map<String, dynamic> json) => _$_QuickFact(
       fact: json['fact'] as String,
       docID: json['docID'] as String,
@@ -16,7 +15,6 @@ _$_QuickFact _$$_QuickFactFromJson(Map<String, dynamic> json) => _$_QuickFact(
           json['timestamp'], const TimestampConverter().fromJson),
     );
 
-// ignore: non_constant_identifier_names
 Map<String, dynamic> _$$_QuickFactToJson(_$_QuickFact instance) =>
     <String, dynamic>{
       'fact': instance.fact,
