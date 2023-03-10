@@ -29,7 +29,7 @@ class GCloudDetailScreen extends StatelessWidget {
                     const EdgeInsets.only(left: 24.0, right: 24, bottom: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     Text(
                       gCloudData.topic,
                       style: headlineSmall(context),

@@ -13,29 +13,29 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return SafeArea(
-        child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SizedBox(
-        height: SizeConfig.screenHeight,
-        width: SizeConfig.screenWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 8.0, bottom: 16.0, left: 8.0, right: 8.0),
-              child: Text(
-                'Cloud Assist',
-                style: headlineSmall(context),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SizedBox(
+          height: SizeConfig.screenHeight,
+          width: SizeConfig.screenWidth,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, bottom: 16.0, left: 8.0, right: 8.0),
+                child: Text(
+                  'Cloud Assist',
+                  style: headlineMedium(context),
+                ),
               ),
-            ),
-            const Expanded(child: TabControllerWidget()),
-          ],
+              const Expanded(child: TabControllerWidget()),
+            ],
+          ),
         ),
       ),
-        ),
     );
   }
 }

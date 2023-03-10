@@ -8,8 +8,8 @@ import '../../models/quick_fact_model/quick_fact_model.dart';
 import '../../repositories/quick_facts_repository.dart';
 import '../../services/constants.dart';
 
+import '../search/search_bar.dart';
 import '../tabs/command_lines.dart';
-import '../tabs/services.dart';
 import 'home_screen.dart';
 
 // Global fetchCount
@@ -33,7 +33,9 @@ class _HomeState extends State<Home> {
             GenericBloc<QuickFact, QuickFactsRepository>(
                 repository: QuickFactsRepository()),
         child: const HomeScreen()),
-    const SearchServices(),
+    const SearchBar(
+   
+    ),
     const GCloudScreen(),
     // const ResourcesScreen()
   ];
@@ -47,10 +49,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
         body: _widgetOptions
             .elementAt(SelectedTabList.values.indexOf(_selectedTab)),
         bottomNavigationBar: CurvedNavigationBar(
-          buttonBackgroundColor: Colors.transparent,
+          color: Theme.of(context).primaryColor,
+          buttonBackgroundColor: Theme.of(context).canvasColor,
           items: List<Widget>.generate(
             bottomNavItems.length,
             (int index) => bottomNavIcons[index],

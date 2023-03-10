@@ -27,7 +27,7 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
           CarouselSlider(
             carouselController: _controller,
             options: CarouselOptions(
-              aspectRatio: 2.8,
+              aspectRatio: 2.5,
               viewportFraction: 1,
               autoPlay: true,
               autoPlayInterval: const Duration(seconds: 20),
@@ -35,9 +35,9 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
                 setState(() => _current = index);
               },
             ),
-            items: widget.facts.map((fact) {
+            items: widget.facts.map((String fact) {
               return Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   fact,
                   style: titleMedium(context),
@@ -46,25 +46,26 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
               );
             }).toList(),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.facts
-                .map((String fact) => GestureDetector(
-                      child: Container(
-                        width: 12.0,
-                        height: 12.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: (Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black)
-                                .withOpacity(_current == fact ? 0.9 : 0.4)),
-                      ),
-                    ))
-                .toList(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: widget.facts
+                  .map((String fact) => GestureDetector(
+                        child: Container(
+                          width: 12.0,
+                          height: 12.0,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 4.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: (Theme.of(context).disabledColor)
+                                  // ignore: unrelated_type_equality_checks
+                                  .withOpacity(_current == fact ? 0.9 : 0.4)),
+                        ),
+                      ))
+                  .toList(),
+            ),
           )
         ],
       ),

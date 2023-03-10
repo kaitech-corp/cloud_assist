@@ -170,6 +170,7 @@ class ServiceDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: List<Widget>.generate(
                   serviceData.benefits.length,
                   (int index) => Padding(
@@ -185,6 +186,7 @@ class ServiceDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: List<Widget>.generate(
                   serviceData.cons.length,
                   (int index) => Padding(
@@ -200,6 +202,7 @@ class ServiceDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: List<Widget>.generate(
                   serviceData.useCases.length,
                   (int index) => Padding(
@@ -211,6 +214,16 @@ class ServiceDetailsScreen extends StatelessWidget {
                       )),
             ),
           ),
+          Text('Example', style: titleLarge(context)),
+          Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: Text(
+                  serviceData.example,
+                  style: titleMedium(context),
+                ),
+              )),
         ],
       ),
     );

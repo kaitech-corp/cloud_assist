@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../models/cloud_data_model/cloud_data_model.dart';
+import '../../../services/firebase_functions/cloud_functions.dart';
 import '../../../services/ui/text_styles.dart';
 
 class FeaturedService extends StatelessWidget {
@@ -13,29 +14,35 @@ class FeaturedService extends StatelessWidget {
   final CloudData cloudData;
 
   @override
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.goNamed('serviceDetails', extra: cloudData),
+      onTap: () {
+        context.goNamed('serviceDetails', extra: cloudData);
+        CloudFunctions().getCombinedCloudData();
+      },
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
                   cloudData.service,
-                  style: titleLarge(context),
+                  style: titleLarge(context)
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const Icon(Icons.data_object)
               ],
             ),
-            const SizedBox(height: 15,),
+            const SizedBox(
+              height: 15,
+            ),
             Text(
               cloudData.description,
               style: titleMedium(context),
             ),
-          
           ],
         ),
       ),

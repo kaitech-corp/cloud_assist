@@ -1,12 +1,12 @@
-import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
-import '../../services/api/api.dart';
-import '../../services/service_config/service_config.dart';
+
+import '../../services/firebase_functions/cloud_functions.dart';
 import '../../services/ui/text_styles.dart';
-import '../../widgets/service_detail_card.dart';
+
+import 'components/fade_shimmer.dart';
 
 ///Screen for listing networking data
 class NetworkingServices extends StatefulWidget {
@@ -20,7 +20,7 @@ class _NetworkingServicesState extends State<NetworkingServices> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<CloudData>?>(
-        future: CloudDataAPI().getNetworkingData(),
+        future: CloudFunctions().getNetworkingData(),
         builder:
             (BuildContext context, AsyncSnapshot<List<CloudData>?> snapshot) {
           if (snapshot.hasData) {
@@ -39,7 +39,7 @@ class _NetworkingServicesState extends State<NetworkingServices> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: <Widget>[
                               Text(
                                 networkData.service,
                                 style: titleMedium(context),
@@ -54,24 +54,7 @@ class _NetworkingServicesState extends State<NetworkingServices> {
                 });
             // } else if(snapshot.connectionState==ConnectionState.waiting){
           } else {
-            return Column(
-              children: List<Widget>.generate(
-                  8,
-                  (int index) => Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: 
-                            FadeShimmer(
-                              height: 8,
-                              width: SizeConfig.screenWidth,
-                              radius: 4,
-                              highlightColor: const Color(0xffF9F9FB),
-                              baseColor: const Color(0xffE6E8EB),
-                            ),
-                          ),
-                        
-                      )),
-            );
+            return loadingShimmer();
           }
         });
   }

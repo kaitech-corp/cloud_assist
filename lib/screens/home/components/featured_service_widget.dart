@@ -2,7 +2,7 @@ import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/cloud_data_model/cloud_data_model.dart';
-import '../../../services/api/api.dart';
+import '../../../services/firebase_functions/cloud_functions.dart';
 import '../../../services/firebase_functions/functions.dart';
 import '../../../services/service_config/service_config.dart';
 import '../../../services/ui/text_styles.dart';
@@ -31,7 +31,7 @@ class FeaturedServiceWidget extends StatelessWidget {
           child: Container(height: 2, color: Colors.grey),
         ),
         FutureBuilder<List<CloudData>?>(
-            future: CloudDataAPI().getCloudData(),
+            future: CloudFunctions().getCloudData(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<CloudData>?> snapshot) {
               if (snapshot.hasData) {
@@ -41,23 +41,71 @@ class FeaturedServiceWidget extends StatelessWidget {
                         <CloudData>[defaultCloudData, defaultCloudData]);
               } else {
                 return Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        children: List<Flexible>.generate(6, (int index) {
-                          return Flexible(
-                            child: ListTile(
-                              title: FadeShimmer(
-                                height: 2,
-                                width: SizeConfig.screenWidth,
-                                radius: 2,
-                                highlightColor: Colors.grey.shade600,
-                                baseColor: const Color(0xffE6E8EB),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List<Flexible>.generate(3, (int index) {
+                      return Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 24.0, top: 16.0, right: 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      FadeShimmer(
+                                        height: 8,
+                                        width: SizeConfig.screenWidth * .2,
+                                        radius: 4,
+                                        highlightColor: Colors.white,
+                                        baseColor:
+                                            Theme.of(context).disabledColor,
+                                      ),
+                                      FadeShimmer.round(
+                                        size: SizeConfig.screenWidth * .05,
+                                        highlightColor: Colors.white,
+                                        baseColor:
+                                            Theme.of(context).disabledColor,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.screenWidth * .05,
+                                  ),
+                                  FadeShimmer(
+                                    height: 8,
+                                    width: SizeConfig.screenWidth,
+                                    radius: 4,
+                                    highlightColor: Colors.white,
+                                    baseColor: Theme.of(context).disabledColor,
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.screenWidth * .05,
+                                  ),
+                                  FadeShimmer(
+                                    height: 8,
+                                    width: SizeConfig.screenWidth,
+                                    radius: 4,
+                                    highlightColor: Colors.white,
+                                    baseColor: Theme.of(context).disabledColor,
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.screenWidth * .05,
+                                  ),
+                                ],
                               ),
                             ),
-                          );
-                        }),
-                      )),
+                            Container(height: 2, color: Colors.grey[400]),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
                 );
               }
             }),

@@ -1,11 +1,10 @@
-import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
-import '../../services/api/api.dart';
-import '../../services/service_config/service_config.dart';
+import '../../services/firebase_functions/cloud_functions.dart';
 import '../../services/ui/text_styles.dart';
+import 'components/fade_shimmer.dart';
 
 class GCloudScreen extends StatefulWidget {
   const GCloudScreen({super.key});
@@ -18,7 +17,7 @@ class _GCloudScreenState extends State<GCloudScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<GCloudData>?>(
-        future: CloudDataAPI().getGCloudData(),
+        future: CloudFunctions().getGCloudData(),
         builder:
             (BuildContext context, AsyncSnapshot<List<GCloudData>?> snapshot) {
           if (snapshot.hasData) {
@@ -37,7 +36,7 @@ class _GCloudScreenState extends State<GCloudScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: <Widget>[
                               Text(
                                 gCloudData.topic,
                                 style: titleMedium(context),
@@ -52,22 +51,7 @@ class _GCloudScreenState extends State<GCloudScreen> {
                 });
             // } else if(snapshot.connectionState==ConnectionState.waiting){
           } else {
-            return Column(
-              children: List<Widget>.generate(
-                  8,
-                  (int index) => Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: FadeShimmer(
-                            height: 8,
-                            width: SizeConfig.screenWidth,
-                            radius: 4,
-                            highlightColor: const Color(0xffF9F9FB),
-                            baseColor: const Color(0xffE6E8EB),
-                          ),
-                        ),
-                      )),
-            );
+            return loadingShimmer();
           }
         });
   }

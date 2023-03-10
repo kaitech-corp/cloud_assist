@@ -31,7 +31,7 @@ Widget funFactCard(Widget child) => Styled.widget(child: child)
           borderRadius: BorderRadius.circular(30),
         ));
 
-Widget terminalView(String text,String text2) {
+Widget terminalView(String text, String text2) {
   return Container(
     width: SizeConfig.screenWidth,
     color: Colors.black,
@@ -39,7 +39,7 @@ Widget terminalView(String text,String text2) {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'cloud@cloudassist: $text',
             style: const TextStyle(
@@ -48,8 +48,10 @@ Widget terminalView(String text,String text2) {
               fontSize: 14.0,
             ),
           ),
-          SizedBox(height: 16,),
-                    Text(
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
             text2,
             style: const TextStyle(
               color: Colors.white,
