@@ -31,7 +31,7 @@ class FeaturedServiceWidget extends StatelessWidget {
           child: Container(height: 2, color: Colors.grey),
         ),
         FutureBuilder<List<CloudData>?>(
-            future: CloudFunctions().getCloudData(),
+            future: CloudFunctions().getCombinedCloudData(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<CloudData>?> snapshot) {
               if (snapshot.hasData) {
@@ -114,20 +114,21 @@ class FeaturedServiceWidget extends StatelessWidget {
   }
 
   Widget buildFeaturedServices(BuildContext context, List<CloudData> data) {
+    final List<CloudData> uniqueServices =
+        getUniqueValues(data) as List<CloudData>;
     return Column(
-      children: <Widget>[
-        FeaturedService(
-          cloudData: getRandomValueFromList(data) as CloudData,
-        ),
-        Container(height: 2, color: Colors.grey[400]),
-        FeaturedService(
-          cloudData: getRandomValueFromList(data) as CloudData,
-        ),
-        Container(height: 2, color: Colors.grey[400]),
-        FeaturedService(
-          cloudData: getRandomValueFromList(data) as CloudData,
-        ),
-      ],
-    );
+        children: List<Widget>.generate(
+      uniqueServices.length,
+      (int index) {
+        return Column(
+          children: <Widget>[
+            FeaturedService(
+              cloudData: uniqueServices[index],
+            ),
+            Container(height: 2, color: Colors.grey[400]),
+          ],
+        );
+      },
+    ));
   }
 }

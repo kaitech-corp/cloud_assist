@@ -16,3 +16,16 @@ String removeCloudAndWhitespace(String str) {
   final String newStr = str.replaceAll(regex, '').replaceAll(RegExp(r'\s+'), '');
   return newStr;
 }
+
+List<dynamic> getUniqueValues(List<dynamic> uniqueList) {
+  // Shuffle the unique list to get a random order
+  uniqueList.shuffle();
+
+  // If the unique list has 3 or fewer elements, return it
+  if (uniqueList.length <= 3) {
+    return uniqueList;
+  }
+
+  // Otherwise, return the first 3 elements of the shuffled unique list
+  return uniqueList.sublist(0, 3);
+}
