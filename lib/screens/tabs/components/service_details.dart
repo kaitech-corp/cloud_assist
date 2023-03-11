@@ -1,7 +1,9 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/cloud_data_model/cloud_data_model.dart';
 import '../../../services/constants.dart';
+import '../../../services/firebase_functions/firebase_functions.dart';
 import '../../../services/functions.dart';
 import '../../../services/navigation/navigation.dart';
 import '../../../services/service_config/service_config.dart';
@@ -78,7 +80,17 @@ class ServiceDetailsScreen extends StatelessWidget {
             child: SizedBox(
                 height: SizeConfig.screenHeight * .15,
                 width: SizeConfig.screenWidth,
-                child: funFactCard(const Text('Fun Facts'))),
+                child: FutureBuilder<String?>(
+                    future: FirestoreDatabase().getFacts(serviceData.service),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<String?> snapshot) {
+                      if (snapshot.hasData) {
+                        final String fact = snapshot.data!;
+                        return funFactCard(Text(fact));
+                      } else{
+                        return funFactCard(const Text('Fun Facts'));
+                      }
+                    })),
           ),
           SizedBox(height: SizeConfig.screenHeight * .05),
           SizedBox(

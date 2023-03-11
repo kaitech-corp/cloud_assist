@@ -18,7 +18,6 @@ class FeaturedService extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.goNamed('serviceDetails', extra: cloudData);
-        CloudFunctions().getCombinedCloudData();
       },
       child: Padding(
         padding: const EdgeInsets.all(8),

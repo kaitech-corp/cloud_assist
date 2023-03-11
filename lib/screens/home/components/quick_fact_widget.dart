@@ -2,6 +2,7 @@ import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 
 import '../../../services/firebase_functions/cloud_functions.dart';
+import '../../../services/firebase_functions/functions.dart';
 import '../../../services/service_config/service_config.dart';
 import 'quick_fact_carousel.dart';
 
@@ -25,7 +26,9 @@ class QuickFactWidget extends StatelessWidget {
                       itemCount: 4,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: const EdgeInsets.only(top:16.0,),
+                          padding: const EdgeInsets.only(
+                            top: 16.0,
+                          ),
                           child: FadeShimmer(
                             width: SizeConfig.screenWidth,
                             height: 8,
@@ -38,8 +41,9 @@ class QuickFactWidget extends StatelessWidget {
             );
           } else if (snapshot.hasData) {
             final List<String>? facts = snapshot.data;
+            final int idx = randomIndex(facts ?? []);
             return QuickFactCarousel(
-              facts: facts?.sublist(0,3) ?? <String>[''],
+              facts: facts?.sublist(idx, idx+ 3) ?? <String>[''],
             );
           } else {
             return SizedBox(
@@ -51,7 +55,9 @@ class QuickFactWidget extends StatelessWidget {
                       itemCount: 4,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: const EdgeInsets.only(top:16.0,),
+                          padding: const EdgeInsets.only(
+                            top: 16.0,
+                          ),
                           child: FadeShimmer(
                             width: SizeConfig.screenWidth,
                             height: 8,
