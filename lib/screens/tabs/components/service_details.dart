@@ -86,7 +86,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                         AsyncSnapshot<String?> snapshot) {
                       if (snapshot.hasData) {
                         final String fact = snapshot.data!;
-                        return funFactCard(Text(fact,style: titleMedium(context),));
+                        return funFactCard(Text(fact,style: titleMedium(context)!.copyWith(color: Colors.black),));
                       } else{
                         return funFactCard(const Text('Fun Facts'));
                       }
