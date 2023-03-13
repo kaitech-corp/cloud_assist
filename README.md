@@ -15,8 +15,8 @@ Whether you are a business owner looking to move your operations to the cloud, a
 - [Twitter](https://twitter.com/RandyNolden)
 
 ## UI
-<img src="assets/images/image_2.PNG" width="275" height="600">
-<img src="assets/images/image_1.PNG" width="275" height="600">
+<img src="assets/images/image_2.png" width="275" height="600">
+<img src="assets/images/image_1.png" width="275" height="600">
 
 
 Thanks for visiting and we hope you get the most out of the app!
