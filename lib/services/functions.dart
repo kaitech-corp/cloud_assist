@@ -6,6 +6,7 @@ Future<void> launchUrlFunc(String url) async {
     await launchUrl(Uri.parse(url));
   } catch (e) {
     if (kDebugMode) {
+      // ignore: noop_primitive_operations
       print('Could not launch: ${e.toString()}');
     }
   }

@@ -13,7 +13,7 @@ class GCloudData with _$GCloudData {
   const factory GCloudData({
     required String topic,
     required String title,
-    required List<Map<String,String>> commands,
+    required Map<String,String> commands,
   }) = _GCloudData;
 
   factory GCloudData.fromJson(Map<String, Object?> json)

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../models/cloud_data_model.dart';
+import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
-import '../../screens/detail_tab_screen.dart';
-import '../../screens/gcloud_detail_screen.dart';
-import '../../screens/home.dart';
-import '../../screens/service_details_screen.dart';
+import '../../screens/home/home.dart';
+import '../../screens/tabs/components/gcloud_detail_screen.dart';
+import '../../screens/tabs/components/service_details.dart';
+import '../../screens/tabs/networking.dart';
 
 ///Go router navigation
 final GoRouter router = GoRouter(
@@ -18,14 +18,6 @@ final GoRouter router = GoRouter(
       },
       routes: <RouteBase>[
         GoRoute(
-          name: 'details',
-          path: 'details',
-          builder: (BuildContext context, GoRouterState state) {
-            final CloudData serviceData = state.extra! as CloudData;
-            return DetailTabScreen(serviceData: serviceData);
-          },
-        ),
-                GoRoute(
           name: 'serviceDetails',
           path: 'serviceDetails',
           builder: (BuildContext context, GoRouterState state) {
@@ -39,6 +31,13 @@ final GoRouter router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             final GCloudData gCloudData = state.extra! as GCloudData;
             return GCloudDetailScreen(gCloudData: gCloudData);
+          },
+        ),
+        GoRoute(
+          name: 'network',
+          path: 'network',
+          builder: (BuildContext context, GoRouterState state) {
+            return const NetworkingServices();
           },
         ),
       ],
