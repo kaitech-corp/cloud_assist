@@ -2,18 +2,22 @@
 
 Welcome to the GCP Cloud reference app! 
 
-This app is designed to provide you with a comprehensive overview of the various Google Cloud Platform (GCP) services. It includes a comprehensive list of GCP services, their pros and cons, and relevant use cases. Additionally, it includes various command line tools and detailed information on Cloud positions. 
+Cloud Assist is the ultimate reference and resource app for learning about cloud services. Whether you are a beginner or an experienced cloud user, Cloud Assist provides comprehensive and up-to-date information on a wide range of cloud computing topics.
 
-This app is the perfect reference guide for anyone who wants to become more familiar with the GCP offering. It will help you make an informed decision when choosing and implementing a cloud platform. 
+With Cloud Assist, you can easily access a wealth of resources that cover everything from the basics of cloud computing to advanced topics like cloud security, data analytics, and machine learning.
+Cloud Assist also includes a powerful search feature that allows you to quickly find the information you need.
+
+In addition to its extensive library of resources, Cloud Assist also provides a glossary of cloud computing terms and acronyms, as well as a directory of cloud service providers and their offerings. This makes it easy to compare different cloud providers and find the one that best meets your needs.
+
+Whether you are a business owner looking to move your operations to the cloud, an IT professional responsible for managing cloud infrastructure, or just someone who wants to learn more about this exciting technology, Cloud Assist is the perfect app for you. Download it today and start exploring the world of cloud computing!
 
 ## Social Media ✨
 - [Twitter](https://twitter.com/RandyNolden)
 
 ## UI
-<img src="assets/images/image_2.png" width="275" height="600">
-<img src="assets/images/image_1.png" width="275" height="600">
-<img src="assets/images/image_0.png" width="275" height="600">
-<img src="assets/images/image_3.png" width="275" height="600">
+<img src="assets/images/image_2.PNG" width="275" height="600">
+<img src="assets/images/image_1.PNG" width="275" height="600">
+
 
 Thanks for visiting and we hope you get the most out of the app!
 
