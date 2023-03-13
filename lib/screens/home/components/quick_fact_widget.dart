@@ -41,7 +41,7 @@ class QuickFactWidget extends StatelessWidget {
             );
           } else if (snapshot.hasData) {
             final List<String>? facts = snapshot.data;
-            final int idx = randomIndex(facts ?? []);
+            final int idx = randomIndex(facts ?? <String>[]);
             return QuickFactCarousel(
               facts: facts?.sublist(idx, idx+ 3) ?? <String>[''],
             );

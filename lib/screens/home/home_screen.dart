@@ -5,6 +5,7 @@ import '../../services/ui/text_styles.dart';
 import '../tabs/command_lines.dart';
 import '../tabs/databases.dart';
 import '../tabs/networking.dart';
+import '../tabs/security.dart';
 import '../tabs/services.dart';
 import 'components/featured_service_widget.dart';
 import 'components/quick_fact_widget.dart';
@@ -46,15 +47,16 @@ class TabControllerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5,
+        length: 6,
         child: Column(
           children: <Widget>[
             TabBar(
               tabs: const <Widget>[
                 Text('Home'),
-                Text('Services'),
+                Text('Popular Services'),
                 Text('Databases'),
                 Text('Networking'),
+                Text('Security'),
                 Text('Command Lines'),
               ],
               isScrollable: true,
@@ -76,6 +78,7 @@ class TabControllerWidget extends StatelessWidget {
                   const SearchServices(),
                   const DatabaseServices(),
                   const NetworkingServices(),
+                  const SecurityServices(),
                   const GCloudScreen(),
                 ],
               ),

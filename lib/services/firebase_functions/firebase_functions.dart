@@ -42,7 +42,7 @@ class FirestoreDatabase {
         CloudFunctions().openAITest(service);
       } else {
         final List<String> fact =
-            ref.docs.map((item) => item['fact'] as String).toList();
+            ref.docs.map((QueryDocumentSnapshot<Object?> item) => item['fact'] as String).toList();
         return getRandomValueFromList(fact) as String;
       }
     } catch (e) {

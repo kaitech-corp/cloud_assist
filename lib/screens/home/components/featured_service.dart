@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../models/cloud_data_model/cloud_data_model.dart';
-import '../../../services/firebase_functions/cloud_functions.dart';
 import '../../../services/ui/text_styles.dart';
 
 class FeaturedService extends StatelessWidget {
