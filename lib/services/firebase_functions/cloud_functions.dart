@@ -4,7 +4,9 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
+import '../../models/database_architecture_model/database_architecture_model.dart';
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
+import 'firebase_functions.dart';
 
 class CloudFunctions {
   // Create new quick facts
@@ -68,6 +70,15 @@ class CloudFunctions {
       final List<CloudData> cloudData = result
           .map((Map<String, dynamic> item) => CloudData.fromJson(item))
           .toList();
+      // Save to shared preferences
+      try {
+        const String api = 'getCombinedData';
+        FirestoreDatabase().saveAPIData(api, cloudData);
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
 
       // Return the List of CloudData objects
       return cloudData;
@@ -101,7 +112,7 @@ class CloudFunctions {
     } catch (e, stackTrace) {
       // Print an error message and return an empty List if an error occurs
       if (kDebugMode) {
-        print('Error in getCombinedCloudData: $e, $stackTrace');
+        print('Error in getCloudData: $e, $stackTrace');
       }
       return <CloudData>[];
     }
@@ -130,7 +141,7 @@ class CloudFunctions {
     } catch (e, stackTrace) {
       // Print an error message and return an empty List if an error occurs
       if (kDebugMode) {
-        print('Error in getCombinedCloudData: $e, $stackTrace');
+        print('Error in getNetworkingData: $e, $stackTrace');
       }
       return <CloudData>[];
     }
@@ -159,7 +170,7 @@ class CloudFunctions {
     } catch (e, stackTrace) {
       // Print an error message and return an empty List if an error occurs
       if (kDebugMode) {
-        print('Error in getCombinedCloudData: $e, $stackTrace');
+        print('Error in getDatabaseData: $e, $stackTrace');
       }
       return <CloudData>[];
     }
@@ -188,7 +199,7 @@ class CloudFunctions {
     } catch (e, stackTrace) {
       // Print an error message and return an empty List if an error occurs
       if (kDebugMode) {
-        print('Error in getCombinedCloudData: $e, $stackTrace');
+        print('Error in getSecurityData: $e, $stackTrace');
       }
       return <CloudData>[];
     }
@@ -217,9 +228,39 @@ class CloudFunctions {
     } catch (e, stackTrace) {
       // Print an error message and return an empty List if an error occurs
       if (kDebugMode) {
-        print('Error in getCombinedCloudData: $e, $stackTrace');
+        print('Error in getGCloudData: $e, $stackTrace');
       }
       return <GCloudData>[];
+    }
+  }
+
+  Future<List<DatabaseArchitecture>> getDatabaseComparisonQuestions() async {
+    try {
+      // Call the Firebase Functions HTTP endpoint 'getDatabaseComparisonQuestions'
+      final HttpsCallableResult<dynamic> callable = await FirebaseFunctions
+          .instance
+          .httpsCallable('getDatabaseComparisonQuestions')
+          .call();
+
+      // Parse the JSON response from the callable as a List of Maps
+      final List<dynamic> response =
+          json.decode(callable.data as String) as List<dynamic>;
+      final List<Map<String, dynamic>> result = List.castFrom(response);
+
+      // Convert the List of Maps to a List of GCloudData objects using GCloudData.fromJson()
+      final List<DatabaseArchitecture> items = result
+          .map((Map<String, dynamic> item) =>
+              DatabaseArchitecture.fromJson(item))
+          .toList();
+
+      // Return the List of GCloudData objects
+      return items;
+    } catch (e, stackTrace) {
+      // Print an error message and return an empty List if an error occurs
+      if (kDebugMode) {
+        print('Error in getDatabaseComparisonQuestions: $e, $stackTrace');
+      }
+      return <DatabaseArchitecture>[];
     }
   }
 
@@ -244,14 +285,15 @@ class CloudFunctions {
     } catch (e, stackTrace) {
       // Print an error message and return an empty List if an error occurs
       if (kDebugMode) {
-        print('Error in getCombinedCloudData: $e, $stackTrace');
+        print('Error in getFactsData: $e, $stackTrace');
       }
       return <String>[];
     }
   }
 
   Future<void> openAITest(String service) async {
-    final HttpsCallable createFacts = FirebaseFunctions.instance.httpsCallable('createFacts');
+    final HttpsCallable createFacts =
+        FirebaseFunctions.instance.httpsCallable('createFacts');
     createFacts(<String, dynamic>{
       'service': service,
     });

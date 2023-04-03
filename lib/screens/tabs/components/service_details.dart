@@ -63,7 +63,7 @@ class ServiceDetailsScreen extends StatelessWidget {
         children: <Widget>[
           Text(
             serviceData.service,
-            style: headlineSmall(context),
+            style: headlineMedium(context),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 5),
@@ -77,7 +77,7 @@ class ServiceDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: SizedBox(
-                height: SizeConfig.screenHeight * .18,
+                height: SizeConfig.screenHeight * .19,
                 width: SizeConfig.screenWidth,
                 child: FutureBuilder<String?>(
                     future: FirestoreDatabase().getFacts(serviceData.service),
@@ -85,11 +85,14 @@ class ServiceDetailsScreen extends StatelessWidget {
                         AsyncSnapshot<String?> snapshot) {
                       if (snapshot.hasData) {
                         final String fact = snapshot.data!;
-                        return funFactCard(Text(
-                          fact,
-                          style: titleMedium(context)!
-                              .copyWith(color: Colors.black),
-                        ));
+                        return funFactCard(
+                          Text(
+                            fact,
+                            softWrap: true,
+                            style: titleMedium(context)!
+                                .copyWith(color: Colors.black),
+                          ),
+                        );
                       } else {
                         return funFactCard(const Text('Fun Facts'));
                       }
@@ -200,6 +203,18 @@ class ServiceDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: Text(serviceData.detail, style: titleMedium(context)),
           ),
+          Text('Example',
+              style: titleLarge(context)
+                  ?.copyWith(decoration: TextDecoration.underline)),
+          Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: Text(
+                  serviceData.example,
+                  style: titleMedium(context),
+                ),
+              )),
           Text('Benefits',
               style: titleLarge(context)
                   ?.copyWith(decoration: TextDecoration.underline)),
@@ -245,18 +260,6 @@ class ServiceDetailsScreen extends StatelessWidget {
                       )),
             ),
           ),
-          Text('Example',
-              style: titleLarge(context)
-                  ?.copyWith(decoration: TextDecoration.underline)),
-          Padding(
-              padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4, bottom: 4),
-                child: Text(
-                  serviceData.example,
-                  style: titleMedium(context),
-                ),
-              )),
         ],
       ),
     );

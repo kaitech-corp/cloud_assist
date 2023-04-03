@@ -22,7 +22,7 @@ List<String> quickLinks = <String>[
 List<Icon> bottomNavIcons = const <Icon>[
   Icon(Icons.home),
   Icon(Icons.search),
-  Icon(Icons.computer_sharp),
+  Icon(Icons.storage),
   Icon(Icons.list)
 ];
 
@@ -34,3 +34,9 @@ List<Icon> serviceDetailIcons = const <Icon>[
 ];
 
 List<String> flagTypes = <String>['Incorrect', 'Outdated'];
+
+List<String> defaultQuickFacts = <String>[
+  'Cloud computing is taking the tech industry by storm!',
+  'How much do you know about cloud computing?',
+  'Start learning about cloud computing services today!'
+];

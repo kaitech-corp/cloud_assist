@@ -31,8 +31,42 @@ const functions = __importStar(require("firebase-functions"));
 const axios_1 = __importDefault(require("axios"));
 const app_1 = require("firebase-admin/app");
 const firebase_admin_1 = require("firebase-admin");
+const openai_1 = require("openai");
 (0, app_1.initializeApp)();
 const db = (0, firebase_admin_1.firestore)();
+/**
+ * Retrieves the latest version of a secret from Google Cloud Secret Manager.
+ * @async
+ * @param {String} params - The name of the secret to retrieve.
+ * @return {Promise<String>} - The secret's payload data as a string.
+ */
+async function getSecretsClient(params) {
+    const projectId = "247644706560";
+    const client = new secret_manager_1.SecretManagerServiceClient();
+    // Get the secret
+    const [version] = await client.accessSecretVersion({
+        name: `projects/${projectId}/secrets/${params}/versions/latest`,
+    });
+    // Convert the payload data to a string and return it
+    return version.payload.data.toString();
+}
+/**
+ * Retrieves the OpenAI client with the appropriate API key and organization.
+ * @async
+ * @return {Promise<OpenAIApi>} - The OpenAI client.
+ */
+async function getOpenaiClient() {
+    // Get the organization and OpenAI API key from Google Cloud Secret Manager
+    const orgKey = await getSecretsClient("orgKey");
+    const secretValue = await getSecretsClient("openAI_api_key");
+    // Create a new configuration object with the retrieved keys
+    const configuration = new openai_1.Configuration({
+        organization: orgKey,
+        apiKey: secretValue,
+    });
+    // Create and return a new OpenAI client using the configuration object
+    return new openai_1.OpenAIApi(configuration);
+}
 //  Combined data api call.
 exports.getCombinedData = functions.https.onCall(async (data, context) => {
     const url = "https://storage.googleapis.com/api-project-371618.appspot.com/combined_data.json";
@@ -46,7 +80,7 @@ exports.getCombinedData = functions.https.onCall(async (data, context) => {
         }
     }
     catch (error) {
-        console.error(`Error in combined cloud data API call: ${error}`);
+        console.log("🚀 ~ file: index.ts:64 ~ getCombinedData ~ error:", error);
         return "Error in combined cloud data API call";
     }
 });
@@ -63,7 +97,7 @@ exports.getCloudData = functions.https.onCall(async (data, context) => {
         }
     }
     catch (error) {
-        console.error(`Error in cloud data API call: ${error}`);
+        console.log("🚀 ~ file: index.ts:82 ~ getCloudData ~ error:", error);
         return "Error in cloud data API call";
     }
 });
@@ -80,7 +114,7 @@ exports.getNetworkingData = functions.https.onCall(async (data, context) => {
         }
     }
     catch (error) {
-        console.error(`Error in cloud networking data API call: ${error}`);
+        console.log("🚀 ~ file: index.ts:100 ~ getNetworkingData ~ error:", error);
         return "Error in cloud networking data API call";
     }
 });
@@ -97,7 +131,7 @@ exports.getDatabaseData = functions.https.onCall(async (data, context) => {
         }
     }
     catch (error) {
-        console.error(`Error in cloud database data API call: ${error}`);
+        console.log("🚀 ~ file: index.ts:118 ~ getDatabaseData ~ error:", error);
         return "Error in cloud database data API call";
     }
 });
@@ -114,7 +148,7 @@ exports.getSecurityData = functions.https.onCall(async (data, context) => {
         }
     }
     catch (error) {
-        console.error(`Error in cloud security data API call: ${error}`);
+        console.log("🚀 ~ file: index.ts:136 ~ getSecurityData ~ error:", error);
         return "Error in cloud security data API call";
     }
 });
@@ -131,8 +165,26 @@ exports.getGCloudData = functions.https.onCall(async (data, context) => {
         }
     }
     catch (error) {
-        console.error(`Error in gcloud data API call: ${error}`);
+        console.log("🚀 ~ file: index.ts:154 ~ getGCloudData ~ error:", error);
         return "Error in gcloud data API call";
+    }
+});
+//    Gcloud command line data api call.
+exports.getDatabaseComparisonQuestions = functions.https.onCall(async (data, context) => {
+    const url = "https://storage.googleapis.com/api-project-371618.appspot.com/" +
+        "database_comparison_questions.json";
+    try {
+        const response = await axios_1.default.get(url);
+        if (response.status === 200) {
+            return JSON.stringify(response.data);
+        }
+        else {
+            return response.status;
+        }
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.ts:173 ~ error:", error);
+        return "Error in getDatabaseComparisonQuestions data API call";
     }
 });
 //    Facts api call.
@@ -148,12 +200,30 @@ exports.getFactsData = functions.https.onCall(async (data, context) => {
         }
     }
     catch (error) {
-        console.error(`Error in facts data API call: ${error}`);
+        console.log("🚀 ~ file: index.ts:131 ~ getFactsData~ error:", error);
+        return "Error in facts data API call";
+    }
+});
+// Lessons api call.
+exports.getLessonsData = functions.https.onCall(async (data, context) => {
+    const url = "https://storage.googleapis.com/api-project-371618.appspot.com/lessons.json";
+    try {
+        const response = await axios_1.default.get(url);
+        if (response.status === 200) {
+            return JSON.stringify(response.data);
+        }
+        else {
+            return response.status;
+        }
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.ts:211 ~ exports.getLessonsData ~ error:", error);
         return "Error in facts data API call";
     }
 });
 //  Create new fun facts
 exports.createFacts = functions.https.onCall(async (snap, context) => {
+    const openai = await getOpenaiClient();
     const service = snap.service;
     const prompt = "Tell me 3 interesting facts " +
         "about Google's " +
@@ -166,7 +236,6 @@ exports.createFacts = functions.https.onCall(async (snap, context) => {
         "[fact 3 about the GCP service]}]";
     const tokenSize = 2000;
     const temp = 0.7;
-    const uri = "https://api.openai.com/v1/completions";
     const data = {
         model: "text-davinci-003",
         prompt: prompt,
@@ -174,45 +243,94 @@ exports.createFacts = functions.https.onCall(async (snap, context) => {
         temperature: temp,
     };
     try {
-        // Set up Secret Manager client
-        const projectId = "247644706560";
-        const client = new secret_manager_1.SecretManagerServiceClient();
-        // Get the secret
-        const name = "openAI_api_key";
-        const [version] = await client.accessSecretVersion({
-            name: `projects/${projectId}/secrets/${name}/versions/latest`,
-        });
-        const secretValue = version.payload.data.toString();
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${secretValue}`,
-                "Content-Type": "application/json",
-            },
-        };
-        console.log(data);
-        const response = await axios_1.default.post(uri, data, config);
+        const response = await openai.createCompletion(data);
         const result = response.data.choices[0].text.trim();
         console.log("🚀 ~ result:", result);
+        // Save plain response for troubleshooting
+        savePlainResponse(service, result);
         try {
-            const newResult = JSON.parse(result);
-            saveChatGPTResponse(newResult, service);
+            const jsonResponse = await convertToJSON(result);
+            const parsedResponse = JSON.parse(jsonResponse);
+            const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
+            saveChatGPTResponse(adjustedResponse, service);
         }
-        catch (e) {
-            console.log("🚀 ~ file: index.js:217 ~ error parsing result:", e);
-            try {
-                const newArray = extractFunFacts(result);
-                saveChatGPTResponse(newArray, service);
-            }
-            catch (error) {
-                console.log("🚀 ~ file: index.js:222 ~ error:", error);
-            }
+        catch (error) {
+            console.log("🚀 ~ file: index.ts:196 ~ error:", error);
         }
     }
-    catch (err) {
-        console.log("🚀 ~ file: index.js:226 ~ err:", err);
-        console.error(err);
+    catch (error) {
+        console.log("🚀 ~ file: index.js:193 ~ err:", error);
     }
 });
+/**
+ * Saves the response from ChatGPT to Firestore.
+ *
+ * @param {string} service The service name in String format.
+ * @param {string} result The response from ChatGPT in String format.
+ * @return {Promise<void>} A promise that resolved when the response is saved.
+ */
+async function savePlainResponse(service, result) {
+    try {
+        db.collection("chatGPT").doc().set({
+            service: service,
+            response: result,
+            timestamp: firebase_admin_1.firestore.FieldValue.serverTimestamp(),
+        });
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.ts:213 ~ savePlainResponse ~ error:", error);
+    }
+}
+/**
+ * Converts the given string to JSON format using OpenAI's
+ * text-davinci-003 model.
+ * @async
+ * @param {String} params - The string to convert to JSON format.
+ * @return {Promise<String>} - The string converted to JSON format.
+ */
+async function convertToJSON(params) {
+    // Retrieve the OpenAI client
+    const openai = await getOpenaiClient();
+    // Set the parameters for the OpenAI API call
+    const prompt = "Convert this to json format" + params;
+    const tokenSize = 2000;
+    const temp = 0.7;
+    const data = {
+        model: "text-davinci-003",
+        prompt: prompt,
+        max_tokens: tokenSize,
+        temperature: temp,
+    };
+    try {
+        // Call the OpenAI API to convert the string to JSON format
+        const response = await openai.createCompletion(data);
+        const result = response.data.choices[0].text.trim();
+        console.log("🚀 ~ result:", result);
+        return result;
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.js:193 ~ err:", error);
+        return null;
+    }
+}
+/**
+ * Replaces non fun fact keys in a given object array with the
+ * value of the first key
+ * @param {FunFactObject[]} jsonArray - An array of objects with
+ * fun_fact property
+ * @return {FunFactObject[]} - An array of objects with only
+ * fun_fact property
+ */
+function replaceNonFunFactKeys(jsonArray) {
+    for (let i = 0; i < jsonArray.length; i++) {
+        const obj = jsonArray[i];
+        if (!Object.prototype.hasOwnProperty.call(obj, "fun_fact")) {
+            obj.fun_fact = obj[Object.keys(obj)[0]];
+            delete obj[Object.keys(obj)[0]];
+        }
+    }
+    return jsonArray;
+}
 /**
  * Saves the response from ChatGPT to Firestore.
  *
@@ -237,38 +355,11 @@ async function saveChatGPTResponse(response, service) {
                 timestamp: firebase_admin_1.firestore.FieldValue.serverTimestamp(),
             });
         });
-        console.log("🚀 ~ file: index.ts:207 ~ documents ~ documents:", documents);
+        console.log("🚀 ~ file: index.ts:240 ~ documents ~ documents:", documents);
     }
     catch (err) {
-        console.log("🚀 ~ file: index.js:254 ~ saveChatGPTResponse ~ err:", err);
+        console.log("🚀 ~ file: index.ts:244 ~ saveChatGPTResponse ~ err:", err);
     }
-}
-/**
-
-Extracts fun facts from a string containing JSON objects surrounded by square
- brackets.
-@param {string} str - The input string containing fun facts in JSON format.
-@return {Array} An array of fun fact objects extracted from the input string,
-or an empty array if no matches were found.
-@throws {SyntaxError} If the fun facts are not in valid JSON format.
-@example
-const input = "[{'fun_fact': 'The Great Wall of China is not visible from
-space.'}, {'fun_fact': 'The first oranges weren’t orange.'}]";
-const funFacts = extractFunFacts(input);
-console.log(funFacts);
-// Output: [{fun_fact: "The Great Wall of China is not visible from space."},
-{fun_fact: "The first oranges weren’t orange."}]
-**/
-function extractFunFacts(str) {
-    const regex = /\[(.*?)\]/g;
-    const matches = str.match(regex);
-    if (!matches) {
-        return [];
-    }
-    return matches.map((match) => {
-        const obj = JSON.parse(match.replace(/'/g, '"').replace(/fun_fact/g, '"fun_fact"'));
-        return obj;
-    });
 }
 /**
 
@@ -285,4 +376,140 @@ function removeCloudAndWhitespace(str) {
     const newStr = str.replace(regex, "").replace(/\s+/g, "");
     return newStr;
 }
+exports.fetchAPIData = functions.pubsub
+    .schedule("every sunday 00:00")
+    .onRun(async (context) => {
+    // List all api calls
+    const apiList = [
+        "getCombinedCloudData",
+        "getCloudData",
+        "getNetworkingData",
+        "getDatabaseData",
+        "getSecurityData",
+        "getGCloudData",
+    ];
+    try {
+        apiList.forEach(async (apiName) => {
+            // Update Firestore timestamp
+            const timestamp = firebase_admin_1.firestore.FieldValue.serverTimestamp();
+            await (0, firebase_admin_1.firestore)().collection("apiStatus").doc(apiName).update({
+                lastUpdated: timestamp,
+            });
+        });
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.ts:318 ~ .onRun ~ error:", error);
+    }
+});
+exports.reportGenerator = functions.https.onCall(async (snap, context) => {
+    const openai = await getOpenaiClient();
+    const title = snap.title;
+    const content = "Write a 500 word report explaining to a high school student on " + title;
+    const model = "gpt-3.5-turbo";
+    const role = "user";
+    const completion = await openai.createChatCompletion({
+        model: model,
+        messages: [{ role: role, content: content }],
+    });
+    const reportResponse = completion.data.choices[0].message.content;
+    try {
+        saveReportToFirestore(reportResponse, title);
+    }
+    catch (error) {
+        saveReportToFirestore(reportResponse, title);
+    }
+});
+/**
+
+Saves a report to Firestore database.
+@async
+@function saveReportToFirestore
+@param {any} reportResponse - The report data to be saved.
+@param {string} title - The title of the report.
+@throws {Error} - Throws an error if there was a problem saving
+the report to Firestore.
+@return {Promise<void>}
+*/
+async function saveReportToFirestore(reportResponse, title) {
+    try {
+        const ref = await (0, firebase_admin_1.firestore)().collection("reports").add({
+            content: reportResponse,
+            timestamp: firebase_admin_1.firestore.FieldValue.serverTimestamp(),
+            title: title,
+        });
+        ref.update({
+            docID: ref.id,
+        });
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.ts:435 ~ saveReportToFirestore ~ error:", error);
+    }
+}
+exports.updateTags = functions.firestore
+    .document("reports/{doc}")
+    .onCreate(async (snap, context) => {
+    const openai = await getOpenaiClient();
+    const doc = context.params.doc;
+    const snapshot = snap.data();
+    const report = snapshot.content;
+    const docRef = (0, firebase_admin_1.firestore)().collection("reports").doc(doc);
+    const content = report +
+        " Create tags for this report to identify it " +
+        "in a search. List them as a json array.";
+    const model = "gpt-3.5-turbo";
+    const role = "user";
+    try {
+        const completion = await openai.createChatCompletion({
+            model: model,
+            messages: [{ role: role, content: content }],
+        });
+        const tagResponse = completion.data.choices[0].message.content;
+        const tagArray = JSON.parse(tagResponse);
+        console.log("🚀 ~ file: index.ts:525 ~ exports.reportGenerator ~ tagResponse:", tagArray);
+        await docRef.update({
+            tags: tagArray,
+        });
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.ts:534 ~ exports.updateTags ~ error:", error);
+    }
+});
+exports.databaseSolutionGenerator = functions.firestore
+    .document("databaseComparison/{docID}")
+    .onCreate(async (snap, context) => {
+    const openai = await getOpenaiClient();
+    const docID = context.params.docID;
+    const docRef = (0, firebase_admin_1.firestore)().collection("databaseComparison").doc(docID);
+    const snapshot = snap.data();
+    try {
+        // Assuming 'snap' is a DocumentSnapshot object
+        const answers = snapshot.answersSelected;
+        console.log("🚀 ~ file: index.ts:530 ~ .onCreate ~ answers:", answers);
+        const answerList = answers.map((map) => map.answer);
+        const answerString = answerList.join(" ");
+        const content = "Give suggestions on what GCP database service would be " +
+            `best suited given the following parameters: ${answerString} ` +
+            "First list the suggestions then offer reasons why and lastly " +
+            "list comparable services on AWS and Azure.";
+        const model = "gpt-3.5-turbo";
+        const role = "user";
+        const completion = await openai.createChatCompletion({
+            model,
+            messages: [{ role, content }],
+        });
+        const response = completion.data.choices[0].message.content;
+        try {
+            docRef.update({
+                answer: response,
+                timestamp: firebase_admin_1.firestore.FieldValue.serverTimestamp(),
+            });
+        }
+        catch (error) {
+            console.log("🚀 ~ file: index.ts:551 ~ databaseSolutionGenerator ~ error:", error);
+        }
+    }
+    catch (error) {
+        console.log("🚀 ~ file: index.ts:558 ~ .onCreate ~ error:", error);
+    }
+});
 //# sourceMappingURL=index.js.map

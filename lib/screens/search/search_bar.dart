@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({super.key, this.recentResults});
@@ -36,8 +37,9 @@ class SearchBarState extends State<SearchBar> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FutureBuilder<List<CloudData>?>(
-            future: CloudFunctions().getCombinedCloudData(),
-            builder: (BuildContext context, AsyncSnapshot<List<CloudData>?> snapshot) {
+            future: FirestoreDatabase().apiCall('getCombinedData'),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<CloudData>?> snapshot) {
               if (snapshot.hasData) {
                 final List<CloudData> data = snapshot.data!;
                 return Column(
@@ -68,7 +70,8 @@ class SearchBarState extends State<SearchBar> {
                                     final List<CloudData> results = data;
                                     setState(() {
                                       try {
-                                        _results = results.where((CloudData result) => result
+                                        _results = results
+                                            .where((CloudData result) => result
                                                 .service
                                                 .toLowerCase()
                                                 .contains(_controller.text
@@ -90,7 +93,8 @@ class SearchBarState extends State<SearchBar> {
                                   final List<CloudData> results = data;
                                   try {
                                     // ignore: no_leading_underscores_for_local_identifiers
-                                    final CloudData _result = results.where((CloudData result) => result
+                                    final CloudData _result = results
+                                        .where((CloudData result) => result
                                             .service
                                             .toLowerCase()
                                             .contains(value.toLowerCase()))
@@ -209,7 +213,6 @@ class SearchBarState extends State<SearchBar> {
                         ),
                       ),
                     ),
-
                   ],
                 );
               }

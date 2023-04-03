@@ -30,6 +30,7 @@ class FeaturedService extends StatelessWidget {
                   cloudData.service,
                   style: titleLarge(context)
                       ?.copyWith(fontWeight: FontWeight.bold),
+                  maxLines: 2,
                 ),
                 const Icon(Icons.data_object)
               ],

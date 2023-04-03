@@ -1,28 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quick_fact_model.dart';
+part of 'comparison_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_QuickFact _$$_QuickFactFromJson(Map<String, dynamic> json) => _$_QuickFact(
-      fact: json['fact'] as String,
+_$_ComparisonModel _$$_ComparisonModelFromJson(Map<String, dynamic> json) =>
+    _$_ComparisonModel(
+      answer: json['answer'] as String,
       docID: json['docID'] as String,
-      service: json['service'] as String,
-      flag: json['flag'] as String,
       timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['timestamp'], const TimestampConverter().fromJson),
+      answersSelected: (json['answersSelected'] as List<dynamic>)
+          .map((e) => Map<String, String>.from(e as Map))
+          .toList(),
     );
 
-Map<String, dynamic> _$$_QuickFactToJson(_$_QuickFact instance) =>
+Map<String, dynamic> _$$_ComparisonModelToJson(_$_ComparisonModel instance) =>
     <String, dynamic>{
-      'fact': instance.fact,
+      'answer': instance.answer,
       'docID': instance.docID,
-      'service': instance.service,
-      'flag': instance.flag,
       'timestamp': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.timestamp, const TimestampConverter().toJson),
+      'answersSelected': instance.answersSelected,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
