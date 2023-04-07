@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/service_config/service_config.dart';
-import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/constants.dart';
 import '../../services/ui/text_styles.dart';
 import '../tabs/command_lines.dart';
 import '../tabs/databases.dart';
@@ -52,14 +52,8 @@ class TabControllerWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             TabBar(
-              tabs: const <Widget>[
-                Text('Home'),
-                Text('Popular Services'),
-                Text('Databases'),
-                Text('Networking'),
-                Text('Security'),
-                Text('Command Lines'),
-              ],
+              tabs: List<Widget>.generate(
+                  tabs.length, (int index) => Text(tabs[index])),
               isScrollable: true,
               labelStyle: titleMedium(context),
             ),

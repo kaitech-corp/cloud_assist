@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
-import '../../models/cloud_options_model/cloud_options_model.dart';
 import '../../models/comparison_model/comparison_model.dart';
 import '../../models/quick_fact_model/quick_fact_model.dart';
 import '../../screens/database_comparison/bloc/event.dart';
@@ -137,31 +136,6 @@ class FirestoreDatabase {
           .map((Map<String, dynamic> item) => CloudData.fromJson(item))
           .toList();
       return cloudData;
-    }
-  }
-
-  Future<void> recordDatabaseComparison(CloudOptions cloudOptions) async {
-    try {
-      final DocumentReference<Object?> ref = await databaseComparison.add({
-        'dataStorageType': cloudOptions.dataStorageType,
-        'dataSize': cloudOptions.dataSize,
-        'dataAccessFrequency': cloudOptions.dataAccessFrequency,
-        'dataConsistency': cloudOptions.dataConsistency,
-        'dataSecurity': cloudOptions.dataSecurity,
-        'budget': cloudOptions.budget,
-        'dataAccess': cloudOptions.dataAccess,
-        'dataGrowth': cloudOptions.dataGrowth,
-        'workload': cloudOptions.workload,
-        'architecture': cloudOptions.architecture,
-      });
-      ref.update(<String, dynamic>{
-        'timestamp': FieldValue.serverTimestamp(),
-        'docID': ref.id,
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print('recordDatabaseComparison error in firebase_functions: $e');
-      }
     }
   }
 

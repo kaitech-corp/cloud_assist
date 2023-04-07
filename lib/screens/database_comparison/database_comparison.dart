@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/comparison_model/comparison_model.dart';
 import '../../models/database_architecture_model/database_architecture_model.dart';
-import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/firebase_functions/functions.dart';
-import '../../services/navigation/navigation.dart';
-import '../../services/service_config/service_config.dart';
 import '../../services/ui/text_styles.dart';
 import '../database_solution/bloc/bloc.dart';
 import '../database_solution/bloc/repository.dart';
 import '../database_solution/database_solution_screen.dart';
-import '../tabs/components/fade_shimmer.dart';
 import 'bloc/bloc.dart';
 import 'bloc/event.dart';
 import 'bloc/state.dart';
@@ -71,7 +66,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Choose a Database.',
+                        'Database Solution',
                         style: headlineSmall(context),
                       ),
                       const SizedBox(

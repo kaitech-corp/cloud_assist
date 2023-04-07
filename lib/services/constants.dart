@@ -8,6 +8,15 @@ List<String> bottomNavItems = <String>[
   'GCloud',
   // 'Resources'
 ];
+
+List<String> tabs = <String>[
+  'Home',
+  'Popular Services',
+  'Data',
+  'Networking',
+  'Security',
+  'Command Lines'
+];
 List<String> serviceDetailItems = <String>[
   'Benefits',
   'Cons',
