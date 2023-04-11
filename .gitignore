@@ -51,3 +51,4 @@ app.*.map.json
 # API
 /lib/services/api/
 ios/Runner/GoogleService-Info.plist
+ios/Runner/Info.plist
