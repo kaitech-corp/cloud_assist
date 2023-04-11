@@ -487,10 +487,10 @@ exports.databaseSolutionGenerator = functions.firestore
         console.log("🚀 ~ file: index.ts:530 ~ .onCreate ~ answers:", answers);
         const answerList = answers.map((map) => map.answer);
         const answerString = answerList.join(" ");
-        const content = "Give suggestions on what GCP database service would be " +
-            `best suited given the following parameters: ${answerString} ` +
-            "First list the suggestions then offer reasons why and lastly " +
-            "list comparable services on AWS and Azure.";
+        const content = "Give suggestions and detailed reasons on what GCP database service " +
+            `is best suited given the following parameters: ${answerString}.` +
+            "Include Description, Suggestions (list suggestions only), Reasons, " +
+            "Comparable services in AWS and Azure";
         const model = "gpt-3.5-turbo";
         const role = "user";
         const completion = await openai.createChatCompletion({
@@ -512,4 +512,29 @@ exports.databaseSolutionGenerator = functions.firestore
         console.log("🚀 ~ file: index.ts:558 ~ .onCreate ~ error:", error);
     }
 });
+exports.createUserDocument = functions.auth.user().onCreate(async (user) => {
+    // Get user data from Firebase Authentication
+    const { uid, displayName, email, photoURL } = user;
+    try {
+        // Create user document in Firestore
+        await (0, firebase_admin_1.firestore)()
+            .collection("users")
+            .doc(uid)
+            .set({
+            displayName: displayName || "",
+            email: email || "",
+            photoURL: photoURL || "",
+            uid: uid,
+            dateCreated: firebase_admin_1.firestore.FieldValue.serverTimestamp(),
+            paid: true,
+            // Add any additional fields you want to store in the user document
+            // e.g. role, created_at, etc.
+        });
+        console.log(`User document created for user with UID: ${uid}`);
+    }
+    catch (error) {
+        console.error(`Error creating user document for user with UID: ${uid}`, error);
+    }
+});
+// npm run lint -- --fix
 //# sourceMappingURL=index.js.map
