@@ -1,8 +1,6 @@
 import 'package:fade_shimmer/fade_shimmer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/quick_fact_model/quick_fact_model.dart';
 import '../../../services/constants.dart';
 import '../../../services/firebase_functions/cloud_functions.dart';
 import '../../../services/firebase_functions/functions.dart';

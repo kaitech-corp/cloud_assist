@@ -1,8 +1,8 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/service_config/service_config.dart';
 import '../../bloc/generics/generic_bloc.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../models/database_architecture_model/database_architecture_model.dart';
@@ -12,8 +12,10 @@ import '../../repositories/quick_facts_repository.dart';
 import '../../services/constants.dart';
 
 import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 import '../database_comparison/database_comparison.dart';
 import '../search/search_bar.dart';
+import '../settings/settings.dart';
 import 'home_screen.dart';
 
 // Global fetchCount
@@ -37,7 +39,7 @@ class _HomeState extends State<Home> {
             GenericBloc<QuickFact, QuickFactsRepository>(
                 repository: QuickFactsRepository()),
         child: const HomeScreen()),
-        BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
+    BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
         create: (BuildContext context) =>
             GenericBloc<CloudData, CloudDataRepository>(
                 repository: CloudDataRepository()),
@@ -46,14 +48,18 @@ class _HomeState extends State<Home> {
         future: CloudFunctions().getDatabaseComparisonQuestions(),
         builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
           if (snapshot.hasData) {
-            final List<DatabaseArchitecture> questions = snapshot.data as List<DatabaseArchitecture>;
-            return DatabaseComparisonScreen(questions: questions,);
+            final List<DatabaseArchitecture> questions =
+                snapshot.data as List<DatabaseArchitecture>;
+            return DatabaseComparisonScreen(
+              questions: questions,
+            );
           } else {
-            return const DatabaseComparisonScreen(questions: [],);
+            return const DatabaseComparisonScreen(
+              questions: <DatabaseArchitecture>[],
+            );
           }
-          
         }),
-    // const ResourcesScreen()
+    const SettingsPage()
   ];
   void _handleIndexChanged(int i) {
     setState(() {
@@ -63,7 +69,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         body: _widgetOptions
