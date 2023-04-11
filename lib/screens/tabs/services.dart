@@ -2,20 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
-
+import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/ui/text_styles.dart';
 import 'components/fade_shimmer.dart';
 
 ///Data class for home
-class SearchServices extends StatefulWidget {
-  const SearchServices({super.key});
+class PopularServices extends StatefulWidget {
+  const PopularServices({super.key});
 
   @override
-  State<SearchServices> createState() => _SearchServicesState();
+  State<PopularServices> createState() => _PopularServicesState();
 }
 
-class _SearchServicesState extends State<SearchServices> {
+class _PopularServicesState extends State<PopularServices> {
+  @override
+  void initState() {
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.popularServices.toString(),
+        startTime: true,
+        endTime: false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.popularServices.toString(),
+        startTime: false,
+        endTime: true);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<CloudData>?>(
@@ -33,6 +52,11 @@ class _SearchServicesState extends State<SearchServices> {
                     child: GestureDetector(
                         onTap: () {
                           context.goNamed('serviceDetails', extra: cloudData);
+                          RealTimeDatabase().saveUserInteraction(
+                              serviceId: cloudData.service,
+                              featureId: FeatureID.popularServices.toString(),
+                              startTime: true,
+                              endTime: false);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),

@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
 
+import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/ui/text_styles.dart';
 
 import 'components/fade_shimmer.dart';
@@ -18,6 +20,24 @@ class SecurityServices extends StatefulWidget {
 
 class _SecurityServicesState extends State<SecurityServices> {
   @override
+  void initState() {
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.security.toString(),
+        startTime: true,
+        endTime: false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.security.toString(),
+        startTime: false,
+        endTime: true);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<CloudData>?>(
         future: CloudFunctions().getSecurityData(),
@@ -28,12 +48,17 @@ class _SecurityServicesState extends State<SecurityServices> {
             return ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final CloudData networkData = data[index];
+                  final CloudData cloudData = data[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                         onTap: () {
-                          context.goNamed('serviceDetails', extra: networkData);
+                          context.goNamed('serviceDetails', extra: cloudData);
+                          RealTimeDatabase().saveUserInteraction(
+                              serviceId: cloudData.service,
+                              featureId: FeatureID.security.toString(),
+                              startTime: true,
+                              endTime: false);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -41,7 +66,7 @@ class _SecurityServicesState extends State<SecurityServices> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                networkData.service,
+                                cloudData.service,
                                 style: titleMedium(context),
                                 textAlign: TextAlign.start,
                               ),

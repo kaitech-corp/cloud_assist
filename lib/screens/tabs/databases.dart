@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
 
+import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/ui/text_styles.dart';
 import 'components/fade_shimmer.dart';
 
@@ -16,6 +18,20 @@ class DatabaseServices extends StatefulWidget {
 }
 
 class _DatabaseServicesState extends State<DatabaseServices> {
+  @override
+  void initState() {
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.data.toString(), startTime: true, endTime: false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.data.toString(), startTime: false, endTime: true);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<CloudData>?>(
@@ -33,6 +49,11 @@ class _DatabaseServicesState extends State<DatabaseServices> {
                     child: GestureDetector(
                         onTap: () {
                           context.goNamed('serviceDetails', extra: cloudData);
+                          RealTimeDatabase().saveUserInteraction(
+                              serviceId: cloudData.service,
+                              featureId: FeatureID.data.toString(),
+                              startTime: true,
+                              endTime: false);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
