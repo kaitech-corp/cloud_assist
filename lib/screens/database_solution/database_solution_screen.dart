@@ -33,6 +33,7 @@ class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
   @override
   void dispose() {
     bloc.close();
+    widget.questionsBloc.close();
     super.dispose();
   }
 
@@ -50,7 +51,7 @@ class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
             width: SizeConfig.screenWidth,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text('Generating Solution. Sit tight.',
@@ -61,35 +62,30 @@ class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
             ),
           );
         } else {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    IconButton(
-                        onPressed: () {
-                          widget.questionsBloc.add(SolutionViewed());
-                          bloc.close();
-                        },
-                        icon: const Icon(Icons.arrow_back_ios)),
-                    Text(
-                      'Solution',
-                      style: headlineSmall(context),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Text(
-                    model?.answer ?? '',
-                    style: titleMedium(context),
-                  ),
-                ),
+          return Scaffold(
+            appBar: AppBar(
+              centerTitle: false,
+              title: Text(
+                'Solution',
+                style: headlineMedium(context),
+              ),
+              actions: <Widget>[
+                IconButton(
+                    onPressed: () {
+                      widget.questionsBloc.add(SolutionViewed(model: model));
+                      bloc.close();
+                    },
+                    icon: const Icon(Icons.close)),
               ],
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(
+                  model.answer,
+                  style: titleMedium(context),
+                ),
+              ),
             ),
           );
         }

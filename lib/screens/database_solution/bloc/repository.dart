@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../models/comparison_model/comparison_model.dart';
 
@@ -24,23 +25,25 @@ class ComparisonModelRepository {
   void refresh(String docID) {
     _subscription?.cancel();
     _subscription = databaseComparisonCollection
-            .doc(docID)
-            .snapshots()
-            .map((DocumentSnapshot<Object?> snapshot) {
-              if (snapshot.exists) {
-                final doc = snapshot.data() as Map<String, Object?>;
-                return ComparisonModel.fromJson(doc);
-              } else {
-                return const ComparisonModel(
-                  answer: '',
-                  docID: "12345",
-                  answersSelected: [],
-                );
-              }
-            })
-            .handleError(
-                (error) => print('Error retrieving database solution: $error'))
-            .listen((ComparisonModel answer) => _loadedData.add(answer));
+        .doc(docID)
+        .snapshots()
+        .map((DocumentSnapshot<Object?> snapshot) {
+      if (snapshot.exists) {
+        final Map<String, Object?> doc =
+            snapshot.data() as Map<String, Object?>;
+        return ComparisonModel.fromJson(doc);
+      } else {
+        return const ComparisonModel(
+          answer: '',
+          docID: '12345',
+          answersSelected: <Map<String, String>>[],
+        );
+      }
+    }).handleError((dynamic error) {
+      if (kDebugMode) {
+        print('Error retrieving database solution: $error');
+      }
+    }).listen((ComparisonModel answer) => _loadedData.add(answer));
   }
 
   Stream<ComparisonModel> get answer => _loadedData.stream;

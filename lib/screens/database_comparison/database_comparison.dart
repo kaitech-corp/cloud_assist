@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/database_architecture_model/database_architecture_model.dart';
+import '../../services/constants.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/firebase_functions/functions.dart';
 import '../../services/ui/text_styles.dart';
 import '../database_solution/bloc/bloc.dart';
@@ -30,11 +32,19 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   void initState() {
     super.initState();
     _questionsBloc = QuestionsBloc();
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.database.toString(),
+        startTime: true,
+        endTime: false);
   }
 
   @override
   void dispose() {
     _questionsBloc.close();
+    RealTimeDatabase().saveUserInteraction(
+        featureId: FeatureID.database.toString(),
+        startTime: false,
+        endTime: true);
     super.dispose();
   }
 
@@ -48,7 +58,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
             answerSelected = List<AnswersSelected>.generate(
                 10, (int index) => AnswersSelected(null, null));
 
-            String docID = hashToString(state.answerSelected);
+            final String docID = hashToString(state.answerSelected);
             return BlocProvider<ComparisonModelBloc>(
               create: (BuildContext context) => ComparisonModelBloc(
                   comparisonModelRepository: ComparisonModelRepository()
@@ -59,12 +69,12 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
             );
           } else {
             return Stack(
-              children: [
+              children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       Text(
                         'Database Solution',
                         style: headlineSmall(context),
@@ -92,7 +102,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: <Widget>[
                                 Text(
                                   databaseArchitecture.question,
                                   style: titleMedium(context),
@@ -117,6 +127,13 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                                         value!,
                                       ),
                                     );
+                                    RealTimeDatabase().saveUserInteraction(
+                                        serviceId:
+                                            databaseArchitecture.question,
+                                        featureId:
+                                            FeatureID.database.toString(),
+                                        startTime: true,
+                                        endTime: false);
                                   },
                                   items: databaseArchitecture.answers
                                       .map<DropdownMenuItem<String>>(
@@ -134,7 +151,8 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                                       .toList(),
                                   hint: Text(
                                     'Select an answer',
-                                    style: titleSmall(context)?.copyWith(color: Colors.blueAccent),
+                                    style: titleSmall(context)
+                                        ?.copyWith(color: Colors.blueAccent),
                                   ),
                                 ),
                                 const SizedBox(
@@ -161,6 +179,11 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                                 AnswersSubmitted(
                                     answerSelected: state.answerSelected),
                               );
+                              RealTimeDatabase().saveUserInteraction(
+                                  featureId:
+                                      FeatureID.popularServices.toString(),
+                                  startTime: false,
+                                  endTime: true);
                             },
                             icon: Icons.send,
                           );

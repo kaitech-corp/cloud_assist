@@ -12,7 +12,7 @@ class CustomFloatingActionButton extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.blue,
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
