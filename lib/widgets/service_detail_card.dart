@@ -31,7 +31,7 @@ Widget funFactCard(Widget child) => Styled.widget(child: child)
           borderRadius: BorderRadius.circular(30),
         ));
 
-Widget terminalView(String text, String text2) {
+Widget terminalView(String text) {
   return Container(
     width: SizeConfig.screenWidth,
     color: Colors.black,
@@ -51,14 +51,7 @@ Widget terminalView(String text, String text2) {
           const SizedBox(
             height: 16,
           ),
-          Text(
-            text2,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'Courier',
-              fontSize: 12.0,
-            ),
-          ),
+          
         ],
       ),
     ),
