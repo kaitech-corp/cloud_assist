@@ -112,8 +112,19 @@ class SolutionListScreenState extends State<SolutionListScreen> {
                                         style: titleMedium(context),
                                       ),
                                     ),
-                                    const AnimatedIconButton(
-                                        Icons.auto_awesome),
+                                    GestureDetector(
+                                      onTap: (){
+                                        RealTimeDatabase().saveUserInteraction(
+                                            startTime: true,
+                                            endTime: false,
+                                            featureId: FeatureID
+                                                .databaseSolutions
+                                                .toString(),
+                                            docID: solution.docID);
+                                      },
+                                      child: const AnimatedIconButton(
+                                          Icons.auto_awesome),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(

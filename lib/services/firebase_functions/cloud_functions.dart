@@ -10,18 +10,14 @@ import 'firebase_functions.dart';
 
 class CloudFunctions {
   // Create new quick facts
-  Future<void> newQuickFacts() async {
+  Future<void> createFacts(String service) async {
     try {
       final HttpsCallable newQuickFacts =
-          FirebaseFunctions.instance.httpsCallable('newQuickFacts');
+          FirebaseFunctions.instance.httpsCallable('createFacts');
       newQuickFacts(<String, dynamic>{
-        'prompt': 'GCP Anthos',
+        'service': service,
       });
-      final HttpsCallableResult<dynamic> result = await newQuickFacts.call();
-      if (kDebugMode) {
-        // ignore: avoid_dynamic_calls
-        print(result.data['prompt']);
-      }
+      await newQuickFacts.call();
     } on FirebaseFunctionsException catch (error) {
       if (kDebugMode) {
         print(error.code);

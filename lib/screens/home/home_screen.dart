@@ -11,7 +11,9 @@ import '../tabs/databases.dart';
 import '../tabs/networking.dart';
 import '../tabs/security.dart';
 import '../tabs/services.dart';
-import 'components/featured_service/featured_service_widget.dart';
+
+
+import 'components/featured_service/featured_service.dart';
 import 'components/quick_fact_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -124,7 +126,7 @@ class TabControllerWidget extends StatelessWidget {
                           greyLineBreak
                         ],
                       ),
-                      const Expanded(flex: 2, child: FeaturedServiceWidget())
+                      const Expanded(flex: 2, child: FeaturedService())
                     ],
                   ),
                   const PopularServices(),

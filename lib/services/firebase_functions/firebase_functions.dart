@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../models/comparison_model/comparison_model.dart';
 import '../../models/quick_fact_model/quick_fact_model.dart';
-import '../../models/user_interaction/user_interaction.dart';
 import '../../models/user_model/user_model.dart';
 import '../../repositories/user_repository.dart';
 import '../../screens/database_comparison/bloc/event.dart';
@@ -58,7 +57,7 @@ class FirestoreDatabase {
     try {
       final QuerySnapshot<Object?> ref = await funFactsCollection.get();
       if (ref.docs.isEmpty) {
-        CloudFunctions().openAITest(service);
+        CloudFunctions().createFacts(service);
       } else {
         final List<String> facts = ref.docs
             .map(
@@ -150,60 +149,59 @@ class FirestoreDatabase {
     }
   }
 
-Future<void> saveAnswers(List<AnswersSelected> answersSelected) async {
-  final String hash = answersSelected.toString().hashCode.toString();
-  final bool docExists = await checkDocExists(hash);
-  
-  if (!docExists) {
-    try {
-      final Map<String, List<Map<String, dynamic>>> data =
-          <String, List<Map<String, dynamic>>>{
-        'answersSelected': answersSelected
-            .map((AnswersSelected answer) => answer.toJson())
-            .toList(),
-      };
-      
-      final DocumentReference<Object?> ref = databaseComparison.doc(hash);
-      ref.set(data);
-      ref.update(<String, dynamic>{
-        'docID': hash,
-      });
+  Future<void> saveAnswers(List<AnswersSelected> answersSelected) async {
+    final String hash = answersSelected.toString().hashCode.toString();
+    final bool docExists = await checkDocExists(hash);
 
-      int retryCount = 0;
-      bool answerNotEmpty = false;
+    if (!docExists) {
+      try {
+        final Map<String, List<Map<String, dynamic>>> data =
+            <String, List<Map<String, dynamic>>>{
+          'answersSelected': answersSelected
+              .map((AnswersSelected answer) => answer.toJson())
+              .toList(),
+        };
 
-      while (retryCount < 3 && !answerNotEmpty) {
-        // Wait for 10 seconds
-        await Future<void>.delayed(const Duration(seconds: 10));
+        final DocumentReference<Object?> ref = databaseComparison.doc(hash);
+        ref.set(data);
+        ref.update(<String, dynamic>{
+          'docID': hash,
+        });
 
-        // Check if 'answer' field is non-empty
-        final DocumentSnapshot<Object?> snapshot = await ref.get();
-        final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        final String answer = data['answer'] as String? ?? '';
-        answerNotEmpty = answer.isNotEmpty;
+        int retryCount = 0;
+        bool answerNotEmpty = false;
 
-        retryCount++;
-      }
+        while (retryCount < 3 && !answerNotEmpty) {
+          // Wait for 10 seconds
+          await Future<void>.delayed(const Duration(seconds: 10));
 
-      if (answerNotEmpty) {
-        // Copy document to 'generatedSolution' collection in user's document
-        final String? uid = UserRepository().getUserID();
-        final DocumentSnapshot<Object?> snapshot = await ref.get();
-        final DocumentReference<Object?> userDocRef = usersCollection
-          .doc(uid)
-          .collection('generatedSolution')
-                .doc(hash);
-        await userDocRef.set(snapshot.data());
-      }
+          // Check if 'answer' field is non-empty
+          final DocumentSnapshot<Object?> snapshot = await ref.get();
+          final Map<String, dynamic> data =
+              snapshot.data() as Map<String, dynamic>;
+          final String answer = data['answer'] as String? ?? '';
+          answerNotEmpty = answer.isNotEmpty;
 
-    } catch (e) {
-      if (kDebugMode) {
-        print('saveAnswers error in firebase_functions: $e');
+          retryCount++;
+        }
+
+        if (answerNotEmpty) {
+          // Copy document to 'generatedSolution' collection in user's document
+          final String? uid = UserRepository().getUserID();
+          final DocumentSnapshot<Object?> snapshot = await ref.get();
+          final DocumentReference<Object?> userDocRef = usersCollection
+              .doc(uid)
+              .collection('generatedSolution')
+              .doc(hash);
+          await userDocRef.set(snapshot.data());
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print('saveAnswers error in firebase_functions: $e');
+        }
       }
     }
   }
-}
-
 
   Future<void> saveSolutionToUserDocument(ComparisonModel model) async {
     final String? uid = UserRepository().getUserID();

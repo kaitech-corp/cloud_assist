@@ -257,6 +257,38 @@ exports.createFacts = functions.https.onCall(async (snap, context) => {
   }
 });
 
+//  Create new fun facts
+exports.createNewFacts = functions.https.onCall(async (snap, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action."
+    );
+  }
+  const openai = await getOpenaiClient();
+  const service = snap.service;
+  const prompt = snap.prompt;
+
+  const tokenSize = 200;
+  const temp = 0.7;
+  const data = {
+    model: "text-davinci-003",
+    prompt: prompt,
+    max_tokens: tokenSize,
+    temperature: temp,
+  };
+  try {
+    const response = await openai.createCompletion(data);
+    const result = response.data.choices[0].text.trim();
+    console.log("🚀 ~ result:", result);
+    // Save plain response for troubleshooting
+    savePlainResponse(service, result);
+    saveServiceFact(result, service);
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:282 ~ createNewFacts~ error:", error);
+  }
+});
+
 /**
  * Saves the response from ChatGPT to Firestore.
  *
@@ -380,6 +412,48 @@ async function saveChatGPTResponse(response, service) {
     console.log("🚀 ~ file: index.ts:240 ~ documents ~ documents:", documents);
   } catch (err) {
     console.log("🚀 ~ file: index.ts:244 ~ saveChatGPTResponse ~ err:", err);
+  }
+}
+
+/**
+ * Saves the fact from ChatGPT to Firestore.
+ *
+ * @param {string} fact The response from ChatGPT in JSON format.
+ * @param {string} service The name of the GCP service.
+ * @return {Promise<void>} A promise that resolved when the response is saved.
+ */
+async function saveServiceFact(fact, service) {
+  const docName = removeCloudAndWhitespace(service);
+
+  // Convert the response to an array of objects
+  try {
+    const docID = db.collection("services").doc().id;
+    // Set new document
+    db.collection("services")
+      .doc(docName)
+      .collection("facts")
+      .doc(docID)
+      .set({
+        fact: fact,
+        timestamp: firestore.FieldValue.serverTimestamp(),
+        flag: null,
+        docID: docID,
+      });
+
+    // Save to quick facts collection.
+    const docID2 = db.collection("quickFacts").doc().id;
+    // Set new document
+    db.collection("quickFacts")
+      .doc(docID2)
+      .set({
+        fact: fact,
+        timestamp: firestore.FieldValue.serverTimestamp(),
+        flag: null,
+        docID: docID,
+        service: service,
+      });
+  } catch (err) {
+    console.log("🚀 ~ file: index.ts:457 ~ saveServiceFact ~ err:", err);
   }
 }
 

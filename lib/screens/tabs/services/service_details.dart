@@ -92,7 +92,7 @@ class ServiceDetailsScreen extends StatelessWidget {
             section: 'Full Description',
           ),
           DetailSection(
-            serviceData: serviceData.detail,
+            serviceData: serviceData.example,
             section: 'Example',
           ),
           ListSection(key: benefitsKey, serviceData: serviceData.benefits, section: 'Benefits'),

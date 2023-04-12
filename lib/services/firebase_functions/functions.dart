@@ -11,15 +11,18 @@ int randomIndex(List<dynamic> list) {
 }
 
 dynamic getRandomValueFromList(List<dynamic> list) {
+  if(list.isEmpty){
+    return '';
+  }
   final Random random = Random();
   final int index = random.nextInt(list.length);
   return list[index];
 }
 
 String removeCloudAndWhitespace(String str) {
-  final RegExp regex = RegExp('Cloud');
+  final RegExp regex = RegExp(r'Cloud|\s+');
   final String newStr =
-      str.replaceAll(regex, '').replaceAll(RegExp(r'\s+'), '');
+      str.replaceAll(regex, '').replaceAll('/', '');
   return newStr;
 }
 
