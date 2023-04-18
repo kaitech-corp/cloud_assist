@@ -9,7 +9,6 @@ import '../../repositories/report_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/navigation/navigation.dart';
-import '../../services/service_config/service_config.dart';
 import '../../services/ui/text_styles.dart';
 
 import '../../widgets/line_break.dart';
@@ -50,7 +49,7 @@ class ReportsScreenState extends State<ReportsScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -146,7 +145,7 @@ class ReportsScreenState extends State<ReportsScreen> {
                                   height: 16,
                                 ),
                                 Text(
-                                  'Tags: $tags',
+                                  tags,
                                   style: titleSmall(context),
                                 ),
                                 const SizedBox(

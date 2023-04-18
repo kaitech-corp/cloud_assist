@@ -51,28 +51,28 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocBuilder<QuestionsBloc, QuestionsState>(
-        bloc: _questionsBloc,
-        builder: (BuildContext context, QuestionsState state) {
-          if (state.isSuccess) {
-            answerSelected = List<AnswersSelected>.generate(
-                10, (int index) => AnswersSelected(null, null));
-
-            final String docID = hashToString(state.answerSelected);
-            return BlocProvider<ComparisonModelBloc>(
-              create: (BuildContext context) => ComparisonModelBloc(
-                  comparisonModelRepository: ComparisonModelRepository()
-                    ..refresh(docID)),
-              child: DatabaseSolutionScreen(
-                questionsBloc: _questionsBloc,
-              ),
-            );
-          } else {
-            return Stack(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: BlocBuilder<QuestionsBloc, QuestionsState>(
+          bloc: _questionsBloc,
+          builder: (BuildContext context, QuestionsState state) {
+            if (state.isSuccess) {
+              answerSelected = List<AnswersSelected>.generate(
+                  10, (int index) => AnswersSelected(null, null));
+      
+              final String docID = hashToString(state.answerSelected);
+              return BlocProvider<ComparisonModelBloc>(
+                create: (BuildContext context) => ComparisonModelBloc(
+                    comparisonModelRepository: ComparisonModelRepository()
+                      ..refresh(docID)),
+                child: DatabaseSolutionScreen(
+                  questionsBloc: _questionsBloc,
+                ),
+              );
+            } else {
+              return Stack(
+                children: <Widget>[
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
@@ -165,35 +165,35 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                       ),
                     ],
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: BlocBuilder<QuestionsBloc, QuestionsState>(
-                        bloc: _questionsBloc,
-                        builder: (BuildContext context, QuestionsState state) {
-                          return CustomFloatingActionButton(
-                            onPressed: () {
-                              _questionsBloc.add(
-                                AnswersSubmitted(
-                                    answerSelected: state.answerSelected),
-                              );
-                              RealTimeDatabase().saveUserInteraction(
-                                  featureId:
-                                      FeatureID.popularServices.toString(),
-                                  startTime: false,
-                                  endTime: true);
-                            },
-                            icon: Icons.send,
-                          );
-                        }),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: BlocBuilder<QuestionsBloc, QuestionsState>(
+                          bloc: _questionsBloc,
+                          builder: (BuildContext context, QuestionsState state) {
+                            return CustomFloatingActionButton(
+                              onPressed: () {
+                                _questionsBloc.add(
+                                  AnswersSubmitted(
+                                      answerSelected: state.answerSelected),
+                                );
+                                RealTimeDatabase().saveUserInteraction(
+                                    featureId:
+                                        FeatureID.popularServices.toString(),
+                                    startTime: false,
+                                    endTime: true);
+                              },
+                              icon: Icons.send,
+                            );
+                          }),
+                    ),
                   ),
-                ),
-              ], // <-- added missing closing bracket here
-            );
-          }
-        },
+                ], // <-- added missing closing bracket here
+              );
+            }
+          },
+        ),
       ),
     );
   }

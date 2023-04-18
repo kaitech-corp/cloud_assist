@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/service_config/service_config.dart';
+import '../../bloc/generics/generic_bloc.dart';
+import '../../models/cloud_data_model/cloud_data_model.dart';
+import '../../repositories/cloud_data_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/navigation/navigation.dart';
@@ -38,7 +42,12 @@ class HomeScreen extends StatelessWidget {
                   style: headlineMedium(context),
                 ),
               ),
-              const Expanded(child: TabControllerWidget()),
+               Expanded(child: BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
+              create: (BuildContext context) =>
+                  GenericBloc<CloudData, CloudDataRepository>(
+                      repository: CloudDataRepository()),
+              child:  const TabControllerWidget(),
+            )),
             ],
           ),
         ),
