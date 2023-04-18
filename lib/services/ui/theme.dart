@@ -57,7 +57,7 @@ ThemeData themeDataBuilderDark() {
     disabledColor: Colors.grey,
     iconButtonTheme:  IconButtonThemeData(style:ButtonStyle(iconColor: MaterialStateProperty.all(Colors.black))),
     iconTheme: const IconThemeData(color: Colors.grey),
-    textTheme: GoogleFonts.latoTextTheme(const TextTheme(
+    textTheme: GoogleFonts.ptSerifTextTheme(const TextTheme(
       displayLarge: TextStyle(color: Colors.grey),
       displayMedium: TextStyle(color: Colors.grey),
       displaySmall: TextStyle(
