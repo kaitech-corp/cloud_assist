@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../models/comparison_model/comparison_model.dart';
-
 abstract class QuestionsEvent extends Equatable {
   @override
   List<Object?> get props => <Object?>[];
@@ -31,11 +29,4 @@ class AnswersSubmitted extends QuestionsEvent {
   List<Object> get props => <Object>[answerSelected];
 }
 
-class SolutionViewed extends QuestionsEvent {
-  SolutionViewed({required this.model});
-
-  final ComparisonModel model;
-
-  @override
-  List<Object> get props => <Object>[model];
-}
+class SolutionViewed extends QuestionsEvent {}
