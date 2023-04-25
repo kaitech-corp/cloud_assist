@@ -54,96 +54,81 @@ class SolutionListScreenState extends State<SolutionListScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8),
-              child: Text(
-                'Generated Solutions',
-                style: titleLarge(context),
-              ),
-            ),
-            greyLineBreak,
-            BlocBuilder<GenericBloc<ComparisonModel, SolutionsRepository>,
-                GenericState>(
-              bloc: bloc,
-              builder: (BuildContext context, GenericState state) {
-                if (state is LoadingState) {
-                  return Expanded(child: loadingShimmer());
-                } else if (state is HasDataState) {
-                  final List<ComparisonModel> solutions =
-                      state.data as List<ComparisonModel>;
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: solutions.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final ComparisonModel solution = solutions[index];
-                        final String? date = formatDate(solution.timestamp);
-                        return GestureDetector(
-                          onTap: () {
-                            router.pushNamed('solutionDetail', extra: solution);
-                            RealTimeDatabase().saveUserInteraction(
-                                docID: solution.docID,
-                                featureId:
-                                    FeatureID.databaseSolutions.toString(),
-                                startTime: true,
-                                endTime: false);
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 16.0, bottom: 24.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  solution.answer,
-                                  style: titleMedium(context),
-                                  maxLines: 5,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Text(
-                                        'Created: $date',
-                                        style: titleMedium(context),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: (){
-                                        RealTimeDatabase().saveUserInteraction(
-                                            startTime: true,
-                                            endTime: false,
-                                            featureId: FeatureID
-                                                .databaseSolutions
-                                                .toString(),
-                                            docID: solution.docID);
-                                      },
-                                      child: const AnimatedIconButton(
-                                          Icons.auto_awesome),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                greyLineBreak
-                              ],
-                            ),
+        padding: const EdgeInsets.only(left:24,right:24,bottom:24),
+        child: BlocBuilder<GenericBloc<ComparisonModel, SolutionsRepository>,
+            GenericState>(
+          bloc: bloc,
+          builder: (BuildContext context, GenericState state) {
+            if (state is LoadingState) {
+              return loadingShimmer();
+            } else if (state is HasDataState) {
+              final List<ComparisonModel> solutions =
+                  state.data as List<ComparisonModel>;
+              return ListView.builder(
+                itemCount: solutions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final ComparisonModel solution = solutions[index];
+                  final String? date = formatDate(solution.timestamp);
+                  return GestureDetector(
+                    onTap: () {
+                      router.pushNamed('solutionDetail', extra: solution);
+                      RealTimeDatabase().saveUserInteraction(
+                          docID: solution.docID,
+                          featureId:
+                              FeatureID.databaseSolutions.toString(),
+                          startTime: true,
+                          endTime: false);
+                    },
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 16.0, bottom: 24.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            solution.answer,
+                            style: titleMedium(context),
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        );
-                      },
+                          const SizedBox(height: 8),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  '$date',
+                                  style: titleMedium(context),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: (){
+                                  RealTimeDatabase().saveUserInteraction(
+                                      startTime: true,
+                                      endTime: false,
+                                      featureId: FeatureID
+                                          .databaseSolutions
+                                          .toString(),
+                                      docID: solution.docID);
+                                },
+                                child: const AnimatedIconButton(
+                                    Icons.auto_awesome),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          greyLineBreak
+                        ],
+                      ),
                     ),
                   );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          ],
+                },
+              );
+            } else {
+              return Container();
+            }
+          },
         ),
       ),
     );
