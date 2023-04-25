@@ -30,10 +30,10 @@ class QuickFactState extends State<QuickFact> {
       child: SizedBox(
         height: SizeConfig.screenHeight * .19,
         width: SizeConfig.screenWidth,
-        child: FutureBuilder<List<String?>>(
+        child: FutureBuilder<List<String?>?>(
           future: FirestoreDatabase().getFacts(widget.serviceData.service),
           builder:
-              (BuildContext context, AsyncSnapshot<List<String?>> snapshot) {
+              (BuildContext context, AsyncSnapshot<List<String?>?> snapshot) {
             if (snapshot.hasData) {
               final List<String?> facts = snapshot.data!;
               _fact = getRandomValueFromList(facts) as String;
@@ -43,10 +43,10 @@ class QuickFactState extends State<QuickFact> {
                     _fact = getRandomValueFromList(facts) as String;
                   });
                   RealTimeDatabase().saveUserInteraction(
-                  serviceId: widget.serviceData.service,
-                  featureId: FeatureID.quickFact.toString(),
-                  startTime: true,
-                  endTime: false);
+                      serviceId: widget.serviceData.service,
+                      featureId: FeatureID.quickFact.toString(),
+                      startTime: true,
+                      endTime: false);
                 },
                 child: funFactCard(
                   Text(
@@ -57,7 +57,10 @@ class QuickFactState extends State<QuickFact> {
                 ),
               );
             } else {
-              return funFactCard(const Text('Fun Facts'));
+              return funFactCard(Text(
+                'Fun Facts',
+                style: titleMedium(context),
+              ));
             }
           },
         ),
