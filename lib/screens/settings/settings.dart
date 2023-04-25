@@ -1,13 +1,16 @@
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nil/nil.dart';
 
 import '../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../bloc/authentication_bloc/authentication_event.dart';
 import '../../models/user_model/user_model.dart';
 import '../../services/constants.dart';
+import '../../services/firebase_functions/cloud_functions.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/functions.dart';
+import '../../services/navigation/navigation.dart';
 import '../../services/ui/text_styles.dart';
 import 'components/network_image_fallback.dart';
 
@@ -68,7 +71,7 @@ class SettingsPageState extends State<SettingsPage> {
                   Expanded(
                     child: Text(
                       'Settings',
-                      style: headlineMedium(context),
+                      style: headlineSmall(context),
                     ),
                   ),
                   IconButton(
@@ -160,6 +163,30 @@ class SettingsPageState extends State<SettingsPage> {
                             style: titleMedium(context),
                           ),
                         ),
+                        const SizedBox(height: 16),
+                        FutureBuilder<dynamic>(
+                            future: CloudFunctions().checkUserId(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<dynamic?> snapshot) {
+                              if (snapshot.hasData) {
+                                final bool isAdmin = snapshot.data as bool;
+                                if (isAdmin) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      router.pushNamed('admin');
+                                    },
+                                    child: Text(
+                                      'Admin Dashboard',
+                                      style: titleMedium(context),
+                                    ),
+                                  );
+                                } else {
+                                  return nil;
+                                }
+                              } else {
+                                return nil;
+                              }
+                            })
                       ],
                     );
                   },
