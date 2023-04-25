@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/service_config/service_config.dart';
 import '../../bloc/generics/generic_bloc.dart';
+import '../../bloc/generics/generic_state.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../repositories/cloud_data_repository.dart';
 import '../../services/constants.dart';
@@ -16,12 +17,31 @@ import '../tabs/networking.dart';
 import '../tabs/security.dart';
 import '../tabs/services.dart';
 
-
 import 'components/featured_service/featured_service.dart';
 import 'components/quick_fact_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late final GenericBloc<CloudData, CloudDataRepository> bloc;
+
+  @override
+  void initState() {
+    bloc =
+        BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +62,21 @@ class HomeScreen extends StatelessWidget {
                   style: headlineMedium(context),
                 ),
               ),
-               Expanded(child: BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
-              create: (BuildContext context) =>
-                  GenericBloc<CloudData, CloudDataRepository>(
-                      repository: CloudDataRepository()),
-              child:  const TabControllerWidget(),
-            )),
+              Expanded(child: BlocBuilder<
+                      GenericBloc<CloudData, CloudDataRepository>,
+                      GenericState>(
+                        bloc: bloc,
+                  builder: (BuildContext context, GenericState state) {
+                if (state is HasDataState) {
+                  final List<CloudData> cloudData =
+                      state.data as List<CloudData>;
+                  return TabControllerWidget(
+                    cloudData: cloudData,
+                  );
+                } else {
+                  return const TabControllerWidget(cloudData: <CloudData>[]);
+                }
+              })),
             ],
           ),
         ),
@@ -57,8 +86,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class TabControllerWidget extends StatelessWidget {
-  const TabControllerWidget({super.key});
-
+  const TabControllerWidget({super.key, required this.cloudData});
+  final List<CloudData> cloudData;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -138,10 +167,12 @@ class TabControllerWidget extends StatelessWidget {
                       const Expanded(flex: 2, child: FeaturedService())
                     ],
                   ),
-                  const PopularServices(),
-                  const DatabaseServices(),
-                  const NetworkingServices(),
-                  const SecurityServices(),
+                  PopularServices(
+                    cloudData: cloudData,
+                  ),
+                   DatabaseServices(cloudData: cloudData,),
+                   NetworkingServices(cloudData: cloudData,),
+                   SecurityServices(cloudData: cloudData,),
                   const GCloudScreen(),
                 ],
               ),

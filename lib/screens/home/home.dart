@@ -1,4 +1,3 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,14 +11,10 @@ import '../../repositories/quick_facts_repository.dart';
 import '../../services/constants.dart';
 
 import '../../services/firebase_functions/cloud_functions.dart';
-import '../../services/firebase_functions/firebase_functions.dart';
 import '../database_comparison/database_comparison.dart';
 import '../search/search_bar.dart';
 import '../settings/settings.dart';
 import 'home_screen.dart';
-
-// Global fetchCount
-ValueNotifier<int> fetchCount = ValueNotifier<int>(3);
 
 /// Home Screen
 class Home extends StatefulWidget {
@@ -34,11 +29,21 @@ class _HomeState extends State<Home> {
   SelectedTabList _selectedTab = SelectedTabList.home;
 
   final List<Widget> _widgetOptions = <Widget>[
-    BlocProvider<GenericBloc<QuickFact, QuickFactsRepository>>(
-        create: (BuildContext context) =>
-            GenericBloc<QuickFact, QuickFactsRepository>(
-                repository: QuickFactsRepository()),
-        child: const HomeScreen()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<GenericBloc<QuickFact, QuickFactsRepository>>(
+          create: (BuildContext context) =>
+              GenericBloc<QuickFact, QuickFactsRepository>(
+                  repository: QuickFactsRepository()),
+        ),
+        BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
+          create: (BuildContext context) =>
+              GenericBloc<CloudData, CloudDataRepository>(
+                  repository: CloudDataRepository()),
+        ),
+      ],
+      child: const HomeScreen(),
+    ),
     BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
         create: (BuildContext context) =>
             GenericBloc<CloudData, CloudDataRepository>(

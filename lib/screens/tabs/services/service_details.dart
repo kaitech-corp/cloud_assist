@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/cloud_data_model/cloud_data_model.dart';
+import '../../../services/firebase_functions/firebase_functions.dart';
+import '../../../services/firebase_functions/functions.dart';
 import '../../../services/navigation/navigation.dart';
 import '../../../services/service_config/service_config.dart';
 import '../../../services/ui/text_styles.dart';
+import '../../reports/components/animated_icon_button.dart';
 import 'components/button_bar.dart';
 import 'components/detail_section.dart';
 import 'components/list_section.dart';
@@ -15,28 +18,20 @@ class ServiceDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirestoreDatabase().incrementPopularity(serviceData.service);
     return Scaffold(
+      appBar: AppBar(
+        actions: const <Widget>[
+           AnimatedIconButton(Icons.auto_awesome),
+        ],
+      ),
       body: SafeArea(
         child: SizedBox(
           height: SizeConfig.screenHeight,
           width: SizeConfig.screenWidth,
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    IconButton(
-                        onPressed: () {
-                          router.pop();
-                        },
-                        icon: const Icon(Icons.arrow_back_ios))
-                  ],
-                ),
-                ServiceDetailsScreen(
-                  serviceData: serviceData,
-                )
-              ],
+            child: ServiceDetailsScreen(
+              serviceData: serviceData,
             ),
           ),
         ),
@@ -57,7 +52,7 @@ class ServiceDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24, bottom: 24),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -95,9 +90,16 @@ class ServiceDetailsScreen extends StatelessWidget {
             serviceData: serviceData.example,
             section: 'Example',
           ),
-          ListSection(key: benefitsKey, serviceData: serviceData.benefits, section: 'Benefits'),
-          ListSection(key: consKey, serviceData: serviceData.cons, section: 'Cons'),
-          ListSection(key: useCasesKey, serviceData: serviceData.useCases, section: 'Use Cases'),
+          ListSection(
+              key: benefitsKey,
+              serviceData: getUniqueValues(serviceData.benefits),
+              section: 'Benefits'),
+          ListSection(
+              key: consKey, serviceData: getUniqueValues(serviceData.cons), section: 'Cons'),
+          ListSection(
+              key: useCasesKey,
+              serviceData: getUniqueValues(serviceData.useCases),
+              section: 'Use Cases'),
         ],
       ),
     );
