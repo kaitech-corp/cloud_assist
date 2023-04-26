@@ -11,7 +11,6 @@ import '../../bloc/login_bloc/state.dart';
 import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
 import '../../services/ui/text_styles.dart';
-import 'components/gradient_button.dart';
 
 /// Form for login screen
 class LoginForm extends StatefulWidget {

@@ -83,7 +83,7 @@ class LoginScreen extends StatelessWidget {
 
 
 class CurvedWidget extends StatelessWidget {
-  const CurvedWidget({Key? key, required this.curvedDistance, required this.curvedHeight, this.child});
+  const CurvedWidget({super.key, required this.curvedDistance, required this.curvedHeight, this.child});
 
   final Widget? child;
   final double curvedDistance;
@@ -97,7 +97,7 @@ class CurvedWidget extends StatelessWidget {
         curvedHeight: curvedHeight,
       ),
       child: Stack(
-        children: [
+        children: <Widget>[
           Positioned(
             left: 20,
             top: 20,
