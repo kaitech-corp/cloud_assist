@@ -9,7 +9,7 @@ part 'comparison_model.g.dart';
 
 ///Model for database comparison
 
-///Model for cloud data
+///Model for comparsion data
 class TimestampConverter implements JsonConverter<DateTime, Timestamp> {
   const TimestampConverter();
 

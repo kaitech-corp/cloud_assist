@@ -2,27 +2,28 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-part of 'quick_fact_model.dart';
+part of 'report_content_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_QuickFact _$$_QuickFactFromJson(Map<String, dynamic> json) => _$_QuickFact(
-      fact: json['fact'] as String,
-      docID: json['docID'] as String,
-      service: json['service'] as String,
-      flag: json['flag'] as String,
+_$_ReportContent _$$_ReportContentFromJson(Map<String, dynamic> json) =>
+    _$_ReportContent(
+      content: json['content'] as String,
+      reportType: json['reportType'] as String,
+      contentDocID: json['contentDocID'] as String,
+      contentField: json['contentField'] as String?,
       timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['timestamp'], const TimestampConverter().fromJson),
     );
 
-Map<String, dynamic> _$$_QuickFactToJson(_$_QuickFact instance) =>
+Map<String, dynamic> _$$_ReportContentToJson(_$_ReportContent instance) =>
     <String, dynamic>{
-      'fact': instance.fact,
-      'docID': instance.docID,
-      'service': instance.service,
-      'flag': instance.flag,
+      'content': instance.content,
+      'reportType': instance.reportType,
+      'contentDocID': instance.contentDocID,
+      'contentField': instance.contentField,
       'timestamp': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.timestamp, const TimestampConverter().toJson),
     };
