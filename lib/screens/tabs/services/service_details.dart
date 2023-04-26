@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../models/cloud_data_model/cloud_data_model.dart';
 import '../../../services/firebase_functions/firebase_functions.dart';
 import '../../../services/firebase_functions/functions.dart';
-import '../../../services/navigation/navigation.dart';
 import '../../../services/service_config/service_config.dart';
 import '../../../services/ui/text_styles.dart';
+import '../../report_dialog/report_dialog.dart';
 import '../../reports/components/animated_icon_button.dart';
 import 'components/button_bar.dart';
 import 'components/detail_section.dart';
@@ -21,8 +21,9 @@ class ServiceDetails extends StatelessWidget {
     FirestoreDatabase().incrementPopularity(serviceData.service);
     return Scaffold(
       appBar: AppBar(
-        actions: const <Widget>[
-           AnimatedIconButton(Icons.auto_awesome),
+        actions: <Widget>[
+          AnimatedIconButton(Icons.auto_awesome,
+              removeCloudAndWhitespace(serviceData.service)),
         ],
       ),
       body: SafeArea(
@@ -60,9 +61,20 @@ class ServiceDetailsScreen extends StatelessWidget {
             serviceData.service,
             style: headlineMedium(context),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 5),
-            child: Text(serviceData.description, style: titleMedium(context)),
+          GestureDetector(
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => ReportDialog(
+                        content: serviceData.description,
+                        contentDocID: serviceData.service,
+                        contentField: 'description',
+                      ));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 5),
+              child: Text(serviceData.description, style: titleMedium(context)),
+            ),
           ),
           Container(
             height: 2,
@@ -82,24 +94,57 @@ class ServiceDetailsScreen extends StatelessWidget {
             width: SizeConfig.screenWidth,
             color: Colors.grey,
           ),
-          DetailSection(
-            serviceData: serviceData.detail,
-            section: 'Full Description',
+          const SizedBox(
+            height: 8,
           ),
-          DetailSection(
-            serviceData: serviceData.example,
-            section: 'Example',
+          GestureDetector(
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => ReportDialog(
+                        content: serviceData.detail,
+                        contentDocID: serviceData.service,
+                        contentField: 'detail',
+                      ));
+            },
+            child: DetailSection(
+              serviceData: serviceData.detail,
+              section: 'Full Description',
+            ),
+          ),
+          GestureDetector(
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => ReportDialog(
+                        content: serviceData.example,
+                        contentDocID: serviceData.service,
+                        contentField: 'example',
+                      ));
+            },
+            child: DetailSection(
+              serviceData: serviceData.example,
+              section: 'Example',
+            ),
           ),
           ListSection(
-              key: benefitsKey,
-              serviceData: getUniqueValues(serviceData.benefits),
-              section: 'Benefits'),
+            key: benefitsKey,
+            serviceData: getUniqueValues(serviceData.benefits),
+            section: 'Benefits',
+            service: serviceData.service,
+          ),
           ListSection(
-              key: consKey, serviceData: getUniqueValues(serviceData.cons), section: 'Cons'),
+            key: consKey,
+            serviceData: getUniqueValues(serviceData.cons),
+            section: 'Cons',
+            service: serviceData.service,
+          ),
           ListSection(
-              key: useCasesKey,
-              serviceData: getUniqueValues(serviceData.useCases),
-              section: 'Use Cases'),
+            key: useCasesKey,
+            serviceData: getUniqueValues(serviceData.useCases),
+            section: 'Use Cases',
+            service: serviceData.service,
+          ),
         ],
       ),
     );

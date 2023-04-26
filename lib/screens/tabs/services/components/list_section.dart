@@ -6,11 +6,13 @@ import 'list_text_layout.dart';
 class ListSection extends StatelessWidget {
   const ListSection({
     super.key,
-    required this.serviceData, required this.section,
+    required this.serviceData,
+    required this.section, required this.service,
   });
 
   final List<String> serviceData;
   final String section;
+  final String service;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,10 @@ class ListSection extends StatelessWidget {
             children: List<Widget>.generate(
                 serviceData.length,
                 (int index) => ListTextLayout(
-                      serviceData: serviceData,
+                      serviceItem: serviceData[index],
                       index: index,
+                      section: section,
+                      service: service,
                     )),
           ),
         ),

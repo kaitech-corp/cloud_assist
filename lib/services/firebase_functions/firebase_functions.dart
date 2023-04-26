@@ -1,3 +1,5 @@
+// ignore_for_file: cast_nullable_to_non_nullable
+
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,10 +11,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../models/comparison_model/comparison_model.dart';
 import '../../models/quick_fact_model/quick_fact_model.dart';
+import '../../models/report_content_model/report_content_model.dart';
+import '../../models/report_model/report_model.dart';
 import '../../models/user_model/user_model.dart';
 import '../../repositories/user_repository.dart';
 import '../../screens/database_comparison/bloc/event.dart';
-import '../api/facts.dart';
 import 'cloud_functions.dart';
 import 'functions.dart';
 
@@ -28,26 +31,14 @@ class FirestoreDatabase {
       FirebaseFirestore.instance.collection('services');
   final CollectionReference<Object?> usersCollection =
       FirebaseFirestore.instance.collection('users');
-  void saveFacts() {
-    for (final String fact in factList.getRange(3, 6)) {
-      try {
-        final String docID = quickFactsCollection.doc().id;
-        final QuickFact quickFact = QuickFact(
-            docID: docID,
-            fact: fact,
-            flag: 'none',
-            service: 'general',
-            timestamp: DateTime.now());
-        quickFactsCollection.doc().set(quickFact.toJson());
-      } catch (e) {
-        if (kDebugMode) {
-          print('Error saving quick facts: $e');
-        }
-      }
-    }
-  }
+  final CollectionReference<Object?> reportCollection =
+      FirebaseFirestore.instance.collection('reports');
+  final CollectionReference<Object?> reportedContentCollection =
+      FirebaseFirestore.instance.collection('reportedContent');
+  final CollectionReference<Object?> popularServicesCollection =
+      FirebaseFirestore.instance.collection('popularServices');
 
-  Future<List<String?>> getFacts(String service) async {
+  Future<List<String?>?> getFacts(String service) async {
     final String docName = removeCloudAndWhitespace(service);
     final CollectionReference<Object?> funFactsCollection = FirebaseFirestore
         .instance
@@ -57,7 +48,7 @@ class FirestoreDatabase {
     try {
       final QuerySnapshot<Object?> ref = await funFactsCollection.get();
       if (ref.docs.isEmpty) {
-        CloudFunctions().createFacts(service);
+        CloudFunctions().createNewFactsManually(service);
       } else {
         final List<String> facts = ref.docs
             .map(
@@ -70,7 +61,7 @@ class FirestoreDatabase {
         print('getFacts error  in firebase_functions: $e');
       }
     }
-    return <String>[];
+    return null;
   }
 
   // Check if API data has been updated
@@ -177,9 +168,9 @@ class FirestoreDatabase {
 
           // Check if 'answer' field is non-empty
           final DocumentSnapshot<Object?> snapshot = await ref.get();
-          final Map<String, dynamic> data =
-              snapshot.data() as Map<String, dynamic>;
-          final String answer = data['answer'] as String? ?? '';
+          final Map<String, dynamic>? data =
+              snapshot.data() as Map<String, dynamic>?;
+          final String answer = data?['answer'] as String? ?? '';
           answerNotEmpty = answer.isNotEmpty;
 
           retryCount++;
@@ -267,6 +258,215 @@ class FirestoreDatabase {
       return defaultUserModel;
     }
   }
+
+  // Admin Functions
+  Future<List<UserModel>?> getUsers() async {
+    final QuerySnapshot<Object?> ref = await usersCollection.get();
+    try {
+      final List<UserModel> users = ref.docs
+          .map((QueryDocumentSnapshot<Object?> doc) =>
+              UserModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      users.sort((UserModel a, UserModel b) =>
+          b.dateCreated!.compareTo(a.dateCreated!));
+      return users;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return <UserModel>[];
+    }
+  }
+
+  Future<void> updateProviderField() async {
+    // Get the documents within the collection
+    final QuerySnapshot<Object?> snapshot = await servicesCollection.get();
+
+    // Create a batch
+    final WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    // Loop through each document in the snapshot
+    snapshot.docs.forEach((QueryDocumentSnapshot<Object?> doc) {
+      // Update the 'provider' field with the value 'gcp'
+      batch.update(doc.reference, <String, String>{'type': ''});
+    });
+
+    // Commit the batch
+    await batch.commit();
+  }
+
+  Future<void> batchWriteQuickFacts(List<String> facts) async {
+    // Create a Firestore instance
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    // Create a Firestore batch
+    final WriteBatch batch = firestore.batch();
+
+    // Loop through each fact in the list
+    for (final String fact in facts) {
+      // Generate a unique document ID
+      final String docID = quickFactsCollection.doc().id;
+
+      // Create a QuickFact object with default values
+      final QuickFact quickFact = QuickFact(
+        fact: fact,
+        docID: docID,
+        service: 'general',
+        flag: '',
+      );
+
+      // Convert the QuickFact object to a map
+      final Map<String, dynamic> quickFactData = <String, dynamic>{
+        'fact': quickFact.fact,
+        'docID': quickFact.docID,
+        'service': quickFact.service,
+        'flag': quickFact.flag,
+        'timestamp':
+            FieldValue.serverTimestamp(), // set to server-side timestamp
+      };
+
+      // Add the set operation to the batch
+      batch.set(quickFactsCollection.doc(docID), quickFactData);
+    }
+
+    // Commit the batch write
+    await batch.commit();
+  }
+// Batch write a field update
+// Future<void> updateFieldValue() async {
+//   final ref = await servicesCollection.get();
+
+//   final batch = FirebaseFirestore.instance.batch();
+
+//   for (final doc in ref.docs) {
+//     batch.update(doc.reference, {'type': ''});
+//   }
+
+//   await batch.commit();
+// }
+
+  Future<List<ReportModel>> getReportsData() async {
+    final QuerySnapshot<Object?> ref = await reportCollection.get();
+    try {
+      final List<ReportModel> report = ref.docs
+          .map((QueryDocumentSnapshot<Object?> doc) =>
+              ReportModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      return report;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return <ReportModel>[];
+    }
+  }
+
+  Future<List<QuickFact>> getQuickFactsData() async {
+    final QuerySnapshot<Object?> ref = await quickFactsCollection.get();
+    try {
+      final List<QuickFact> facts = ref.docs
+          .map((QueryDocumentSnapshot<Object?> doc) =>
+              QuickFact.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      return facts;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return <QuickFact>[];
+    }
+  }
+
+  Future<List<CloudData>> getServiceData() async {
+    final QuerySnapshot<Object?> ref = await servicesCollection.get();
+    try {
+      final List<CloudData> facts = ref.docs
+          .map((QueryDocumentSnapshot<Object?> doc) =>
+              CloudData.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      return facts;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return <CloudData>[];
+    }
+  }
+
+  Future<List<dynamic>> getDatabaseComparisonData() async {
+    final QuerySnapshot<Object?> ref = await databaseComparison.get();
+    try {
+      final List<ComparisonModel> data = ref.docs
+          .map((QueryDocumentSnapshot<Object?> doc) =>
+              ComparisonModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      return data;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return <UserModel>[];
+    }
+  }
+
+// This is an asynchronous function that increments the
+// popularity count of a document in a Firestore database.
+  Future<void> incrementPopularity(String service) async {
+    final String docID = removeCloudAndWhitespace(service);
+    final DocumentReference<Object?> documentReference =
+        popularServicesCollection.doc(docID);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final DocumentSnapshot<Object?> documentSnapshot =
+          await transaction.get(documentReference);
+
+      if (!documentSnapshot.exists) {
+        throw Exception('Document does not exist!');
+      }
+
+      final dynamic currentPopularity = documentSnapshot.get('popularity') ?? 0;
+      transaction.update(documentReference, <String, dynamic>{
+        'popularity': currentPopularity + 1,
+        'lastUpdated': FieldValue.serverTimestamp()
+      });
+    });
+  }
+
+  Future<List<String>> getPopularServiceIds() async {
+    final QuerySnapshot<Object?> querySnapshot = await popularServicesCollection
+        .orderBy('popularity', descending: true)
+        .limit(15)
+        .get();
+
+    final List<String> popularServiceIds = querySnapshot.docs
+        .map((QueryDocumentSnapshot<Object?> doc) => doc.id)
+        .toList();
+    return popularServiceIds;
+  }
+
+  Future<void> reportContent(ReportContent reportContent) async {
+    final String docID = reportedContentCollection.doc().id;
+    final String contentDocID =
+        removeCloudAndWhitespace(reportContent.contentDocID);
+    final String? uid = UserRepository().getUserID();
+    reportedContentCollection.doc(docID).set(<String, dynamic>{
+      'content': reportContent.content,
+      'contentType': reportContent.reportType,
+      'contentDocID': contentDocID,
+      'contentField': reportContent.contentField,
+      'docID': docID,
+      'timestamp': FieldValue.serverTimestamp(),
+      'uid': uid
+    }).then((value) {
+      RealTimeDatabase().saveUserInteraction(
+        startTime: true,
+        endTime: false,
+        serviceId: reportContent.contentDocID,
+        featureId: reportContent.reportType,
+        docID: docID,
+      );
+    });
+  }
 }
 
 class RealTimeDatabase {
@@ -296,12 +496,24 @@ class RealTimeDatabase {
           .push()
           .set(userTimeData);
     } catch (e) {
-      print('Error saving user interaction: $e');
+      if (kDebugMode) {
+        print('Error saving user interaction: $e');
+      }
       databaseReference
           .ref()
           .child('user_interaction_data')
           .child('00000000')
           .set(userTimeData);
     }
+  }
+
+  // Function to list the number of interactions for each user
+  Future<List<dynamic>> listInteractionsForUsers() async {
+    // Get a reference to the 'user_interaction_data' node in Realtime Database
+    final DatabaseReference ref =
+        FirebaseDatabase.instance.ref().child('user_interaction_data');
+
+    final DataSnapshot snapshot = await ref.get();
+    return snapshot.children.toList();
   }
 }
