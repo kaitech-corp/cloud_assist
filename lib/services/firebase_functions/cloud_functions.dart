@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../models/database_architecture_model/database_architecture_model.dart';
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
+import '../../models/service_model/create_service_model.dart';
 import 'firebase_functions.dart';
 
 class CloudFunctions {
@@ -18,6 +19,38 @@ class CloudFunctions {
         'service': service,
       });
       await newQuickFacts.call();
+    } on FirebaseFunctionsException catch (error) {
+      if (kDebugMode) {
+        print(error.code);
+        print(error.details);
+        print(error.message);
+      }
+    }
+  }
+
+  // Create new quick facts manually
+  Future<void> createNewFactsManually(String service) async {
+    try {
+      final HttpsCallable newQuickFacts =
+          FirebaseFunctions.instance.httpsCallable('createNewFactsManually');
+      newQuickFacts(<String, dynamic>{
+        'service': service,
+      });
+      await newQuickFacts.call();
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+  }
+
+  // Check if Admin
+  Future<void> checkUserId() async {
+    try {
+      final HttpsCallableResult<dynamic> checkUserId =
+          await FirebaseFunctions.instance.httpsCallable('checkUserId').call();
+      final dynamic result = checkUserId.data;
+      return result;
     } on FirebaseFunctionsException catch (error) {
       if (kDebugMode) {
         print(error.code);
@@ -84,6 +117,34 @@ class CloudFunctions {
         print('Error in getCombinedCloudData: $e, $stackTrace');
       }
       return <CloudData>[];
+    }
+  }
+
+//
+  Future<List<ServiceModel>> getGcpServiceList() async {
+    try {
+      // Call the Firebase Functions HTTP endpoint 'getGcpServiceList'
+      final HttpsCallableResult<dynamic> callable = await FirebaseFunctions
+          .instance
+          .httpsCallable('getGcpServiceList')
+          .call();
+
+      // Parse the JSON response from the callable as a List of Maps
+      final List<dynamic> response =
+          json.decode(callable.data as String) as List<dynamic>;
+      // Convert the List of Maps to a List of ServiceModel objects using ServiceModel.fromJson()
+      final List<ServiceModel> serviceModelList = response
+          .map((item) => ServiceModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+
+      // Return the List of ServiceModel objects
+      return serviceModelList;
+    } catch (e, stackTrace) {
+      // Print an error message and return an empty List if an error occurs
+      if (kDebugMode) {
+        print('Error in getGcpServiceList: $e, $stackTrace');
+      }
+      return <ServiceModel>[];
     }
   }
 
@@ -292,6 +353,33 @@ class CloudFunctions {
         FirebaseFunctions.instance.httpsCallable('createFacts');
     createFacts(<String, dynamic>{
       'service': service,
+    });
+  }
+
+  Future<void> serviceDataGenerator(
+      String service, String serviceType, String provider) async {
+    final HttpsCallable serviceDataGenerator =
+        FirebaseFunctions.instance.httpsCallable('serviceDataGenerator');
+    serviceDataGenerator(<String, dynamic>{
+      'service': service,
+      'serviceType': serviceType,
+      'provider': provider
+    });
+  }
+
+  Future<void> updateServiceField(
+      {required String service,
+      required String field,
+      required String provider}) async {
+    if (kDebugMode) {
+      print('$service $field $provider');
+    }
+    final HttpsCallable updateServiceField =
+        FirebaseFunctions.instance.httpsCallable('updateServiceField');
+    updateServiceField(<String, dynamic>{
+      'service': service,
+      'field': field,
+      'provider': provider
     });
   }
 }
