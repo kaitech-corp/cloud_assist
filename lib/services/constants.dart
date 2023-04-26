@@ -23,7 +23,8 @@ enum FeatureID {
   generatedSolution,
   signout,
   googleSignin,
-  appleSignin
+  appleSignin,
+  like
 }
 
 List<String> bottomNavItems = <String>[
