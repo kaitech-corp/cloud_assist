@@ -136,8 +136,10 @@ class ReportsScreenState extends State<ReportsScreen> {
                                                 .toString(),
                                             docID: report.docID);
                                       },
-                                      child: const AnimatedIconButton(
-                                          Icons.auto_awesome),
+                                      child: AnimatedIconButton(
+                                        Icons.auto_awesome,
+                                        report.docID,
+                                      ),
                                     ),
                                   ],
                                 ),

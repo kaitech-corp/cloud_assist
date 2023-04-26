@@ -54,7 +54,7 @@ class SolutionListScreenState extends State<SolutionListScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left:24,right:24,bottom:24),
+        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
         child: BlocBuilder<GenericBloc<ComparisonModel, SolutionsRepository>,
             GenericState>(
           bloc: bloc,
@@ -74,14 +74,12 @@ class SolutionListScreenState extends State<SolutionListScreen> {
                       router.pushNamed('solutionDetail', extra: solution);
                       RealTimeDatabase().saveUserInteraction(
                           docID: solution.docID,
-                          featureId:
-                              FeatureID.databaseSolutions.toString(),
+                          featureId: FeatureID.databaseSolutions.toString(),
                           startTime: true,
                           endTime: false);
                     },
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 16.0, bottom: 24.0),
+                      padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -101,17 +99,16 @@ class SolutionListScreenState extends State<SolutionListScreen> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   RealTimeDatabase().saveUserInteraction(
                                       startTime: true,
                                       endTime: false,
-                                      featureId: FeatureID
-                                          .databaseSolutions
+                                      featureId: FeatureID.databaseSolutions
                                           .toString(),
                                       docID: solution.docID);
                                 },
-                                child: const AnimatedIconButton(
-                                    Icons.auto_awesome),
+                                child: AnimatedIconButton(
+                                    Icons.auto_awesome, solution.docID),
                               ),
                             ],
                           ),
