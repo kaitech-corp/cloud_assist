@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/service_model/create_service_model.dart';
-import '../../../services/constants.dart';
 import '../../../services/firebase_functions/cloud_functions.dart';
-import '../../../services/firebase_functions/firebase_functions.dart';
 
 class CreateServicesScreen extends StatelessWidget {
   const CreateServicesScreen({super.key});
@@ -15,7 +13,7 @@ class CreateServicesScreen extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<ServiceModel>> snapshot) {
         if (snapshot.hasData) {
-          List<ServiceModel> services = snapshot.data!;
+          final List<ServiceModel> services = snapshot.data!;
 
           return ListView.builder(
             itemCount: snapshot.data!.length,

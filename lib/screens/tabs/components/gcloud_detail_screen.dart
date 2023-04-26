@@ -76,7 +76,7 @@ class GCloudDetailScreen extends StatelessWidget {
                                   },
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
+                                    children: <Widget>[
                                       terminalView(
                                           gCloudData.commands.keys.elementAt(index),
                                           ),

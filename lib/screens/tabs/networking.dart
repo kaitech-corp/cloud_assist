@@ -37,7 +37,7 @@ class _NetworkingServicesState extends State<NetworkingServices> {
   @override
   Widget build(BuildContext context) {
     final Iterable<CloudData> filteredData =
-        widget.cloudData.where((data) => data.type == 'Networking');
+        widget.cloudData.where((CloudData data) => data.type == 'Networking');
     return ListView.builder(
         itemCount: filteredData.length,
         itemBuilder: (BuildContext context, int index) {

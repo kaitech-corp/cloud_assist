@@ -32,7 +32,7 @@ class _FeaturedServiceState extends State<FeaturedService> {
 
   @override
   void dispose() {
-    bloc.close();
+    // bloc.close();
     super.dispose();
   }
 
@@ -75,7 +75,7 @@ class _FeaturedServiceState extends State<FeaturedService> {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: [
+                                    children: <Widget>[
                                       FadeShimmer(
                                         height: 8,
                                         width: SizeConfig.screenWidth * .2,
@@ -126,8 +126,7 @@ class _FeaturedServiceState extends State<FeaturedService> {
                 );
               } else if (state is HasDataState) {
                 final List<CloudData> data = state.data as List<CloudData>;
-                final List<CloudData> uniqueServices =
-                    getUniqueValues(data) as List<CloudData>;
+                final List<CloudData> uniqueServices = getUniqueValues(data);
                 return SingleChildScrollView(
                   child: Column(
                     children: <Widget>[

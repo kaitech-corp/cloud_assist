@@ -67,7 +67,7 @@ class SettingsPageState extends State<SettingsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Text(
                       'Settings',
@@ -167,7 +167,7 @@ class SettingsPageState extends State<SettingsPage> {
                         FutureBuilder<dynamic>(
                             future: CloudFunctions().checkUserId(),
                             builder: (BuildContext context,
-                                AsyncSnapshot<dynamic?> snapshot) {
+                                AsyncSnapshot<dynamic> snapshot) {
                               if (snapshot.hasData) {
                                 final bool isAdmin = snapshot.data as bool;
                                 if (isAdmin) {

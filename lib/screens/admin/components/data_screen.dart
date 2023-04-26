@@ -10,10 +10,10 @@ class DataScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: [
+      children: <Widget>[
         FutureBuilder<List<dynamic>>(
           future: FirestoreDatabase().getReportsData(),
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             return ListTile(
               title: const Text('Generated Reports'),
               subtitle: Text('${snapshot.data?.length ?? 0} reports'),
@@ -22,7 +22,7 @@ class DataScreen extends StatelessWidget {
         ),
         FutureBuilder<List<dynamic>>(
           future: FirestoreDatabase().getDatabaseComparisonData(),
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             return ListTile(
               title: const Text('Generated Database Solutions'),
               subtitle: Text('${snapshot.data?.length ?? 0} solutions'),
@@ -31,7 +31,7 @@ class DataScreen extends StatelessWidget {
         ),
         FutureBuilder<List<dynamic>>(
           future: RealTimeDatabase().listInteractionsForUsers(),
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             return ListTile(
               title: const Text('Users with Interactions'),
               subtitle: Text('${snapshot.data?.length ?? 0} users'),

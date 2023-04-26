@@ -44,7 +44,7 @@ class _PopularServicesState extends State<PopularServices> {
           if (snapshot.hasData) {
             final List<String> data = snapshot.data!;
             List<CloudData> popularServices =
-                transformAndFilter(widget.cloudData, data) as List<CloudData>;
+                transformAndFilter(widget.cloudData, data);
             return ListView.builder(
                 itemCount: popularServices.length,
                 itemBuilder: (BuildContext context, int index) {

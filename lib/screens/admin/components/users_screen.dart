@@ -7,6 +7,8 @@ import '../../../services/service_config/service_config.dart';
 import '../../../services/ui/text_styles.dart';
 
 class UsersScreen extends StatelessWidget {
+  const UsersScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<UserModel>?>(
@@ -14,7 +16,7 @@ class UsersScreen extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<UserModel>?> snapshot) {
         if (snapshot.hasData) {
-          List<UserModel>? users = snapshot.data;
+          final List<UserModel>? users = snapshot.data;
           return StatisticsScreen(
             users: users!,
           );
@@ -34,7 +36,7 @@ class StatisticsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
@@ -46,7 +48,7 @@ class StatisticsScreen extends StatelessWidget {
           height: SizeConfig.screenHeight * .2,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
+            children: <Widget>[
               _buildStatCard(
                 context,
                 'Total Users',
@@ -80,7 +82,7 @@ class StatisticsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Text(
               title,
               style: titleSmall(context),
@@ -99,7 +101,7 @@ class StatisticsScreen extends StatelessWidget {
   Widget _buildChart() {
     return SfCartesianChart(
       primaryXAxis: DateTimeAxis(),
-      series: <ChartSeries>[
+      series: <ChartSeries<dynamic,dynamic>>[
         LineSeries<UserData, DateTime>(
           dataSource: _createData(),
           xValueMapper: (UserData user, _) => user.date,
@@ -111,7 +113,7 @@ class StatisticsScreen extends StatelessWidget {
 
   List<UserData> _createData() {
     final DateTime now = DateTime.now();
-    return [
+    return <UserData>[
       UserData(now.subtract(const Duration(days: 30)), 10),
       UserData(now.subtract(const Duration(days: 25)), 8),
       UserData(now.subtract(const Duration(days: 20)), 15),
@@ -124,8 +126,8 @@ class StatisticsScreen extends StatelessWidget {
 }
 
 class UserData {
-  final DateTime date;
-  final int count;
 
   UserData(this.date, this.count);
+  final DateTime date;
+  final int count;
 }

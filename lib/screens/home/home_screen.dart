@@ -109,7 +109,7 @@ class TabControllerWidget extends StatelessWidget {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      const Expanded(child: QuickFactWidget()),
+                       const Expanded(child: QuickFactWidget()),
                       Column(
                         children: <Widget>[
                           greyLineBreak,

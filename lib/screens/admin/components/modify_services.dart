@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nil/nil.dart';
 
 import '../../../models/cloud_data_model/cloud_data_model.dart';
-import '../../../services/constants.dart';
 import '../../../services/firebase_functions/cloud_functions.dart';
 import '../../../services/firebase_functions/firebase_functions.dart';
 import '../../../services/navigation/navigation.dart';
@@ -22,13 +21,13 @@ class _ModifyServicesState extends State<ModifyServices> {
       future: FirestoreDatabase().getServiceData(),
       builder: (BuildContext context, AsyncSnapshot<List<CloudData>> snapshot) {
         if (snapshot.hasData) {
-          final List<CloudData> services = snapshot.data as List<CloudData>;
+          final List<CloudData>? services = snapshot.data;
           return ListView.builder(
-              itemCount: services.length,
+              itemCount: services?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
-                final CloudData data = services[index];
+                final CloudData data = services?[index] ?? defaultCloudData;
                 return Column(
-                  children: [
+                  children: <Widget>[
                     GestureDetector(
                       onTap: () {
                         router.pushNamed('serviceDetails', extra: data);
@@ -50,7 +49,7 @@ class _ModifyServicesState extends State<ModifyServices> {
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        children: [
+                                        children: <Widget>[
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {

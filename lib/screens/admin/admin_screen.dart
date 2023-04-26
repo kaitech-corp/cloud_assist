@@ -31,20 +31,15 @@ class AdminScreen extends StatelessWidget {
             labelStyle: titleMedium(context),
           ),
         ),
-        body: TabBarView(
-          children: [
+        body: const TabBarView(
+          children: <Widget>[
             UsersScreen(),
-            const DataScreen(),
-            const CreateServicesScreen(),
-            const ModifyServices()
+            DataScreen(),
+            CreateServicesScreen(),
+            ModifyServices()
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-

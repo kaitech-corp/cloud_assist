@@ -33,7 +33,7 @@ class _DatabaseServicesState extends State<DatabaseServices> {
   @override
   Widget build(BuildContext context) {
     final Iterable<CloudData> filteredData = widget.cloudData
-        .where((data) => data.type == 'Databases' || data.type == 'Storage');
+        .where((CloudData data) => data.type == 'Databases' || data.type == 'Storage');
     return ListView.builder(
         itemCount: filteredData.length,
         itemBuilder: (BuildContext context, int index) {
