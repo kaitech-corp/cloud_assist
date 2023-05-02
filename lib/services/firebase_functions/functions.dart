@@ -61,7 +61,7 @@ bool validateEmail(String? email) {
   if (email == null || email.isEmpty) {
     return false;
   }
-  final emailRegExp = RegExp(
+  final RegExp emailRegExp = RegExp(
       r'^[a-zA-Z0-9.!#$%&\*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
   if (!emailRegExp.hasMatch(email)) {
     return false;

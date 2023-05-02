@@ -21,4 +21,3 @@ String? formatDate(DateTime? dateTime) {
   final DateFormat format = DateFormat.MMMMd().add_y();
   return format.format(dateTime);
 }
-

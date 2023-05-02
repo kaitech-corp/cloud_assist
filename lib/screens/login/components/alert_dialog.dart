@@ -1,6 +1,4 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 
 import '../../../repositories/user_repository.dart';
 import '../../../services/constants.dart';

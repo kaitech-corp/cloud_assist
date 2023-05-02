@@ -10,7 +10,6 @@ import '../../bloc/login_bloc/event.dart';
 import '../../bloc/login_bloc/state.dart';
 import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
-import '../../services/firebase_functions/functions.dart';
 import '../../services/ui/text_styles.dart';
 import 'components/alert_dialog.dart';
 
