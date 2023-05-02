@@ -40,6 +40,6 @@ class UserInteractionModel with _$UserInteractionModel {
     @TimestampConverter() DateTime? endTime,
   }) = _UserInteractionModel;
 
-  factory UserInteractionModel.fromJson(Map<String, Object?> json) =>
+  factory UserInteractionModel.fromJson(Map<Object?, Object?> json) =>
       _$UserInteractionModelFromJson(json);
 }

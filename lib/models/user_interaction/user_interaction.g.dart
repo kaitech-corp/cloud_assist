@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'user_interaction.dart';
 
 // **************************************************************************
@@ -9,7 +7,7 @@ part of 'user_interaction.dart';
 // **************************************************************************
 
 _$_UserInteractionModel _$$_UserInteractionModelFromJson(
-        Map<String, dynamic> json) =>
+        Map<Object?, dynamic> json) =>
     _$_UserInteractionModel(
       serviceId: json['serviceId'] as String?,
       featureId: json['featureId'] as String?,

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-UserInteractionModel _$UserInteractionModelFromJson(Map<String, dynamic> json) {
+UserInteractionModel _$UserInteractionModelFromJson(Map<Object?, dynamic> json) {
   return _UserInteractionModel.fromJson(json);
 }
 
@@ -147,7 +147,7 @@ class _$_UserInteractionModel implements _UserInteractionModel {
       @TimestampConverter() this.startTime,
       @TimestampConverter() this.endTime});
 
-  factory _$_UserInteractionModel.fromJson(Map<String, dynamic> json) =>
+  factory _$_UserInteractionModel.fromJson(Map<Object?, dynamic> json) =>
       _$$_UserInteractionModelFromJson(json);
 
   @override
@@ -207,7 +207,7 @@ abstract class _UserInteractionModel implements UserInteractionModel {
       @TimestampConverter() final DateTime? startTime,
       @TimestampConverter() final DateTime? endTime}) = _$_UserInteractionModel;
 
-  factory _UserInteractionModel.fromJson(Map<String, dynamic> json) =
+  factory _UserInteractionModel.fromJson(Map<Object?, dynamic> json) =
       _$_UserInteractionModel.fromJson;
 
   @override
