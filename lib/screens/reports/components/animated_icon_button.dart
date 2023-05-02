@@ -19,7 +19,7 @@ class AnimatedIconButton extends HookWidget {
         iconSize: size.value,
         color: Colors.blueAccent,
         onPressed: () {
-          RealTimeDatabase().saveUserInteraction(
+          FirestoreDatabase().saveUserInteraction(
               startTime: true,
               endTime: false,
               docID: item,

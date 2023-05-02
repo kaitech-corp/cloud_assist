@@ -33,7 +33,7 @@ class ServiceDetailItemsRow extends StatelessWidget {
             
             onPressed: () {
               Scrollable.ensureVisible(benefitsKey.currentContext!);
-              RealTimeDatabase().saveUserInteraction(
+              FirestoreDatabase().saveUserInteraction(
                   serviceId: serviceData.service,
                   featureId: FeatureID.benefits.toString(),
                   startTime: true,
@@ -46,7 +46,7 @@ class ServiceDetailItemsRow extends StatelessWidget {
             
             onPressed: () {
               Scrollable.ensureVisible(consKey.currentContext!);
-              RealTimeDatabase().saveUserInteraction(
+              FirestoreDatabase().saveUserInteraction(
                   serviceId: serviceData.service,
                   featureId: FeatureID.cons.toString(),
                   startTime: true,
@@ -59,7 +59,7 @@ class ServiceDetailItemsRow extends StatelessWidget {
            
             onPressed: () {
               Scrollable.ensureVisible(useCasesKey.currentContext!);
-              RealTimeDatabase().saveUserInteraction(
+              FirestoreDatabase().saveUserInteraction(
                   serviceId: serviceData.service,
                   featureId: FeatureID.use_cases.toString(),
                   startTime: true,
@@ -71,7 +71,7 @@ class ServiceDetailItemsRow extends StatelessWidget {
           ServiceDetailItem(
             onPressed: () {
               launchUrlFunc(serviceData.link);
-              RealTimeDatabase().saveUserInteraction(
+              FirestoreDatabase().saveUserInteraction(
                   serviceId: serviceData.service,
                   featureId: FeatureID.docs.toString(),
                   startTime: true,

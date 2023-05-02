@@ -54,6 +54,16 @@ class _ModifyServicesState extends State<ModifyServices> {
                                             child: ElevatedButton(
                                               onPressed: () {
                                                 CloudFunctions()
+                                                    .createNewFactsManually(data.service);
+                                                router.pop();
+                                              },
+                                              child: const Text('Fun Facts'),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                CloudFunctions()
                                                     .updateServiceField(
                                                         service: data.service,
                                                         field: 'description',

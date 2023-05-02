@@ -10,7 +10,9 @@ import '../../bloc/login_bloc/event.dart';
 import '../../bloc/login_bloc/state.dart';
 import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
+import '../../services/firebase_functions/functions.dart';
 import '../../services/ui/text_styles.dart';
+import 'components/alert_dialog.dart';
 
 /// Form for login screen
 class LoginForm extends StatefulWidget {
@@ -121,7 +123,9 @@ class _LoginFormState extends State<LoginForm> {
                         padding: const EdgeInsets.fromLTRB(8, 8, 8.0, 16),
                         child: TextButton(
                           child:  Text('Forgot Password',style: titleLarge(context)?.copyWith(color: Colors.blue,fontStyle: FontStyle.italic),),
-                          onPressed: () {},
+                          onPressed: () {
+                            resetPasswordAlertDialog(context);
+                          },
                         ),
                       ),
                     ),
@@ -137,6 +141,8 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
+
+
 
   void listenerMethod(LoginState state, BuildContext context) {
     if (state.isFailure) {

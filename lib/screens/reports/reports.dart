@@ -105,7 +105,7 @@ class ReportsScreenState extends State<ReportsScreen> {
                         return GestureDetector(
                           onTap: () {
                             router.pushNamed('detail', extra: report);
-                            RealTimeDatabase().saveUserInteraction(
+                            FirestoreDatabase().saveUserInteraction(
                                 docID: report.docID,
                                 featureId:
                                     FeatureID.generatedContent.toString(),
@@ -128,7 +128,7 @@ class ReportsScreenState extends State<ReportsScreen> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        RealTimeDatabase().saveUserInteraction(
+                                        FirestoreDatabase().saveUserInteraction(
                                             startTime: true,
                                             endTime: false,
                                             featureId: FeatureID

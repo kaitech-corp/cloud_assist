@@ -35,7 +35,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   void initState() {
     super.initState();
     _questionsBloc = QuestionsBloc();
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.database.toString(),
         startTime: true,
         endTime: false);
@@ -44,7 +44,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   @override
   void dispose() {
     _questionsBloc.close();
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.database.toString(),
         startTime: false,
         endTime: true);
@@ -161,7 +161,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
             value!,
           ),
         );
-        RealTimeDatabase().saveUserInteraction(
+        FirestoreDatabase().saveUserInteraction(
             serviceId: databaseArchitecture.question,
             featureId: FeatureID.database.toString(),
             startTime: true,
@@ -204,7 +204,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                       10, (int index) => AnswersSelected(null, null));
                   final String docID = hashToString(state.answerSelected);
                   router.goNamed('solution', extra: docID);
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       featureId: FeatureID.popularServices.toString(),
                       startTime: false,
                       endTime: true);

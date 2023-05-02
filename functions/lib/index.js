@@ -691,6 +691,9 @@ exports.createUserDocument = functions.auth.user().onCreate(async (user) => {
             // Add any additional fields you want to store in the user document
             // e.g. role, created_at, etc.
         });
+        await (0, firebase_admin_1.firestore)()
+            .collection("userInteraction")
+            .doc(uid).set({ docID: uid });
         console.log(`User document created for user with UID: ${uid}`);
     }
     catch (error) {

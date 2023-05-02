@@ -48,7 +48,7 @@ class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
               leading: IconButton(
                 onPressed: () {
                   router.pop();
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       featureId: FeatureID.generatedSolution.toString(),
                       startTime: true,
                       endTime: false);
@@ -66,7 +66,7 @@ class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
               leading: IconButton(
                 onPressed: () {
                   router.pop();
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       featureId: FeatureID.generatedSolution.toString(),
                       startTime: true,
                       endTime: false);
@@ -101,7 +101,7 @@ class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
               leading: IconButton(
                 onPressed: () {
                   router.pop();
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       docID: model.docID,
                       featureId: FeatureID.generatedSolution.toString(),
                       startTime: false,

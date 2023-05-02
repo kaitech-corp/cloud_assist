@@ -32,7 +32,7 @@ class SearchBarState extends State<SearchBar> {
         BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context);
     bloc.add(LoadingGenericData());
     _controller = TextEditingController();
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.search.toString(),
         startTime: true,
         endTime: false);
@@ -43,7 +43,7 @@ class SearchBarState extends State<SearchBar> {
   void dispose() {
     bloc.close();
     _controller.dispose();
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.search.toString(),
         startTime: false,
         endTime: true);
@@ -153,7 +153,7 @@ class SearchBarState extends State<SearchBar> {
                                           .first;
                                       context.goNamed('serviceDetails',
                                           extra: _result);
-                                      RealTimeDatabase().saveUserInteraction(
+                                      FirestoreDatabase().saveUserInteraction(
                                           serviceId: _result.service,
                                           featureId:
                                               FeatureID.search.toString(),
@@ -209,7 +209,7 @@ class SearchBarState extends State<SearchBar> {
                                   });
                                   context.goNamed('serviceDetails',
                                       extra: result);
-                                  RealTimeDatabase().saveUserInteraction(
+                                  FirestoreDatabase().saveUserInteraction(
                                       serviceId: result.service,
                                       featureId: FeatureID.search.toString(),
                                       startTime: true,

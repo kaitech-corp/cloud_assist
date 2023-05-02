@@ -56,3 +56,15 @@ String formatFieldNames(String input) {
   final String output = input.toLowerCase().replaceAll(' ', '_');
   return output;
 }
+
+bool validateEmail(String? email) {
+  if (email == null || email.isEmpty) {
+    return false;
+  }
+  final emailRegExp = RegExp(
+      r'^[a-zA-Z0-9.!#$%&\*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+  if (!emailRegExp.hasMatch(email)) {
+    return false;
+  }
+  return true;
+}

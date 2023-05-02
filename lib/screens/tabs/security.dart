@@ -19,7 +19,7 @@ class SecurityServices extends StatefulWidget {
 class _SecurityServicesState extends State<SecurityServices> {
   @override
   void initState() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.security.toString(),
         startTime: true,
         endTime: false);
@@ -28,7 +28,7 @@ class _SecurityServicesState extends State<SecurityServices> {
 
   @override
   void dispose() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.security.toString(),
         startTime: false,
         endTime: true);
@@ -48,7 +48,7 @@ class _SecurityServicesState extends State<SecurityServices> {
             child: GestureDetector(
                 onTap: () {
                   context.goNamed('serviceDetails', extra: cloudData);
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       serviceId: cloudData.service,
                       featureId: FeatureID.security.toString(),
                       startTime: true,

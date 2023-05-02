@@ -19,6 +19,9 @@ PODS:
     - FirebaseAuth (~> 10.7.0)
   - Firebase/CoreOnly (10.7.0):
     - FirebaseCore (= 10.7.0)
+  - Firebase/Crashlytics (10.7.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 10.7.0)
   - Firebase/Database (10.7.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 10.7.0)
@@ -35,8 +38,12 @@ PODS:
     - Firebase/Auth (= 10.7.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.9.0):
+  - firebase_core (2.10.0):
     - Firebase/CoreOnly (= 10.7.0)
+    - Flutter
+  - firebase_crashlytics (3.1.2):
+    - Firebase/Crashlytics (= 10.7.0)
+    - firebase_core
     - Flutter
   - firebase_database (10.1.0):
     - Firebase/Database (= 10.7.0)
@@ -61,6 +68,14 @@ PODS:
     - FirebaseCore (~> 10.0)
   - FirebaseCoreInternal (10.7.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
+  - FirebaseCrashlytics (10.7.0):
+    - FirebaseCore (~> 10.5)
+    - FirebaseInstallations (~> 10.0)
+    - FirebaseSessions (~> 10.5)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/Environment (~> 7.8)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - PromisesObjC (~> 2.1)
   - FirebaseDatabase (10.7.0):
     - FirebaseCore (~> 10.0)
     - leveldb-library (~> 1.22)
@@ -80,7 +95,20 @@ PODS:
     - FirebaseMessagingInterop (~> 10.0)
     - FirebaseSharedSwift (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
+  - FirebaseInstallations (10.7.0):
+    - FirebaseCore (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
+    - PromisesObjC (~> 2.1)
   - FirebaseMessagingInterop (10.7.0)
+  - FirebaseSessions (10.9.0):
+    - FirebaseCore (~> 10.5)
+    - FirebaseCoreExtension (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/Environment (~> 7.10)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - PromisesSwift (~> 2.1)
   - FirebaseSharedSwift (10.7.0)
   - FirebaseStorage (10.7.0):
     - FirebaseAppCheckInterop (~> 10.0)
@@ -94,6 +122,10 @@ PODS:
   - google_sign_in_ios (0.0.1):
     - Flutter
     - GoogleSignIn (~> 6.2)
+  - GoogleDataTransport (9.2.2):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
   - GoogleSignIn (6.2.4):
     - AppAuth (~> 1.5)
     - GTMAppAuth (~> 1.3)
@@ -113,6 +145,8 @@ PODS:
   - "GoogleUtilities/NSData+zlib (7.11.1)"
   - GoogleUtilities/Reachability (7.11.1):
     - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (7.11.1):
+    - GoogleUtilities/Logger
   - GTMAppAuth (1.3.1):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
@@ -127,6 +161,8 @@ PODS:
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.2.0)
+  - PromisesSwift (2.2.0):
+    - PromisesObjC (= 2.2.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -140,6 +176,7 @@ DEPENDENCIES:
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `10.7.0`)
@@ -161,11 +198,15 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
+    - FirebaseCrashlytics
     - FirebaseDatabase
     - FirebaseFunctions
+    - FirebaseInstallations
     - FirebaseMessagingInterop
+    - FirebaseSessions
     - FirebaseSharedSwift
     - FirebaseStorage
+    - GoogleDataTransport
     - GoogleSignIn
     - GoogleUtilities
     - GTMAppAuth
@@ -173,6 +214,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - PromisesSwift
 
 EXTERNAL SOURCES:
   cloud_firestore:
@@ -183,6 +225,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_crashlytics:
+    :path: ".symlinks/plugins/firebase_crashlytics/ios"
   firebase_database:
     :path: ".symlinks/plugins/firebase_database/ios"
   firebase_storage:
@@ -216,7 +260,8 @@ SPEC CHECKSUMS:
   cloud_functions: 1013ced10d7b82cc7b4239f86236782fe3b9fc5b
   Firebase: 0219acf760880eeec8ce479895bd7767466d9f81
   firebase_auth: 5984ebaf5463319e304ab1c0966b06994bd1c69a
-  firebase_core: d85432877e814811e040e7659f9c82faeab66e04
+  firebase_core: 18d44f087248303a4a8f05d0099a000c46e3c77a
+  firebase_crashlytics: 621d91c0c5752e8219f8fe05a4d1e76394f4896a
   firebase_database: 7dfac1ef83539a3716784b11f4d72d077c3464c2
   firebase_storage: 3419feab3ca832a07bdff5307477e0b9d20eb5f8
   FirebaseAppCheckInterop: 8e907eea79958960a8bd2058e067f31e03a7914b
@@ -225,15 +270,19 @@ SPEC CHECKSUMS:
   FirebaseCore: e317665b9d744727a97e623edbbed009320afdd7
   FirebaseCoreExtension: f17247ba8c61e4d3c8d136b5e2de3cb4ac6a85b6
   FirebaseCoreInternal: 8845798510aae74703467480f71ac613788d0696
+  FirebaseCrashlytics: 35fdd1a433b31e28adcf5c8933f4c526691a1e0b
   FirebaseDatabase: 06195bac336b5e4c893ec04a111631a4cdb00178
   FirebaseFirestore: 7b7d95b74637ed61b76996077a2b292167dae7e5
   FirebaseFunctions: 6cede311274dd1e13ea4950fc9e57221d3538386
+  FirebaseInstallations: 59c0e4c7a816a0f76710d83f77e5369b3e45eb96
   FirebaseMessagingInterop: c49e2766f4059ea4ef9e7c7764ed741a14aaeded
+  FirebaseSessions: 44a6782502eb279a214d4adca20891353278760c
   FirebaseSharedSwift: 993e46657e34f14fe497c4a43c1f9608dabfb2e5
   FirebaseStorage: 4841efa304543e1f9e4ca116c559c7a1ea2a9d0f
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
   google_sign_in_ios: 1256ff9d941db546373826966720b0c24804bcdd
+  GoogleDataTransport: 8378d1fa8ac49753ea6ce70d65a7cb70ce5f66e6
   GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
@@ -242,10 +291,11 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
+  PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
 
-PODFILE CHECKSUM: 1cb4b69aa92fec57d8672e42c9067f2ca81233ff
+PODFILE CHECKSUM: 729f489962d4f7d502a4d7341f19389af5bcd351
 
 COCOAPODS: 1.12.0
