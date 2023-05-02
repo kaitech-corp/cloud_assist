@@ -3,6 +3,8 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -12,6 +14,7 @@ class UserRepository {
   UserRepository() : _firebaseAuth = FirebaseAuth.instance;
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  final crashlytics = FirebaseCrashlytics.instance;
 
   Future<List<dynamic>> signOut() async {
     return Future.wait([_firebaseAuth.signOut()]);
@@ -22,10 +25,29 @@ class UserRepository {
     return currentUser != null;
   }
 
-  // Reset Password
-  Future<void> resetPassword(String email) async {
-    await _firebaseAuth.sendPasswordResetEmail(email: email);
+// Reset Password
+Future<bool> resetPassword(String email) async {
+  try {
+    final isRegisterEmail = await isRegistered(email);
+    if (isRegisterEmail) {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return true;
+    }
+  } catch (e) {
+    crashlytics.log('Error resetting password: $e');
   }
+  return false;
+}
+
+Future<bool> isRegistered(String email) async {
+  try {
+    final result = await _firebaseAuth.fetchSignInMethodsForEmail(email);
+    return result.isNotEmpty;
+  } catch (e) {
+    return false;
+  }
+}
+
 
   User? getUser() {
     return _firebaseAuth.currentUser;
@@ -56,7 +78,7 @@ class UserRepository {
 
       return await _firebaseAuth.signInWithCredential(credential);
     } catch (e) {
-      // CloudFunctions().logError('Error in Apple sign in: $e');
+      crashlytics.log('Error in Apple sign in: $e');
       return null;
     }
   }
@@ -85,7 +107,7 @@ class UserRepository {
 
       return authResult;
     } catch (e) {
-      return null;
+      crashlytics.log('Error in Google sign in: $e');
     }
   }
 }
