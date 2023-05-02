@@ -13,31 +13,25 @@ class DataScreen extends StatelessWidget {
       children: <Widget>[
         FutureBuilder<List<dynamic>>(
           future: FirestoreDatabase().getReportsData(),
-          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             return ListTile(
               title: const Text('Generated Reports'),
               subtitle: Text('${snapshot.data?.length ?? 0} reports'),
             );
           },
         ),
-        FutureBuilder<List<dynamic>>(
+        FutureBuilder<int>(
           future: FirestoreDatabase().getDatabaseComparisonData(),
-          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<int> snapshot) {
             return ListTile(
               title: const Text('Generated Database Solutions'),
-              subtitle: Text('${snapshot.data?.length ?? 0} solutions'),
+              subtitle: Text('${snapshot.data ?? 0} solutions'),
             );
           },
         ),
-        FutureBuilder<List<dynamic>>(
-          future: RealTimeDatabase().listInteractionsForUsers(),
-          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-            return ListTile(
-              title: const Text('Users with Interactions'),
-              subtitle: Text('${snapshot.data?.length ?? 0} users'),
-            );
-          },
-        ),
+        
         FutureBuilder<List<QuickFact>>(
           future: FirestoreDatabase().getQuickFactsData(),
           builder:
