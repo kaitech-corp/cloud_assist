@@ -18,7 +18,7 @@ class GCloudScreen extends StatefulWidget {
 class _GCloudScreenState extends State<GCloudScreen> {
   @override
   void initState() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.commandlines.toString(),
         startTime: true,
         endTime: false);
@@ -27,7 +27,7 @@ class _GCloudScreenState extends State<GCloudScreen> {
 
   @override
   void dispose() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.commandlines.toString(),
         startTime: false,
         endTime: true);
@@ -51,7 +51,7 @@ class _GCloudScreenState extends State<GCloudScreen> {
                     child: GestureDetector(
                       onTap: () {
                         context.goNamed('gcloud', extra: gCloudData);
-                        RealTimeDatabase().saveUserInteraction(
+                        FirestoreDatabase().saveUserInteraction(
                             serviceId: gCloudData.topic,
                             featureId: FeatureID.commandlines.toString(),
                             startTime: true,

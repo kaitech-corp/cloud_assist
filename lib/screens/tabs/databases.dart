@@ -18,14 +18,14 @@ class DatabaseServices extends StatefulWidget {
 class _DatabaseServicesState extends State<DatabaseServices> {
   @override
   void initState() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.data.toString(), startTime: true, endTime: false);
     super.initState();
   }
 
   @override
   void dispose() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.data.toString(), startTime: false, endTime: true);
     super.dispose();
   }
@@ -43,7 +43,7 @@ class _DatabaseServicesState extends State<DatabaseServices> {
             child: GestureDetector(
                 onTap: () {
                   context.goNamed('serviceDetails', extra: cloudData);
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       serviceId: cloudData.service,
                       featureId: FeatureID.data.toString(),
                       startTime: true,

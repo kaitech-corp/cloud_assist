@@ -37,7 +37,7 @@ class SolutionListScreenState extends State<SolutionListScreen> {
   @override
   void dispose() {
     bloc.close();
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.databaseSolutions.toString(),
         startTime: false,
         endTime: true);
@@ -72,7 +72,7 @@ class SolutionListScreenState extends State<SolutionListScreen> {
                   return GestureDetector(
                     onTap: () {
                       router.pushNamed('solutionDetail', extra: solution);
-                      RealTimeDatabase().saveUserInteraction(
+                      FirestoreDatabase().saveUserInteraction(
                           docID: solution.docID,
                           featureId: FeatureID.databaseSolutions.toString(),
                           startTime: true,
@@ -100,7 +100,7 @@ class SolutionListScreenState extends State<SolutionListScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  RealTimeDatabase().saveUserInteraction(
+                                  FirestoreDatabase().saveUserInteraction(
                                       startTime: true,
                                       endTime: false,
                                       featureId: FeatureID.databaseSolutions

@@ -21,7 +21,7 @@ class GCloudDetailScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             router.pop();
-            RealTimeDatabase().saveUserInteraction(
+            FirestoreDatabase().saveUserInteraction(
                 serviceId: gCloudData.topic,
                 featureId: FeatureID.commandlines.toString(),
                 startTime: false,
@@ -66,7 +66,7 @@ class GCloudDetailScreen extends StatelessWidget {
                                 padding: const EdgeInsets.fromLTRB(8, 24, 8, 16),
                                 child: GestureDetector(
                                   onTap: () {
-                                    RealTimeDatabase().saveUserInteraction(
+                                    FirestoreDatabase().saveUserInteraction(
                                         serviceId: gCloudData.commands.keys
                                             .elementAt(index),
                                         featureId:

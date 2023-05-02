@@ -18,7 +18,7 @@ class NetworkingServices extends StatefulWidget {
 class _NetworkingServicesState extends State<NetworkingServices> {
   @override
   void initState() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.networking.toString(),
         startTime: true,
         endTime: false);
@@ -27,7 +27,7 @@ class _NetworkingServicesState extends State<NetworkingServices> {
 
   @override
   void dispose() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.networking.toString(),
         startTime: false,
         endTime: true);
@@ -47,7 +47,7 @@ class _NetworkingServicesState extends State<NetworkingServices> {
             child: GestureDetector(
                 onTap: () {
                   context.goNamed('serviceDetails', extra: cloudData);
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       serviceId: cloudData.service,
                       featureId: FeatureID.networking.toString(),
                       startTime: true,

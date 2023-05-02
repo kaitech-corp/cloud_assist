@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,6 +36,8 @@ class FirestoreDatabase {
       FirebaseFirestore.instance.collection('reportedContent');
   final CollectionReference<Object?> popularServicesCollection =
       FirebaseFirestore.instance.collection('popularServices');
+  final CollectionReference<Object?> userInteractionCollection =
+      FirebaseFirestore.instance.collection('userInteraction');
 
   Future<List<String?>?> getFacts(String service) async {
     final String docName = removeCloudAndWhitespace(service);
@@ -393,19 +394,16 @@ class FirestoreDatabase {
     }
   }
 
-  Future<List<dynamic>> getDatabaseComparisonData() async {
+  Future<int> getDatabaseComparisonData() async {
     final QuerySnapshot<Object?> ref = await databaseComparison.get();
     try {
-      final List<ComparisonModel> data = ref.docs
-          .map((QueryDocumentSnapshot<Object?> doc) =>
-              ComparisonModel.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
+      final int data = ref.docs.length;
       return data;
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return <UserModel>[];
+      return 0;
     }
   }
 
@@ -458,7 +456,7 @@ class FirestoreDatabase {
       'timestamp': FieldValue.serverTimestamp(),
       'uid': uid
     }).then((value) {
-      RealTimeDatabase().saveUserInteraction(
+      FirestoreDatabase().saveUserInteraction(
         startTime: true,
         endTime: false,
         serviceId: reportContent.contentDocID,
@@ -467,53 +465,55 @@ class FirestoreDatabase {
       );
     });
   }
-}
 
-class RealTimeDatabase {
-  // Function to save user interactions to the Realtime Database
-  void saveUserInteraction(
-      {String? serviceId,
-      String? featureId,
-      required bool startTime,
-      required bool endTime,
-      String? docID}) {
+  // Function to save user interactions to Firestore
+  Future<void> saveUserInteraction({
+    String? serviceId,
+    String? featureId,
+    required bool startTime,
+    required bool endTime,
+    String? docID,
+  }) async {
     final String? userId = UserRepository().getUserID();
-    final FirebaseDatabase databaseReference = FirebaseDatabase.instance;
+    final DocumentReference<Object?> userInteractionRef =
+        userInteractionCollection.doc(userId).collection('interactions').doc();
+
     final Map<String, dynamic> userTimeData = <String, dynamic>{
       'serviceId': serviceId,
       'featureId': featureId,
       'docID': docID,
-      'startTime': startTime ? ServerValue.timestamp : null,
-      'endTime': endTime ? ServerValue.timestamp : null
+      'startTime': startTime ? Timestamp.now() : null,
+      'endTime': endTime ? Timestamp.now() : null,
     };
 
-    // Save UserInteractionModel to the Realtime Database
     try {
-      databaseReference
-          .ref()
-          .child('user_interaction_data')
-          .child(userId!)
-          .push()
-          .set(userTimeData);
+      await userInteractionRef.set(userTimeData);
     } catch (e) {
       if (kDebugMode) {
         print('Error saving user interaction: $e');
       }
-      databaseReference
-          .ref()
-          .child('user_interaction_data')
-          .child('00000000')
+      await userInteractionCollection
+          .doc('00000000')
+          .collection('interactions')
+          .doc()
           .set(userTimeData);
     }
   }
 
-  // Function to list the number of interactions for each user
-  Future<List<dynamic>> listInteractionsForUsers() async {
-    // Get a reference to the 'user_interaction_data' node in Realtime Database
-    final DatabaseReference ref =
-        FirebaseDatabase.instance.ref().child('user_interaction_data');
+  Future<List<String>?> getInteractionIds() async {
+    final QuerySnapshot<Object?> ref = await userInteractionCollection.get();
+    return ref.docs.map((doc) => doc.id).toList();
+  }
 
-    final DataSnapshot snapshot = await ref.get();
-    return snapshot.children.toList();
+  Future<int?> getInteractionCount(String uid) async {
+    if (uid.isEmpty) {
+      return 0;
+    }
+
+    final ref = await userInteractionCollection
+        .doc(uid)
+        .collection('interactions')
+        .get();
+    return ref.size;
   }
 }

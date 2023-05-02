@@ -20,7 +20,7 @@ class PopularServices extends StatefulWidget {
 class _PopularServicesState extends State<PopularServices> {
   @override
   void initState() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.popularServices.toString(),
         startTime: true,
         endTime: false);
@@ -29,7 +29,7 @@ class _PopularServicesState extends State<PopularServices> {
 
   @override
   void dispose() {
-    RealTimeDatabase().saveUserInteraction(
+    FirestoreDatabase().saveUserInteraction(
         featureId: FeatureID.popularServices.toString(),
         startTime: false,
         endTime: true);
@@ -54,7 +54,7 @@ class _PopularServicesState extends State<PopularServices> {
                     child: GestureDetector(
                         onTap: () {
                           context.goNamed('serviceDetails', extra: cloudData);
-                          RealTimeDatabase().saveUserInteraction(
+                          FirestoreDatabase().saveUserInteraction(
                               serviceId: cloudData.service,
                               featureId: FeatureID.popularServices.toString(),
                               startTime: true,

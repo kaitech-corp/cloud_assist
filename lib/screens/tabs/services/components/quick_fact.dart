@@ -42,7 +42,7 @@ class QuickFactState extends State<QuickFact> {
                   setState(() {
                     _fact = getRandomValueFromList(facts) as String;
                   });
-                  RealTimeDatabase().saveUserInteraction(
+                  FirestoreDatabase().saveUserInteraction(
                       serviceId: widget.serviceData.service,
                       featureId: FeatureID.quickFact.toString(),
                       startTime: true,

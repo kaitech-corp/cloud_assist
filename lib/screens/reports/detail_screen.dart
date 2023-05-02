@@ -18,7 +18,7 @@ class ReportDetailScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             router.pop();
-            RealTimeDatabase().saveUserInteraction(
+            FirestoreDatabase().saveUserInteraction(
                 docID: report.docID,
                 featureId: FeatureID.generatedContent.toString(),
                 startTime: false,

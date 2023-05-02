@@ -11,7 +11,7 @@ class SolutionsRepository extends GenericBlocRepository<ComparisonModel> {
     final String? uid = UserRepository().getUserID();
     final Query<Object> solutionCollection = FirebaseFirestore.instance
         .collection('users')
-        .doc(uid).collection('generatedSolution');
+        .doc(uid).collection('generatedSolution').orderBy('timestamp',descending: true);
 
     // Get all Quick Facts
     List<ComparisonModel> solutionListFromSnapshot(
@@ -20,7 +20,7 @@ class SolutionsRepository extends GenericBlocRepository<ComparisonModel> {
         final List<ComparisonModel> solutionList =
             snapshot.docs.map((QueryDocumentSnapshot<Object> doc) {
           return ComparisonModel.fromJson(doc.data() as Map<String, dynamic>);
-        }).toList().reversed.toList();
+        }).toList();
         return solutionList;
       } catch (e) {
         if (kDebugMode) {

@@ -130,7 +130,7 @@ class TabControllerWidget extends StatelessWidget {
                                               onPressed: () {
                                                 switch (index) {
                                                   case 0:
-                                                    RealTimeDatabase()
+                                                    FirestoreDatabase()
                                                         .saveUserInteraction(
                                                             featureId: FeatureID
                                                                 .databaseSolutions
@@ -140,7 +140,7 @@ class TabControllerWidget extends StatelessWidget {
                                                     router.goNamed('solutions');
                                                     break;
                                                   case 1:
-                                                    RealTimeDatabase()
+                                                    FirestoreDatabase()
                                                         .saveUserInteraction(
                                                             featureId: FeatureID
                                                                 .generatedContent

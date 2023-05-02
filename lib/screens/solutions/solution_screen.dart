@@ -18,7 +18,7 @@ class SolutionScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             router.pop();
-            RealTimeDatabase().saveUserInteraction(
+            FirestoreDatabase().saveUserInteraction(
                 docID: model.docID,
                 featureId: FeatureID.generatedSolution.toString(),
                 startTime: false,
