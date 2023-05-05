@@ -958,11 +958,11 @@ exports.updateServiceField = functions.https.onCall(async (snap, context) => {
     "the response is valid JSON and that the array is an array " +
     "of strings, not an array of objects or maps.";
 
-  const arrayDescription2 =
-    "This should be in an array of strings, with each " +
-    "Please ensure that the response is valid JSON and " +
-    "that the array is an array of strings, not an " +
-    "array of objects or maps.";
+  // const arrayDescription2 =
+  //   "This should be in an array of non-numbered strings. " +
+  //   "Please ensure that the response is valid JSON and " +
+  //   "that the array is an array of strings, not an " +
+  //   "array of objects or maps.";
 
   switch (field) {
   case "description":
@@ -989,7 +989,7 @@ exports.updateServiceField = functions.https.onCall(async (snap, context) => {
   case "useCases":
     content =
         `Generate use cases for the ${provider} service ${service} ` +
-        `that conform to the JSON format {useCases: []}. ${arrayDescription2}`;
+        `that conform to the JSON format {useCases: []}. ${arrayDescription}`;
     break;
   default:
     console.log("🚀 ~ updateServiceField: Did not make api call.");
@@ -1064,7 +1064,8 @@ async function updateFirestoreDocumentField(
       } else if (field === "cons") {
         updateData["cons"] = serviceData.cons;
       } else if (field === "useCases") {
-        updateData["useCases"] = serviceData.useCases;
+        const cleanData = removeLeadingNumbers(serviceData.useCases);
+        updateData["useCases"] = cleanData;
       }
 
       updateData["lastUpdated"] = FieldValue.serverTimestamp();
@@ -1079,6 +1080,24 @@ async function updateFirestoreDocumentField(
     }
   }
 }
+
+/**
+ * Removes any leading numbers and spaces from each string in an array.
+ *
+ * @function removeLeadingNumbers
+ * @param {string[]} arr The input array of strings.
+ * @return {string[]} An array of strings with leading numbers removed.
+ */
+function removeLeadingNumbers(arr: string[]): string[] {
+  const output: string[] = [];
+  for (let i = 0; i < arr.length; i++) {
+    const regex = /^\d+\s*/; // Matches any leading digits and spaces
+    // Removes any leading digits and spaces
+    output.push(arr[i].replace(regex, ""));
+  }
+  return output;
+}
+
 
 exports.checkServices = functions.https.onCall(async (snap, context) => {
   if (!context.auth) {
