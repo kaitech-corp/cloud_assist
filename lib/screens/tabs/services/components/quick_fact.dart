@@ -28,7 +28,9 @@ class QuickFactState extends State<QuickFact> {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
       child: SizedBox(
-        height: SizeConfig.screenHeight * .19,
+        height: SizeConfig.tablet
+            ? SizeConfig.screenHeight * .1
+            : SizeConfig.screenHeight * .21,
         width: SizeConfig.screenWidth,
         child: FutureBuilder<List<String?>?>(
           future: FirestoreDatabase().getFacts(widget.serviceData.service),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../models/cloud_data_model/cloud_data_model.dart';
+import '../../../../services/service_config/service_config.dart';
 import '../../../../services/ui/text_styles.dart';
 
 class FeaturedServiceWidget extends StatelessWidget {
@@ -44,7 +45,7 @@ class FeaturedServiceWidget extends StatelessWidget {
               height: 15,
             ),
             Text(
-              cloudData.description,
+              (SizeConfig.tablet) ? cloudData.detail : cloudData.description,
               style: titleMedium(context),
             ),
           ],

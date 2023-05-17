@@ -109,7 +109,9 @@ class TabControllerWidget extends StatelessWidget {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                       const Expanded(child: QuickFactWidget()),
+                       const Expanded(
+                        flex: 3,
+                        child: QuickFactWidget()),
                       Column(
                         children: <Widget>[
                           greyLineBreak,
@@ -164,7 +166,7 @@ class TabControllerWidget extends StatelessWidget {
                           greyLineBreak
                         ],
                       ),
-                      const Expanded(flex: 2, child: FeaturedService())
+                      const Expanded(flex: 4, child: FeaturedService())
                     ],
                   ),
                   PopularServices(

@@ -20,33 +20,32 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        children: <Widget>[
-          CarouselSlider(
-            carouselController: _controller,
-            options: CarouselOptions(
-              aspectRatio: 2.5,
-              viewportFraction: 1,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 20),
-              onPageChanged: (int index, _) {
-                setState(() => _current = index);
-              },
-            ),
-            items: widget.facts.map((String fact) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  fact,
-                  style: titleMedium(context),
-                  textAlign: TextAlign.start,
-                ),
-              );
-            }).toList(),
+    return Column(
+      children: <Widget>[
+        CarouselSlider(
+          carouselController: _controller,
+          options: CarouselOptions(
+            aspectRatio: 2.5,
+            viewportFraction: 1,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 20),
+            onPageChanged: (int index, _) {
+              setState(() => _current = index);
+            },
           ),
-          Padding(
+          items: widget.facts.map((String fact) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                fact,
+                style: titleMedium(context),
+                textAlign: TextAlign.start,
+              ),
+            );
+          }).toList(),
+        ),
+        Flexible(
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -66,9 +65,9 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
                       ))
                   .toList(),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

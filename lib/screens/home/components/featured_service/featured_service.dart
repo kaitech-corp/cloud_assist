@@ -59,7 +59,7 @@ class _FeaturedServiceState extends State<FeaturedService> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     for (int i = 0; i < 3; i++)
-                      Flexible(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[

@@ -30,7 +30,6 @@ class ServiceDetailItemsRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           ServiceDetailItem(
-            
             onPressed: () {
               Scrollable.ensureVisible(benefitsKey.currentContext!);
               FirestoreDatabase().saveUserInteraction(
@@ -43,7 +42,6 @@ class ServiceDetailItemsRow extends StatelessWidget {
             label: serviceDetailItems[0],
           ),
           ServiceDetailItem(
-            
             onPressed: () {
               Scrollable.ensureVisible(consKey.currentContext!);
               FirestoreDatabase().saveUserInteraction(
@@ -56,7 +54,6 @@ class ServiceDetailItemsRow extends StatelessWidget {
             label: serviceDetailItems[1],
           ),
           ServiceDetailItem(
-           
             onPressed: () {
               Scrollable.ensureVisible(useCasesKey.currentContext!);
               FirestoreDatabase().saveUserInteraction(
@@ -100,18 +97,24 @@ class ServiceDetailItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          CircleAvatar(
-            child: IconButton(onPressed: onPressed, icon: icon),
-          ),
-          Text(
-            label,
-            style: titleMedium(context),
-          ),
-        ],
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: CircleAvatar(
+                child: IconButton(onPressed: onPressed, icon: icon),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                label,
+                style: titleMedium(context),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
