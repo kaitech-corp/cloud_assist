@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../services/firebase_functions/firebase_functions.dart';
 import 'event.dart';
@@ -16,6 +17,9 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
           
         } catch (e) {
           emit(QuestionsState.failure());
+          if (kDebugMode) {
+            print('Error in AnswersSubmitted: $e');
+          }
         }
       } else {
         emit(QuestionsState.failure());

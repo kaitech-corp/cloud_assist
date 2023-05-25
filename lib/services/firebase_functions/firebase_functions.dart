@@ -144,7 +144,7 @@ class FirestoreDatabase {
   Future<void> saveAnswers(List<AnswersSelected> answersSelected) async {
     final String hash = answersSelected.toString().hashCode.toString();
     final bool docExists = await checkDocExists(hash);
-
+    final bool userDocExists = await checkDocExistsInUserDocument(hash);
     if (!docExists) {
       try {
         final Map<String, List<Map<String, dynamic>>> data =
@@ -165,7 +165,7 @@ class FirestoreDatabase {
 
         while (retryCount < 3 && !answerNotEmpty) {
           // Wait for 10 seconds
-          await Future<void>.delayed(const Duration(seconds: 10));
+          await Future<void>.delayed(const Duration(seconds: 20));
 
           // Check if 'answer' field is non-empty
           final DocumentSnapshot<Object?> snapshot = await ref.get();
@@ -192,6 +192,18 @@ class FirestoreDatabase {
           print('saveAnswers error in firebase_functions: $e');
         }
       }
+    } else if (!userDocExists) {
+      try {
+        final DocumentReference<Object?> ref = databaseComparison.doc(hash);
+        final DocumentSnapshot<Object?> snapshot = await ref.get();
+        final ComparisonModel model =
+            ComparisonModel.fromJson(snapshot.data() as Map<String, dynamic>);
+        saveSolutionToUserDocument(model);
+      } catch (e) {
+        if (kDebugMode) {
+          print('saveAnswers error in firebase_functions: $e');
+        }
+      }
     }
   }
 
@@ -205,6 +217,9 @@ class FirestoreDatabase {
 
       // Use set method with SetOptions(merge: true) to create or update document
       await ref.set(model.toJson(), SetOptions(merge: true));
+      await ref.update(<String, dynamic>{
+        'timestamp': FieldValue.serverTimestamp(),
+      });
     } catch (e) {
       if (kDebugMode) {
         print('Error in saveSolutionToUserDocument: $e');
@@ -216,6 +231,25 @@ class FirestoreDatabase {
     final DocumentSnapshot<Object?> ref =
         await databaseComparison.doc(docID).get();
     return ref.exists;
+  }
+
+  Future<bool> checkDocExistsInUserDocument(String docID) async {
+    final String? uid = UserRepository().getUserID();
+    try {
+      final CollectionReference<Object?> usersGeneratedCollection =
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('generatedSolution');
+      final DocumentSnapshot<Object?> ref =
+          await usersGeneratedCollection.doc(docID).get();
+      return ref.exists;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error in checkDocExistsInUserDocument: $e');
+      }
+      return false;
+    }
   }
 
   Stream<ComparisonModel> getDatabaseAnswer(
@@ -414,7 +448,8 @@ class FirestoreDatabase {
     final DocumentReference<Object?> documentReference =
         popularServicesCollection.doc(docID);
 
-    await FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
+    await FirebaseFirestore.instance
+        .runTransaction((Transaction transaction) async {
       final DocumentSnapshot<Object?> documentSnapshot =
           await transaction.get(documentReference);
 
@@ -502,7 +537,9 @@ class FirestoreDatabase {
 
   Future<List<String>?> getInteractionIds() async {
     final QuerySnapshot<Object?> ref = await userInteractionCollection.get();
-    return ref.docs.map((QueryDocumentSnapshot<Object?> doc) => doc.id).toList();
+    return ref.docs
+        .map((QueryDocumentSnapshot<Object?> doc) => doc.id)
+        .toList();
   }
 
   Future<int?> getInteractionCount(String uid) async {
@@ -510,10 +547,11 @@ class FirestoreDatabase {
       return 0;
     }
 
-    final QuerySnapshot<Map<String, dynamic>> ref = await userInteractionCollection
-        .doc(uid)
-        .collection('interactions')
-        .get();
+    final QuerySnapshot<Map<String, dynamic>> ref =
+        await userInteractionCollection
+            .doc(uid)
+            .collection('interactions')
+            .get();
     return ref.size;
   }
 }
