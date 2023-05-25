@@ -55,6 +55,10 @@ class UserRepository {
     return _firebaseAuth.currentUser?.uid;
   }
 
+  void deleteUser(){
+    _firebaseAuth.currentUser?.delete();
+  }
+
   Stream<User?> get user =>
       _firebaseAuth.authStateChanges().map((User? user) => user);
 

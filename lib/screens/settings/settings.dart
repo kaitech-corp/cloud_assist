@@ -6,6 +6,7 @@ import 'package:nil/nil.dart';
 import '../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../bloc/authentication_bloc/authentication_event.dart';
 import '../../models/user_model/user_model.dart';
+import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
@@ -46,8 +47,14 @@ class SettingsPageState extends State<SettingsPage> {
               child: const Text('Deactivate'),
               onPressed: () {
                 Navigator.of(context).pop();
+                FirestoreDatabase().saveUserInteraction(
+                docID: '',
+                featureId: FeatureID.deleteAccount.toString(),
+                startTime: false,
+                endTime: true);
                 BlocProvider.of<AuthenticationBloc>(context)
                     .add(AuthenticationLoggedOut());
+                UserRepository().deleteUser();
               },
             ),
           ],
