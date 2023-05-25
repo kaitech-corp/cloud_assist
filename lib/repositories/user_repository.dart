@@ -25,28 +25,27 @@ class UserRepository {
   }
 
 // Reset Password
-Future<bool> resetPassword(String email) async {
-  try {
-    final isRegisterEmail = await isRegistered(email);
-    if (isRegisterEmail) {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
-      return true;
+  Future<bool> resetPassword(String email) async {
+    try {
+      final isRegisterEmail = await isRegistered(email);
+      if (isRegisterEmail) {
+        await _firebaseAuth.sendPasswordResetEmail(email: email);
+        return true;
+      }
+    } catch (e) {
+      crashlytics.log('Error resetting password: $e');
     }
-  } catch (e) {
-    crashlytics.log('Error resetting password: $e');
-  }
-  return false;
-}
-
-Future<bool> isRegistered(String email) async {
-  try {
-    final result = await _firebaseAuth.fetchSignInMethodsForEmail(email);
-    return result.isNotEmpty;
-  } catch (e) {
     return false;
   }
-}
 
+  Future<bool> isRegistered(String email) async {
+    try {
+      final result = await _firebaseAuth.fetchSignInMethodsForEmail(email);
+      return result.isNotEmpty;
+    } catch (e) {
+      return false;
+    }
+  }
 
   User? getUser() {
     return _firebaseAuth.currentUser;
@@ -60,6 +59,16 @@ Future<bool> isRegistered(String email) async {
       _firebaseAuth.authStateChanges().map((User? user) => user);
 
   bool get appleSignInAvailable => Platform.isIOS;
+
+  Future<UserCredential?> signInAnonymous() async {
+    try {
+      final result = await _firebaseAuth.signInAnonymously();
+      return result;
+    } catch (e) {
+      crashlytics.log('Error signing in anonymously: $e');
+      return null;
+    }
+  }
 
   Future<UserCredential?> signInWithApple() async {
     try {

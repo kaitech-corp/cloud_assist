@@ -24,3 +24,9 @@ class LoginWithGooglePressed extends LoginEvent {
   @override
   List<Object> get props => <Object>[];
 }
+class LoginAnonymousPressed extends LoginEvent {
+  LoginAnonymousPressed();
+
+  @override
+  List<Object> get props => <Object>[];
+}

@@ -414,7 +414,7 @@ class FirestoreDatabase {
     final DocumentReference<Object?> documentReference =
         popularServicesCollection.doc(docID);
 
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
+    await FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       final DocumentSnapshot<Object?> documentSnapshot =
           await transaction.get(documentReference);
 
@@ -502,7 +502,7 @@ class FirestoreDatabase {
 
   Future<List<String>?> getInteractionIds() async {
     final QuerySnapshot<Object?> ref = await userInteractionCollection.get();
-    return ref.docs.map((doc) => doc.id).toList();
+    return ref.docs.map((QueryDocumentSnapshot<Object?> doc) => doc.id).toList();
   }
 
   Future<int?> getInteractionCount(String uid) async {
@@ -510,7 +510,7 @@ class FirestoreDatabase {
       return 0;
     }
 
-    final ref = await userInteractionCollection
+    final QuerySnapshot<Map<String, dynamic>> ref = await userInteractionCollection
         .doc(uid)
         .collection('interactions')
         .get();

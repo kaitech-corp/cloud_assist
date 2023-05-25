@@ -45,8 +45,9 @@ class SettingsPageState extends State<SettingsPage> {
             TextButton(
               child: const Text('Deactivate'),
               onPressed: () {
-                // Handle account deactivation here.
                 Navigator.of(context).pop();
+                BlocProvider.of<AuthenticationBloc>(context)
+                    .add(AuthenticationLoggedOut());
               },
             ),
           ],
@@ -142,19 +143,19 @@ class SettingsPageState extends State<SettingsPage> {
                           style: titleMedium(context),
                         ),
                         const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Paid Account',
-                              style: titleMedium(context),
-                            ),
-                            Checkbox(
-                              value: profileData.paid,
-                              onChanged: (bool? value) {},
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: <Widget>[
+                        //     Text(
+                        //       'Paid Account',
+                        //       style: titleMedium(context),
+                        //     ),
+                        //     Checkbox(
+                        //       value: profileData.paid,
+                        //       onChanged: (bool? value) {},
+                        //     ),
+                        //   ],
+                        // ),
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: _showDeactivateAccountDialog,
