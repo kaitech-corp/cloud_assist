@@ -28,11 +28,11 @@ class SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Deactivate Account'),
+          title: const Text('Delete Account'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('Are you sure you want to deactivate this account?'),
+                Text('Are you sure you want to delete this account? Account and all linked data will be deleted.'),
               ],
             ),
           ),
@@ -44,7 +44,7 @@ class SettingsPageState extends State<SettingsPage> {
               },
             ),
             TextButton(
-              child: const Text('Deactivate'),
+              child: const Text('Delete'),
               onPressed: () {
                 Navigator.of(context).pop();
                 FirestoreDatabase().saveUserInteraction(
