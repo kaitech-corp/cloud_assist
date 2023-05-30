@@ -1179,4 +1179,5 @@ exports.createPopularServicesDocument = functions.firestore
     }
   });
 
+// Delete user document
 // npm run lint -- --fix
