@@ -1181,3 +1181,8 @@ exports.createPopularServicesDocument = functions.firestore
 
 // Delete user document
 // npm run lint -- --fix
+// <<<<<<< HEAD
+// 1a65d409c7a1438a34d21b60bf30a6fd5db59314
+// =======
+// 90fa3ae28fe6ddaee1af2c120f01e50201c1401b
+// >>>>>>> 9cd3d0d9ff05768afa249e036acc66e8abe93bff
