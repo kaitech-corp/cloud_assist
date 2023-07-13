@@ -294,6 +294,25 @@ exports.getLessonsData = functions.https.onCall(async (data, context) => {
     return "Error in facts data API call";
   }
 });
+/**
+ * Removes all text outside of a JSON format.
+ *
+ * @param {string} text - The input text that may contain JSON.
+ * @return {string} - The JSON substring extracted from the input text.
+ */
+function removeNonJSONText(text: string) {
+  // Find the first occurrence of a curly brace
+  const startIndex = text.indexOf("[");
+
+  // Find the last occurrence of a curly brace
+  const lastIndex = text.lastIndexOf("]");
+
+  // Extract the JSON substring
+  const json = text.substring(startIndex, lastIndex + 1);
+
+  // Return the JSON substring
+  return json;
+}
 
 //  Create new fun facts
 exports.createFacts = functions.firestore
@@ -306,34 +325,36 @@ exports.createFacts = functions.firestore
       "Tell me 5 interesting facts " +
       "about " +
       service +
-      " and here's an example output in a JSON array format " +
-      "with double quotes around fun_fact and the response " +
-      "[{fun_fact: Did you know that [fact 1]?}, " +
-      "{fun_fact: Companies like [fact 2].}, " +
-      "{fun_fact: An interesting fact about [fact 3]}] " +
-      "[{fun_fact: A comparable service using AWS [fact 4]?}, " +
-      "{fun_fact: A comparable service using Azure [fact 5].},";
-    const tokenSize = 2000;
-    const temp = 0.7;
-    const data = {
-      model: "text-davinci-003",
-      prompt: prompt,
-      max_tokens: tokenSize,
-      temperature: temp,
-    };
+      "return response in json list format using the following schema: [" +
+      "\"fun_fact\": \"Did you know that [fact 1]?\",\n" +
+      "\"fun_fact\": \"Companies like [fact 2].\",\n" +
+      "\"fun_fact\": \"An interesting fact about [fact 3]\",\n" +
+      "\"fun_fact\": \"A comparable service using [fact 4]?\",\n" +
+      "\"fun_fact\": \"A comparable service using [fact 5]}.\"]";
+
     try {
-      const response = await openai.createCompletion(data);
-      const result = response.data.choices[0].text.trim();
+      const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo-0613",
+        messages: [
+          {role: "system", content: "Cloud Computing Expert"},
+          {role: "user", content: prompt},
+        ],
+      });
+      const result = response.data.choices[0].message.content.trim();
       console.log("🚀 ~ result:", result);
       // Save plain response for troubleshooting
       savePlainResponse(service, result);
       try {
-        const jsonResponse = await convertToJSON(result);
+        const jsonResponse = await removeNonJSONText(result);
         const parsedResponse = JSON.parse(jsonResponse);
         const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
         saveChatGPTResponse(adjustedResponse, service);
       } catch (error) {
         console.log("🚀 ~ file: index.ts:337 ~ error:", error);
+        const jsonResponse = await convertToJSON(result);
+        const parsedResponse = JSON.parse(jsonResponse);
+        const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
+        saveChatGPTResponse(adjustedResponse, service);
       }
     } catch (error) {
       console.log("🚀 ~ file: index.js:340 ~ error:", error);
@@ -355,24 +376,22 @@ exports.createNewFactsManually = functions.https.onCall(
       "Tell me 5 interesting facts " +
       "about " +
       service +
-      " and here's an example output in a JSON array format " +
-      "with double quotes around fun_fact and the response " +
-      "[{fun_fact: Did you know that [fact 1]?}, " +
-      "{fun_fact: Companies like [fact 2].}, " +
-      "{fun_fact: An interesting fact about [fact 3]}] " +
-      "[{fun_fact: A comparable service using AWS [fact 4]?}, " +
-      "{fun_fact: A comparable service using Azure [fact 5].},";
-    const tokenSize = 2000;
-    const temp = 0.7;
-    const data = {
-      model: "text-davinci-003",
-      prompt: prompt,
-      max_tokens: tokenSize,
-      temperature: temp,
-    };
+      "return response in json list format using the following schema: [" +
+      "\"fun_fact\": \"Did you know that [fact 1]?\",\n" +
+      "\"fun_fact\": \"Companies like [fact 2].\",\n" +
+      "\"fun_fact\": \"An interesting fact about [fact 3]\",\n" +
+      "\"fun_fact\": \"A comparable service using [fact 4]?\",\n" +
+      "\"fun_fact\": \"A comparable service using [fact 5]}.\"]";
+
     try {
-      const response = await openai.createCompletion(data);
-      const result = response.data.choices[0].text.trim();
+      const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo-0613",
+        messages: [
+          {role: "system", content: "Cloud Computing Expert"},
+          {role: "user", content: prompt},
+        ],
+      });
+      const result = response.data.choices[0].message.content.trim();
       console.log("🚀 ~ result:", result);
       // Save plain response for troubleshooting
       savePlainResponse(service, result);
@@ -387,7 +406,8 @@ exports.createNewFactsManually = functions.https.onCall(
     } catch (error) {
       console.log("🚀 ~ file: index.js:340 ~ error:", error);
     }
-  });
+  }
+);
 
 //  Create new fun facts
 exports.createNewFacts = functions.https.onCall(async (snap, context) => {
@@ -449,7 +469,8 @@ async function savePlainResponse(service, result) {
  */
 async function convertToJSON(params) {
   const openai = await getOpenaiClient();
-  const prompt = "Convert this to json format" + params;
+  const prompt = "Remove everything but the json and format it correctly:" +
+  params;
   const tokenSize = 2000;
   const temp = 0.3;
   const data = {
@@ -786,7 +807,8 @@ exports.createUserDocument = functions.auth.user().onCreate(async (user) => {
       });
     await firestore()
       .collection("userInteraction")
-      .doc(uid).set({docID: uid});
+      .doc(uid)
+      .set({docID: uid});
     console.log(`User document created for user with UID: ${uid}`);
   } catch (error) {
     console.error(
@@ -1097,7 +1119,6 @@ function removeLeadingNumbers(arr: string[]): string[] {
   }
   return output;
 }
-
 
 exports.checkServices = functions.https.onCall(async (snap, context) => {
   if (!context.auth) {

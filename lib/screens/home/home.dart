@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> _widgetOptions = <Widget>[
     MultiBlocProvider(
-      providers: [
+      providers: <BlocProvider>[
         BlocProvider<GenericBloc<QuickFact, QuickFactsRepository>>(
           create: (BuildContext context) =>
               GenericBloc<QuickFact, QuickFactsRepository>(
@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
         create: (BuildContext context) =>
             GenericBloc<CloudData, CloudDataRepository>(
                 repository: CloudDataRepository()),
-        child: const SearchBar()),
+        child: const CustomSearchBar()),
     FutureBuilder<Object>(
         future: CloudFunctions().getDatabaseComparisonQuestions(),
         builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {

@@ -12,15 +12,15 @@ import '../../repositories/cloud_data_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
 
-class SearchBar extends StatefulWidget {
-  const SearchBar({super.key, this.recentResults});
+class CustomSearchBar extends StatefulWidget {
+  const CustomSearchBar({super.key, this.recentResults});
   final List<CloudData>? recentResults;
 
   @override
-  SearchBarState createState() => SearchBarState();
+  CustomSearchBarState createState() => CustomSearchBarState();
 }
 
-class SearchBarState extends State<SearchBar> {
+class CustomSearchBarState extends State<CustomSearchBar> {
   TextEditingController _controller = TextEditingController();
   List<CloudData> _results = <CloudData>[];
   bool _isSearching = false;

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../models/database_architecture_model/database_architecture_model.dart';
@@ -146,6 +147,35 @@ class CloudFunctions {
       }
       return <ServiceModel>[];
     }
+  }
+
+  Future<List<ServiceModel>> getAWSServiceList() async {
+    try {
+      // Call the Firebase Functions HTTP endpoint 'getGcpServiceList'
+      final http.Response callable = await http.get(Uri.parse(
+          'https://storage.googleapis.com/api-project-371618.appspot.com/aws_service_list.json'));
+
+      // Parse the JSON response from the callable as a List of Maps
+      final List<dynamic> response =
+          json.decode(callable.body) as List<dynamic>;
+      // Convert the List of Maps to a List of ServiceModel objects using ServiceModel.fromJson()
+      final List<ServiceModel> serviceModelList = response
+          .map((item) => ServiceModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+
+      // Return the List of ServiceModel objects
+      return serviceModelList;
+    } catch (e, stackTrace) {
+      // Print an error message and return an empty List if an error occurs
+      if (kDebugMode) {
+        print('Error in getAWSServiceList: $e, $stackTrace');
+      }
+      return <ServiceModel>[];
+    }
+  }
+
+  Future<List<ServiceModel>> getAzureServiceList() async {
+    return <ServiceModel>[];
   }
 
   Future<List<CloudData>> getCloudData() async {

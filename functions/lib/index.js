@@ -271,6 +271,22 @@ exports.getLessonsData = functions.https.onCall(async (data, context) => {
         return "Error in facts data API call";
     }
 });
+/**
+ * Removes all text outside of a JSON format.
+ *
+ * @param {string} text - The input text that may contain JSON.
+ * @return {string} - The JSON substring extracted from the input text.
+ */
+function removeNonJSONText(text) {
+    // Find the first occurrence of a curly brace
+    const startIndex = text.indexOf("[");
+    // Find the last occurrence of a curly brace
+    const lastIndex = text.lastIndexOf("]");
+    // Extract the JSON substring
+    const json = text.substring(startIndex, lastIndex + 1);
+    // Return the JSON substring
+    return json;
+}
 //  Create new fun facts
 exports.createFacts = functions.firestore
     .document("services/{doc}")
@@ -281,35 +297,36 @@ exports.createFacts = functions.firestore
     const prompt = "Tell me 5 interesting facts " +
         "about " +
         service +
-        " and here's an example output in a JSON array format " +
-        "with double quotes around fun_fact and the response " +
-        "[{fun_fact: Did you know that [fact 1]?}, " +
-        "{fun_fact: Companies like [fact 2].}, " +
-        "{fun_fact: An interesting fact about [fact 3]}] " +
-        "[{fun_fact: A comparable service using AWS [fact 4]?}, " +
-        "{fun_fact: A comparable service using Azure [fact 5].},";
-    const tokenSize = 2000;
-    const temp = 0.7;
-    const data = {
-        model: "text-davinci-003",
-        prompt: prompt,
-        max_tokens: tokenSize,
-        temperature: temp,
-    };
+        "return response in json list format using the following schema: [" +
+        "\"fun_fact\": \"Did you know that [fact 1]?\",\n" +
+        "\"fun_fact\": \"Companies like [fact 2].\",\n" +
+        "\"fun_fact\": \"An interesting fact about [fact 3]\",\n" +
+        "\"fun_fact\": \"A comparable service using [fact 4]?\",\n" +
+        "\"fun_fact\": \"A comparable service using [fact 5]}.\"]";
     try {
-        const response = await openai.createCompletion(data);
-        const result = response.data.choices[0].text.trim();
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo-0613",
+            messages: [
+                { role: "system", content: "Cloud Computing Expert" },
+                { role: "user", content: prompt },
+            ],
+        });
+        const result = response.data.choices[0].message.content.trim();
         console.log("🚀 ~ result:", result);
         // Save plain response for troubleshooting
         savePlainResponse(service, result);
         try {
-            const jsonResponse = await convertToJSON(result);
+            const jsonResponse = await removeNonJSONText(result);
             const parsedResponse = JSON.parse(jsonResponse);
             const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
             saveChatGPTResponse(adjustedResponse, service);
         }
         catch (error) {
             console.log("🚀 ~ file: index.ts:337 ~ error:", error);
+            const jsonResponse = await convertToJSON(result);
+            const parsedResponse = JSON.parse(jsonResponse);
+            const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
+            saveChatGPTResponse(adjustedResponse, service);
         }
     }
     catch (error) {
@@ -326,24 +343,21 @@ exports.createNewFactsManually = functions.https.onCall(async (snap, context) =>
     const prompt = "Tell me 5 interesting facts " +
         "about " +
         service +
-        " and here's an example output in a JSON array format " +
-        "with double quotes around fun_fact and the response " +
-        "[{fun_fact: Did you know that [fact 1]?}, " +
-        "{fun_fact: Companies like [fact 2].}, " +
-        "{fun_fact: An interesting fact about [fact 3]}] " +
-        "[{fun_fact: A comparable service using AWS [fact 4]?}, " +
-        "{fun_fact: A comparable service using Azure [fact 5].},";
-    const tokenSize = 2000;
-    const temp = 0.7;
-    const data = {
-        model: "text-davinci-003",
-        prompt: prompt,
-        max_tokens: tokenSize,
-        temperature: temp,
-    };
+        "return response in json list format using the following schema: [" +
+        "\"fun_fact\": \"Did you know that [fact 1]?\",\n" +
+        "\"fun_fact\": \"Companies like [fact 2].\",\n" +
+        "\"fun_fact\": \"An interesting fact about [fact 3]\",\n" +
+        "\"fun_fact\": \"A comparable service using [fact 4]?\",\n" +
+        "\"fun_fact\": \"A comparable service using [fact 5]}.\"]";
     try {
-        const response = await openai.createCompletion(data);
-        const result = response.data.choices[0].text.trim();
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo-0613",
+            messages: [
+                { role: "system", content: "Cloud Computing Expert" },
+                { role: "user", content: prompt },
+            ],
+        });
+        const result = response.data.choices[0].message.content.trim();
         console.log("🚀 ~ result:", result);
         // Save plain response for troubleshooting
         savePlainResponse(service, result);
@@ -417,7 +431,8 @@ async function savePlainResponse(service, result) {
  */
 async function convertToJSON(params) {
     const openai = await getOpenaiClient();
-    const prompt = "Convert this to json format" + params;
+    const prompt = "Remove everything but the json and format it correctly:" +
+        params;
     const tokenSize = 2000;
     const temp = 0.3;
     const data = {
@@ -693,7 +708,8 @@ exports.createUserDocument = functions.auth.user().onCreate(async (user) => {
         });
         await (0, firebase_admin_1.firestore)()
             .collection("userInteraction")
-            .doc(uid).set({ docID: uid });
+            .doc(uid)
+            .set({ docID: uid });
         console.log(`User document created for user with UID: ${uid}`);
     }
     catch (error) {
@@ -1036,5 +1052,11 @@ exports.createPopularServicesDocument = functions.firestore
         console.error(`Error creating popular service document: ${error}`);
     }
 });
+// Delete user document
 // npm run lint -- --fix
+// <<<<<<< HEAD
+// 1a65d409c7a1438a34d21b60bf30a6fd5db59314
+// =======
+// 90fa3ae28fe6ddaee1af2c120f01e50201c1401b
+// >>>>>>> 9cd3d0d9ff05768afa249e036acc66e8abe93bff
 //# sourceMappingURL=index.js.map

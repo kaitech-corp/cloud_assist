@@ -27,7 +27,7 @@ class AdminScreen extends StatelessWidget {
               Tab(text: 'Users'),
               Tab(text: 'Interactions'),
               Tab(text: 'Data'),
-              Tab(text: 'Manage GCP Service'),
+              Tab(text: 'Manage Services'),
               Tab(text: 'Modify Service')
             ],
             labelStyle: titleMedium(context),

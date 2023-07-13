@@ -38,10 +38,11 @@ List<String> bottomNavItems = <String>[
 List<String> tabs = <String>[
   'Home',
   'Popular Services',
+  'AI',
   'Data',
   'Networking',
   'Security',
-  'Command Lines'
+  'GCloud'
 ];
 List<String> serviceDetailItems = <String>[
   'Benefits',

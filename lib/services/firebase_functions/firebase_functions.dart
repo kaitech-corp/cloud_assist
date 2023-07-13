@@ -85,7 +85,7 @@ class FirestoreDatabase {
         print('From Local Storage: $dateData');
         print(timestamp == dateData);
       }
-      if (storedData == null || timestamp.toString() != dateData.toString()) {
+      if (storedData == null || timestamp != dateData.toString()) {
         await prefs.remove(api);
         await prefs.remove(lastDateUpdated);
         await prefs.setString(lastDateUpdated, timestamp);

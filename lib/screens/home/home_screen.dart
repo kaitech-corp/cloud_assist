@@ -11,6 +11,7 @@ import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/navigation/navigation.dart';
 import '../../services/ui/text_styles.dart';
 import '../../widgets/line_break.dart';
+import '../tabs/ai.dart';
 import '../tabs/command_lines.dart';
 import '../tabs/databases.dart';
 import '../tabs/networking.dart';
@@ -91,7 +92,7 @@ class TabControllerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 6,
+        length: 7,
         child: Column(
           children: <Widget>[
             TabBar(
@@ -172,6 +173,7 @@ class TabControllerWidget extends StatelessWidget {
                   PopularServices(
                     cloudData: cloudData,
                   ),
+                  AIServices(cloudData: cloudData),
                    DatabaseServices(cloudData: cloudData,),
                    NetworkingServices(cloudData: cloudData,),
                    SecurityServices(cloudData: cloudData,),

@@ -29,9 +29,9 @@ class SettingsPageState extends State<SettingsPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Delete Account'),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
                 Text('Are you sure you want to delete this account? Account and all linked data will be deleted.'),
               ],
             ),
@@ -121,8 +121,8 @@ class SettingsPageState extends State<SettingsPage> {
                     }
 
                     if (snapshot.hasError || !snapshot.hasData) {
-                      return Column(
-                        children: const <Widget>[
+                      return const Column(
+                        children: <Widget>[
                           Text('No data found'),
                         ],
                       );

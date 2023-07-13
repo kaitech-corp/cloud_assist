@@ -5,6 +5,7 @@ import '../../../models/user_model/user_model.dart';
 import '../../../services/firebase_functions/firebase_functions.dart';
 import '../../../services/service_config/service_config.dart';
 import '../../../services/ui/text_styles.dart';
+import '../logic/logic.dart';
 
 class UsersScreen extends StatelessWidget {
   const UsersScreen({super.key});
@@ -57,7 +58,7 @@ class StatisticsScreen extends StatelessWidget {
               _buildStatCard(
                 context,
                 'New Users (Last 7 Days)',
-                '3',
+                '${getUserCount(users,DateTime.now().subtract(const Duration(days: 30)))}',
               ),
             ],
           ),
@@ -70,7 +71,7 @@ class StatisticsScreen extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: _buildChart(),
+          child: _buildChart(users),
         ),
       ],
     );
@@ -98,12 +99,12 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChart() {
+  Widget _buildChart(List<UserModel> userlist) {
     return SfCartesianChart(
       primaryXAxis: DateTimeAxis(),
       series: <ChartSeries<dynamic,dynamic>>[
-        LineSeries<UserData, DateTime>(
-          dataSource: _createData(),
+        BarSeries<UserData, DateTime>(
+          dataSource: _createData(userlist),
           xValueMapper: (UserData user, _) => user.date,
           yValueMapper: (UserData user, _) => user.count,
         ),
@@ -111,23 +112,18 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  List<UserData> _createData() {
+  List<UserData> _createData(List<UserModel> userlist) {
     final DateTime now = DateTime.now();
     return <UserData>[
-      UserData(now.subtract(const Duration(days: 30)), 10),
-      UserData(now.subtract(const Duration(days: 25)), 8),
-      UserData(now.subtract(const Duration(days: 20)), 15),
-      UserData(now.subtract(const Duration(days: 15)), 12),
-      UserData(now.subtract(const Duration(days: 10)), 18),
-      UserData(now.subtract(const Duration(days: 5)), 20),
+      UserData(now.subtract(const Duration(days: 30)), getUserCount(userlist,now.subtract(const Duration(days: 30)))),
+      UserData(now.subtract(const Duration(days: 25)), getUserCount(userlist,now.subtract(const Duration(days: 25)))),
+      UserData(now.subtract(const Duration(days: 20)), getUserCount(userlist,now.subtract(const Duration(days: 20)))),
+      UserData(now.subtract(const Duration(days: 15)), getUserCount(userlist,now.subtract(const Duration(days: 15)))),
+      UserData(now.subtract(const Duration(days: 10)), getUserCount(userlist,now.subtract(const Duration(days: 10)))),
+      UserData(now.subtract(const Duration(days: 5)), getUserCount(userlist,now.subtract(const Duration(days: 5)))),
       UserData(now, 25),
     ];
   }
 }
 
-class UserData {
 
-  UserData(this.date, this.count);
-  final DateTime date;
-  final int count;
-}

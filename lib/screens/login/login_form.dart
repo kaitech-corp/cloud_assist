@@ -158,9 +158,9 @@ class _LoginFormState extends State<LoginForm> {
         ..removeCurrentSnackBar()
         ..showSnackBar(
           SnackBar(
-            content: Row(
+            content: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const <Widget>[
+              children: <Widget>[
                 Text('Logging in...'),
                 CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

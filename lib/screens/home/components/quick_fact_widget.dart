@@ -45,7 +45,7 @@ class QuickFactWidget extends StatelessWidget {
             final int idx = randomIndex(facts ?? <String>[]);
             List<String> quickFacts = <String>[];
 
-            if (((facts?.length) ?? 0) < 3) {
+            if ((facts?.length ?? 0) < 3) {
               quickFacts = defaultQuickFacts;
             } else {
               quickFacts = facts?.sublist(idx, idx + 3) ?? <String>[];

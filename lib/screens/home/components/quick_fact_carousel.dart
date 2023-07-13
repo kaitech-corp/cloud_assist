@@ -58,7 +58,7 @@ class _QuickFactCarouselState extends State<QuickFactCarousel> {
                               vertical: 4.0, horizontal: 4.0),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: (Theme.of(context).disabledColor)
+                              color: Theme.of(context).disabledColor
                                   // ignore: unrelated_type_equality_checks
                                   .withOpacity(_current == fact ? 0.9 : 0.4)),
                         ),
