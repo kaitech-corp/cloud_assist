@@ -17,6 +17,7 @@ class CloudDataRepository extends GenericBlocRepository<CloudData> {
             snapshot.docs.map((QueryDocumentSnapshot<Object> doc) {
           return CloudData.fromJson(doc.data() as Map<String, dynamic>);
         }).toList();
+        
         return serviceList;
       } catch (e) {
         if (kDebugMode) {

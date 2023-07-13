@@ -24,6 +24,8 @@ mixin _$CloudData {
   String get description => throw _privateConstructorUsedError;
   String get detail => throw _privateConstructorUsedError;
   String get link => throw _privateConstructorUsedError;
+  String get provider => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
   List<String> get benefits => throw _privateConstructorUsedError;
   List<String> get cons => throw _privateConstructorUsedError;
   List<String> get useCases => throw _privateConstructorUsedError;
@@ -45,6 +47,8 @@ abstract class $CloudDataCopyWith<$Res> {
       String description,
       String detail,
       String link,
+      String provider,
+      String type,
       List<String> benefits,
       List<String> cons,
       List<String> useCases,
@@ -68,6 +72,8 @@ class _$CloudDataCopyWithImpl<$Res, $Val extends CloudData>
     Object? description = null,
     Object? detail = null,
     Object? link = null,
+    Object? provider = null,
+    Object? type = null,
     Object? benefits = null,
     Object? cons = null,
     Object? useCases = null,
@@ -89,6 +95,14 @@ class _$CloudDataCopyWithImpl<$Res, $Val extends CloudData>
       link: null == link
           ? _value.link
           : link // ignore: cast_nullable_to_non_nullable
+              as String,
+      provider: null == provider
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
               as String,
       benefits: null == benefits
           ? _value.benefits
@@ -122,6 +136,8 @@ abstract class _$$_CloudDataCopyWith<$Res> implements $CloudDataCopyWith<$Res> {
       String description,
       String detail,
       String link,
+      String provider,
+      String type,
       List<String> benefits,
       List<String> cons,
       List<String> useCases,
@@ -143,6 +159,8 @@ class __$$_CloudDataCopyWithImpl<$Res>
     Object? description = null,
     Object? detail = null,
     Object? link = null,
+    Object? provider = null,
+    Object? type = null,
     Object? benefits = null,
     Object? cons = null,
     Object? useCases = null,
@@ -164,6 +182,14 @@ class __$$_CloudDataCopyWithImpl<$Res>
       link: null == link
           ? _value.link
           : link // ignore: cast_nullable_to_non_nullable
+              as String,
+      provider: null == provider
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
               as String,
       benefits: null == benefits
           ? _value._benefits
@@ -193,6 +219,8 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
       required this.description,
       required this.detail,
       required this.link,
+      required this.provider,
+      required this.type,
       required final List<String> benefits,
       required final List<String> cons,
       required final List<String> useCases,
@@ -212,6 +240,10 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
   final String detail;
   @override
   final String link;
+  @override
+  final String provider;
+  @override
+  final String type;
   final List<String> _benefits;
   @override
   List<String> get benefits {
@@ -241,7 +273,7 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CloudData(service: $service, description: $description, detail: $detail, link: $link, benefits: $benefits, cons: $cons, useCases: $useCases, example: $example)';
+    return 'CloudData(service: $service, description: $description, detail: $detail, link: $link, provider: $provider, type: $type, benefits: $benefits, cons: $cons, useCases: $useCases, example: $example)';
   }
 
   @override
@@ -253,6 +285,8 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('detail', detail))
       ..add(DiagnosticsProperty('link', link))
+      ..add(DiagnosticsProperty('provider', provider))
+      ..add(DiagnosticsProperty('type', type))
       ..add(DiagnosticsProperty('benefits', benefits))
       ..add(DiagnosticsProperty('cons', cons))
       ..add(DiagnosticsProperty('useCases', useCases))
@@ -269,6 +303,9 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
                 other.description == description) &&
             (identical(other.detail, detail) || other.detail == detail) &&
             (identical(other.link, link) || other.link == link) &&
+            (identical(other.provider, provider) ||
+                other.provider == provider) &&
+            (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(other._benefits, _benefits) &&
             const DeepCollectionEquality().equals(other._cons, _cons) &&
             const DeepCollectionEquality().equals(other._useCases, _useCases) &&
@@ -283,6 +320,8 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
       description,
       detail,
       link,
+      provider,
+      type,
       const DeepCollectionEquality().hash(_benefits),
       const DeepCollectionEquality().hash(_cons),
       const DeepCollectionEquality().hash(_useCases),
@@ -308,6 +347,8 @@ abstract class _CloudData implements CloudData {
       required final String description,
       required final String detail,
       required final String link,
+      required final String provider,
+      required final String type,
       required final List<String> benefits,
       required final List<String> cons,
       required final List<String> useCases,
@@ -324,6 +365,10 @@ abstract class _CloudData implements CloudData {
   String get detail;
   @override
   String get link;
+  @override
+  String get provider;
+  @override
+  String get type;
   @override
   List<String> get benefits;
   @override

@@ -1,17 +1,40 @@
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../models/cloud_data_model/cloud_data_model.dart';
-import '../../../services/firebase_functions/cloud_functions.dart';
-import '../../../services/firebase_functions/functions.dart';
-import '../../../services/service_config/service_config.dart';
-import '../../../services/ui/text_styles.dart';
-import 'featured_service.dart';
+import '../../../../bloc/generics/generic_bloc.dart';
+import '../../../../bloc/generics/generic_state.dart';
+import '../../../../bloc/generics/generics_event.dart';
+import '../../../../models/cloud_data_model/cloud_data_model.dart';
+import '../../../../repositories/cloud_data_repository.dart';
+import '../../../../services/firebase_functions/functions.dart';
+import '../../../../services/service_config/service_config.dart';
+import '../../../../services/ui/text_styles.dart';
+import '../../../../widgets/line_break.dart';
+import 'featured_service_widget.dart';
 
-class FeaturedServiceWidget extends StatelessWidget {
-  const FeaturedServiceWidget({
-    super.key,
-  });
+class FeaturedService extends StatefulWidget {
+  const FeaturedService({super.key});
+
+  @override
+  State<FeaturedService> createState() => _FeaturedServiceState();
+}
+
+class _FeaturedServiceState extends State<FeaturedService> {
+  late final GenericBloc<CloudData, CloudDataRepository> bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context)
+      ..add(LoadingGenericData());
+  }
+
+  @override
+  void dispose() {
+    // bloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,35 +45,30 @@ class FeaturedServiceWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Featured Services', style: headlineSmall(context)),
+              Text('FEATURED SERVICES', style: titleMedium(context)),
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Container(height: 2, color: Colors.grey),
-        ),
-        FutureBuilder<List<CloudData>?>(
-            future: CloudFunctions().getCombinedCloudData(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<CloudData>?> snapshot) {
-              if (snapshot.hasData) {
-                return buildFeaturedServices(
-                    context,
-                    snapshot.data ??
-                        <CloudData>[defaultCloudData, defaultCloudData]);
-              } else {
-                return Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List<Flexible>.generate(3, (int index) {
-                      return Flexible(
+        Expanded(
+          child: BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
+              GenericState>(
+            bloc: bloc,
+            builder: (BuildContext context, GenericState state) {
+              if (state is LoadingState) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    for (int i = 0; i < 3; i++)
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 24.0, top: 16.0, right: 24),
+                                left: 24.0,
+                                top: 16.0,
+                                right: 24,
+                              ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -100,35 +118,35 @@ class FeaturedServiceWidget extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Container(height: 2, color: Colors.grey[400]),
+                            greyLineBreak,
                           ],
                         ),
-                      );
-                    }),
+                      ),
+                  ],
+                );
+              } else if (state is HasDataState) {
+                final List<CloudData> data = state.data as List<CloudData>;
+                final List<CloudData> uniqueServices = getUniqueValues(data);
+                return SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      for (final CloudData service in uniqueServices)
+                        Column(
+                          children: <Widget>[
+                            FeaturedServiceWidget(cloudData: service),
+                            greyLineBreak,
+                          ],
+                        ),
+                    ],
                   ),
                 );
+              } else {
+                return const SizedBox.shrink();
               }
-            }),
+            },
+          ),
+        ),
       ],
     );
-  }
-
-  Widget buildFeaturedServices(BuildContext context, List<CloudData> data) {
-    final List<CloudData> uniqueServices =
-        getUniqueValues(data) as List<CloudData>;
-    return Column(
-        children: List<Widget>.generate(
-      uniqueServices.length,
-      (int index) {
-        return Column(
-          children: <Widget>[
-            FeaturedService(
-              cloudData: uniqueServices[index],
-            ),
-            Container(height: 2, color: Colors.grey[400]),
-          ],
-        );
-      },
-    ));
   }
 }

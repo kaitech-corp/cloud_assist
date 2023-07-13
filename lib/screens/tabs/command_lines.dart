@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
+import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/ui/text_styles.dart';
 import 'components/fade_shimmer.dart';
 
@@ -14,6 +16,24 @@ class GCloudScreen extends StatefulWidget {
 }
 
 class _GCloudScreenState extends State<GCloudScreen> {
+  @override
+  void initState() {
+    FirestoreDatabase().saveUserInteraction(
+        featureId: FeatureID.commandlines.toString(),
+        startTime: true,
+        endTime: false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    FirestoreDatabase().saveUserInteraction(
+        featureId: FeatureID.commandlines.toString(),
+        startTime: false,
+        endTime: true);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<GCloudData>?>(
@@ -31,6 +51,11 @@ class _GCloudScreenState extends State<GCloudScreen> {
                     child: GestureDetector(
                       onTap: () {
                         context.goNamed('gcloud', extra: gCloudData);
+                        FirestoreDatabase().saveUserInteraction(
+                            serviceId: gCloudData.topic,
+                            featureId: FeatureID.commandlines.toString(),
+                            startTime: true,
+                            endTime: false);
                       },
                       child: Padding(
                           padding: const EdgeInsets.all(8.0),

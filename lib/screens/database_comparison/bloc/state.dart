@@ -10,7 +10,7 @@ class QuestionsState {
   });
   factory QuestionsState.failure() {
     return QuestionsState(
-        isSubmitting: false, isSuccess: false, isFailure: true, answerSelected: []);
+        isSubmitting: false, isSuccess: false, isFailure: true, answerSelected: <AnswersSelected>[]);
   }
 
   factory QuestionsState.success({required List<AnswersSelected> answerSelected}) {
@@ -20,7 +20,7 @@ class QuestionsState {
 
   factory QuestionsState.submitting() {
     return QuestionsState(
-        isSubmitting: true, isSuccess: false, isFailure: false, answerSelected: []);
+        isSubmitting: true, isSuccess: false, isFailure: false, answerSelected: <AnswersSelected>[]);
   }
 
   final bool isSubmitting;

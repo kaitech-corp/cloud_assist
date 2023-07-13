@@ -9,16 +9,18 @@ import '../../bloc/generics/generic_state.dart';
 import '../../bloc/generics/generics_event.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../repositories/cloud_data_repository.dart';
+import '../../services/constants.dart';
+import '../../services/firebase_functions/firebase_functions.dart';
 
-class SearchBar extends StatefulWidget {
-  const SearchBar({super.key, this.recentResults});
+class CustomSearchBar extends StatefulWidget {
+  const CustomSearchBar({super.key, this.recentResults});
   final List<CloudData>? recentResults;
 
   @override
-  SearchBarState createState() => SearchBarState();
+  CustomSearchBarState createState() => CustomSearchBarState();
 }
 
-class SearchBarState extends State<SearchBar> {
+class CustomSearchBarState extends State<CustomSearchBar> {
   TextEditingController _controller = TextEditingController();
   List<CloudData> _results = <CloudData>[];
   bool _isSearching = false;
@@ -30,6 +32,10 @@ class SearchBarState extends State<SearchBar> {
         BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context);
     bloc.add(LoadingGenericData());
     _controller = TextEditingController();
+    FirestoreDatabase().saveUserInteraction(
+        featureId: FeatureID.search.toString(),
+        startTime: true,
+        endTime: false);
     super.initState();
   }
 
@@ -37,6 +43,10 @@ class SearchBarState extends State<SearchBar> {
   void dispose() {
     bloc.close();
     _controller.dispose();
+    FirestoreDatabase().saveUserInteraction(
+        featureId: FeatureID.search.toString(),
+        startTime: false,
+        endTime: true);
     super.dispose();
   }
 
@@ -105,7 +115,7 @@ class SearchBarState extends State<SearchBar> {
                                 child: TextField(
                                   controller: _controller,
                                   onChanged: (String value) async {
-                                    if (value.length >= 3) {
+                                    if (value.length >= 2) {
                                       setState(() {
                                         _isSearching = true;
                                       });
@@ -143,6 +153,12 @@ class SearchBarState extends State<SearchBar> {
                                           .first;
                                       context.goNamed('serviceDetails',
                                           extra: _result);
+                                      FirestoreDatabase().saveUserInteraction(
+                                          serviceId: _result.service,
+                                          featureId:
+                                              FeatureID.search.toString(),
+                                          startTime: true,
+                                          endTime: false);
                                     } catch (e) {
                                       if (kDebugMode) {
                                         print(e);
@@ -193,6 +209,11 @@ class SearchBarState extends State<SearchBar> {
                                   });
                                   context.goNamed('serviceDetails',
                                       extra: result);
+                                  FirestoreDatabase().saveUserInteraction(
+                                      serviceId: result.service,
+                                      featureId: FeatureID.search.toString(),
+                                      startTime: true,
+                                      endTime: false);
                                 },
                               );
                             },

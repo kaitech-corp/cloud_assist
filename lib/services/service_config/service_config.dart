@@ -38,5 +38,6 @@ class SizeConfig {
     safeBlockHorizontal = (screenWidth - _safeAreaHorizontal)/100;
     safeBlockVertical = (screenHeight - _safeAreaVertical)/100;
     defaultPadding = blockSizeHorizontal*4;
+    tablet = _mediaQueryData.size.width >= 600;
   }
 }

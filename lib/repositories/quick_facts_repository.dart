@@ -3,15 +3,13 @@ import 'package:flutter/foundation.dart';
 
 import '../bloc/generics/generic_bloc.dart';
 import '../models/quick_fact_model/quick_fact_model.dart';
-import '../screens/home/home.dart';
 
 class QuickFactsRepository extends GenericBlocRepository<QuickFact> {
   @override
   Stream<List<QuickFact>> data() {
     final Query<Object> quickFactsCollection = FirebaseFirestore.instance
         .collection('quickFacts')
-        .orderBy('timestamp')
-        .limit(fetchCount.value);
+        .orderBy('timestamp');
 
     // Get all Quick Facts
     List<QuickFact> factListFromSnapshot(QuerySnapshot<Object> snapshot) {

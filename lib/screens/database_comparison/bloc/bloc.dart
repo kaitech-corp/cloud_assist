@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../services/firebase_functions/firebase_functions.dart';
 import 'event.dart';
@@ -15,8 +14,12 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
         try {
           FirestoreDatabase().saveAnswers(event.answerSelected);
           emit(QuestionsState.success(answerSelected: event.answerSelected));
+          
         } catch (e) {
           emit(QuestionsState.failure());
+          if (kDebugMode) {
+            print('Error in AnswersSubmitted: $e');
+          }
         }
       } else {
         emit(QuestionsState.failure());

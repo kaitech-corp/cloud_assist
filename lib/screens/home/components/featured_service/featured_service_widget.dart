@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../models/cloud_data_model/cloud_data_model.dart';
-import '../../../services/ui/text_styles.dart';
+import '../../../../models/cloud_data_model/cloud_data_model.dart';
+import '../../../../services/service_config/service_config.dart';
+import '../../../../services/ui/text_styles.dart';
 
-class FeaturedService extends StatelessWidget {
-  const FeaturedService({
+class FeaturedServiceWidget extends StatelessWidget {
+  const FeaturedServiceWidget({
     required this.cloudData,
     super.key,
   });
@@ -26,20 +27,25 @@ class FeaturedService extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  cloudData.service,
-                  style: titleLarge(context)
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                  maxLines: 2,
+                Expanded(
+                  child: Text(
+                    cloudData.service,
+                    style: titleLarge(context)
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                  ),
                 ),
-                const Icon(Icons.data_object)
+                const Icon(
+                  Icons.data_object,
+                  color: Colors.blueAccent,
+                )
               ],
             ),
             const SizedBox(
               height: 15,
             ),
             Text(
-              cloudData.description,
+              (SizeConfig.tablet) ? cloudData.detail : cloudData.description,
               style: titleMedium(context),
             ),
           ],

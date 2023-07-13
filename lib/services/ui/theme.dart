@@ -5,17 +5,24 @@ import 'package:google_fonts/google_fonts.dart';
 ThemeData themeDataBuilder() {
   return ThemeData(
     primaryColor: const Color(0xFFFAFAFA),
-    // canvasColor: const Color(0xFFFAFAFA),
-    textTheme: GoogleFonts.latoTextTheme(const TextTheme(
+    appBarTheme: const AppBarTheme(backgroundColor: Color(0xFFFAFAFA),iconTheme: IconThemeData(color: Color(0xFF212121)),),
+    disabledColor: Colors.black,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),side: const BorderSide(color: Color(-3092272)))))),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),side: const BorderSide(color: Color(-3092272)))))),
+    textTheme: GoogleFonts.ptSerifTextTheme(const TextTheme(
       displayLarge: TextStyle(color: Colors.black),
-      displayMedium:
-          TextStyle(color: Colors.black),
+      displayMedium: TextStyle(color: Colors.black),
       displaySmall: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
           fontStyle: FontStyle.italic),
-      headlineLarge:
-          TextStyle(color: Colors.black),
+      headlineLarge: TextStyle(color: Colors.black),
       headlineMedium: TextStyle(
         fontWeight: FontWeight.bold,
         color: Colors.black,
@@ -37,18 +44,27 @@ ThemeData themeDataBuilderDark() {
   return ThemeData(
     primaryColor: const Color(0xFF121212),
     canvasColor: const Color(0xFF212121),
+    scaffoldBackgroundColor: Colors.black,
+    appBarTheme: const AppBarTheme(backgroundColor: Colors.black,iconTheme: IconThemeData(color: Colors.grey)),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),)))),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),)))),
     disabledColor: Colors.grey,
+    iconButtonTheme:  IconButtonThemeData(style:ButtonStyle(iconColor: MaterialStateProperty.all(Colors.black))),
     iconTheme: const IconThemeData(color: Colors.grey),
-    textTheme: GoogleFonts.latoTextTheme(const TextTheme(
+    textTheme: GoogleFonts.ptSerifTextTheme(const TextTheme(
       displayLarge: TextStyle(color: Colors.grey),
-      displayMedium:
-          TextStyle(color: Colors.grey),
+      displayMedium: TextStyle(color: Colors.grey),
       displaySmall: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.grey,
           fontStyle: FontStyle.italic),
-      headlineLarge:
-          TextStyle(color: Colors.grey),
+      headlineLarge: TextStyle(color: Colors.grey),
       headlineMedium: TextStyle(
         fontWeight: FontWeight.bold,
         color: Colors.grey,
