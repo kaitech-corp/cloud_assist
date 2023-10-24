@@ -125,5 +125,3 @@ class StatisticsScreen extends StatelessWidget {
     ];
   }
 }
-
-

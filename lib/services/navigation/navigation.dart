@@ -13,6 +13,7 @@ import '../../screens/admin/admin_screen.dart';
 import '../../screens/database_solution/bloc/bloc.dart';
 import '../../screens/database_solution/bloc/repository.dart';
 import '../../screens/database_solution/database_solution_screen.dart';
+import '../../screens/home/components/quick_links/quick_link_list.dart';
 import '../../screens/reports/detail_screen.dart';
 import '../../screens/reports/reports.dart';
 import '../../screens/root/root_page.dart';
@@ -65,12 +66,11 @@ final GoRouter router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             final String docID = state.extra! as String;
             return BlocProvider<ComparisonModelBloc>(
-                create: (BuildContext context) => ComparisonModelBloc(
-                    comparisonModelRepository: ComparisonModelRepository()
-                      ..refresh(docID)),
-                child: const DatabaseSolutionScreen(
-                ),
-              );
+              create: (BuildContext context) => ComparisonModelBloc(
+                  comparisonModelRepository: ComparisonModelRepository()
+                    ..refresh(docID)),
+              child: const DatabaseSolutionScreen(),
+            );
           },
         ),
         GoRoute(
@@ -108,6 +108,13 @@ final GoRouter router = GoRouter(
           path: 'admin',
           builder: (BuildContext context, GoRouterState state) {
             return const AdminScreen();
+          },
+        ),
+        GoRoute(
+          name: 'linkList',
+          path: 'linkList',
+          builder: (BuildContext context, GoRouterState state) {
+            return const QuickLinkList();
           },
         ),
       ],

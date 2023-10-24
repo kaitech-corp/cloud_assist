@@ -34,7 +34,7 @@ List<T> getUniqueValues<T>(List<T> uniqueList) {
     return shuffledList;
   }
 
-  return shuffledList.sublist(0, 3);
+  return shuffledList.sublist(0, 2);
 }
 
 String hashToString(dynamic hash) {

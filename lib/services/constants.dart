@@ -9,6 +9,8 @@ enum FeatureID {
   settings,
   popularServices,
   data,
+  aws,
+  gcp,
   networking,
   security,
   commandlines,
@@ -38,10 +40,8 @@ List<String> bottomNavItems = <String>[
 List<String> tabs = <String>[
   'Home',
   'Popular Services',
-  'AI',
-  'Data',
-  'Networking',
-  'Security',
+  'AWS',
+  'GCP',
   'GCloud'
 ];
 List<String> serviceDetailItems = <String>[
@@ -53,6 +53,17 @@ List<String> serviceDetailItems = <String>[
 List<String> quickLinks = <String>[
   'Database Solutions',
   'Generated Content',
+  'AI',
+  'Analytics',
+  'CICD',
+  'Compute',
+  'Database',
+  'Networking',
+  'Operations',
+  'Security',
+  'Serverless',
+  'Storage',
+  'GCloud'
   // 'Resources',
 ];
 List<Icon> bottomNavIcons = const <Icon>[

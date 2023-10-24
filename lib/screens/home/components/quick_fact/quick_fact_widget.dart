@@ -1,10 +1,10 @@
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 
-import '../../../services/constants.dart';
-import '../../../services/firebase_functions/cloud_functions.dart';
-import '../../../services/firebase_functions/functions.dart';
-import '../../../services/service_config/service_config.dart';
+import '../../../../services/constants.dart';
+import '../../../../services/firebase_functions/cloud_functions.dart';
+import '../../../../services/firebase_functions/functions.dart';
+import '../../../../services/service_config/service_config.dart';
 import 'quick_fact_carousel.dart';
 
 class QuickFactWidget extends StatelessWidget {

@@ -58,7 +58,7 @@ class _FeaturedServiceState extends State<FeaturedService> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

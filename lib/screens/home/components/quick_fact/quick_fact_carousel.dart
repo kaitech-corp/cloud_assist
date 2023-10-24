@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../services/ui/text_styles.dart';
+import '../../../../services/ui/text_styles.dart';
 
 class QuickFactCarousel extends StatefulWidget {
   const QuickFactCarousel({

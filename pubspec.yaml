@@ -14,7 +14,7 @@ dependencies:
 
   #Auth
   google_sign_in: ^6.1.0
-  sign_in_with_apple: ^4.3.0
+  sign_in_with_apple: ^5.0.0
 
   #Data
   freezed: ^2.3.2
@@ -23,32 +23,30 @@ dependencies:
   json_annotation: ^4.7.0
 
   #Firebase
-  cloud_firestore: ^4.8.2
-  cloud_functions: ^4.3.3
-  firebase_analytics: ^10.4.3
-  firebase_auth: ^4.6.3
-  firebase_core: ^2.14.0
-  firebase_crashlytics: ^3.3.3
-  firebase_database: ^10.2.3
-  firebase_storage: ^11.2.4
+  cloud_firestore: ^4.9.3
+  cloud_functions: ^4.4.2
+  firebase_analytics: ^10.5.1
+  firebase_auth: ^4.10.1
+  firebase_core: ^2.17.0
+  firebase_crashlytics: ^3.3.7
+  # firebase_database: ^10.2.3
+  firebase_storage: ^11.2.8
 
   #Networking
-  http: ^0.13.5
+  http: ^1.1.0
   url_launcher: ^6.1.7
 
   # State Management
   bloc: ^8.1.0
   equatable: ^2.0.3
   flutter_bloc: ^8.0.1
-  flutter_hooks: ^0.18.6
   observable: ^0.24.0
 
   #UI
   curved_navigation_bar: ^1.0.3
-  google_fonts: ^4.0.1
-  responsive_framework: ^0.2.0
+  google_fonts: ^6.1.0
+  responsive_framework: ^1.1.1
   flutter_neumorphic: ^3.2.0
-  flex_color_scheme: ^6.1.1
   expandable: ^5.0.1
   nil: ^1.1.1
   showcaseview: ^2.0.0+1
@@ -56,22 +54,23 @@ dependencies:
   fade_shimmer: ^2.2.0
   readmore: ^2.2.0
   carousel_slider: ^4.2.1
-  syncfusion_flutter_charts: ^21.1.39
+  syncfusion_flutter_charts: ^23.1.40
 
   #Misc
   cupertino_icons: ^1.0.2
-  intl: ^0.17.0
-  go_router: ^6.0.2
+  intl: ^0.18.1
+  go_router: ^11.1.4
   shared_preferences: ^2.0.18
   flutter_tts: ^3.6.3
   mockito: ^5.4.0
+  flutter_hooks: ^0.20.3
 
   
   
 dev_dependencies:
 #  flutter_test:
 #    sdk: flutter
-  go_router_builder: ^1.0.15
+  go_router_builder: ^2.3.3
   build_verify: ^3.1.0
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3

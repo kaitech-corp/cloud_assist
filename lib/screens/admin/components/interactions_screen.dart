@@ -21,7 +21,7 @@ class UserInteractions extends StatelessWidget {
                         .getInteractionCount(idList?[index] ?? ''),
                     builder:
                         (BuildContext context, AsyncSnapshot<int?> snapshot) {
-                      return Text('${snapshot.data ?? 0} users');
+                      return Text('${snapshot.data ?? 0} Interactions');
                     },
                   ),
                 ));
