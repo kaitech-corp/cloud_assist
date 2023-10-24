@@ -421,17 +421,15 @@ exports.createNewFacts = functions.https.onCall(async (snap, context) => {
   const service = snap.service;
   const prompt = snap.prompt;
 
-  const tokenSize = 200;
-  const temp = 0.7;
-  const data = {
-    model: "text-davinci-003",
-    prompt: prompt,
-    max_tokens: tokenSize,
-    temperature: temp,
-  };
   try {
-    const response = await openai.createCompletion(data);
-    const result = response.data.choices[0].text.trim();
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {role: "system", content: "Cloud Computing Expert"},
+        {role: "user", content: prompt},
+      ],
+    });
+    const result = response.data.choices[0].message.content.trim();
     console.log("🚀 ~ result:", result);
     // Save plain response for troubleshooting
     savePlainResponse(service, result);
@@ -471,18 +469,16 @@ async function convertToJSON(params) {
   const openai = await getOpenaiClient();
   const prompt = "Remove everything but the json and format it correctly:" +
   params;
-  const tokenSize = 2000;
-  const temp = 0.3;
-  const data = {
-    model: "text-davinci-003",
-    prompt: prompt,
-    max_tokens: tokenSize,
-    temperature: temp,
-  };
 
   try {
-    const response = await openai.createCompletion(data);
-    const result = response.data.choices[0].text.trim();
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {role: "system", content: "JSON Expert"},
+        {role: "user", content: prompt},
+      ],
+    });
+    const result = response.data.choices[0].message.content.trim();
     console.log("🚀 ~ convertToJSON: completed");
     return result;
   } catch (error) {
@@ -757,10 +753,10 @@ exports.databaseSolutionGenerator = functions.firestore
       const answerList: string[] = answers.map((map: MapType) => map.answer);
       const answerString: string = answerList.join(" ");
       const content =
-        "Give suggestions and detailed reasons on what GCP database service " +
+        "Give suggestions and detailed reasons on what database service " +
         `is best suited given the following parameters: ${answerString}.` +
         "Include Description, Suggestions (list suggestions only), Reasons, " +
-        "Comparable services in AWS and Azure";
+        "Comparable services in GCP, AWS and Azure";
       const model = "gpt-3.5-turbo";
       const role = "user";
 
@@ -1200,10 +1196,25 @@ exports.createPopularServicesDocument = functions.firestore
     }
   });
 
+// Update interaction collection with last updated timestamp
+exports.lastInteractionTimestamp = functions.firestore
+  .document("userInteraction/{uid}/interactions/{doc}")
+  .onCreate(async (snapshot, context) => {
+    const uid = context.params.uid;
+    try {
+      const popularServicesRef = firestore()
+        .collection("userInteraction")
+        .doc(uid);
+
+      await popularServicesRef.update({
+        lastUpdated: FieldValue.serverTimestamp(),
+      });
+
+      console.log("Updated user interaction document");
+    } catch (error) {
+      console.error(`Error updating user interaction document: ${error}`);
+    }
+  });
+
 // Delete user document
 // npm run lint -- --fix
-// <<<<<<< HEAD
-// 1a65d409c7a1438a34d21b60bf30a6fd5db59314
-// =======
-// 90fa3ae28fe6ddaee1af2c120f01e50201c1401b
-// >>>>>>> 9cd3d0d9ff05768afa249e036acc66e8abe93bff
