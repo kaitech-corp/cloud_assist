@@ -10,7 +10,8 @@ import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
-import '../../services/functions.dart';
+
+import '../../services/firebase_functions/functions.dart';
 import '../../services/navigation/navigation.dart';
 import '../../services/ui/text_styles.dart';
 import 'components/network_image_fallback.dart';

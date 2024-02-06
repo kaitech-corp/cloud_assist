@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../models/cloud_data_model/cloud_data_model.dart';
 import '../../../../services/constants.dart';
 import '../../../../services/firebase_functions/firebase_functions.dart';
-import '../../../../services/functions.dart';
+import '../../../../services/firebase_functions/functions.dart';
 import '../../../../services/service_config/service_config.dart';
 import '../../../../services/ui/text_styles.dart';
 

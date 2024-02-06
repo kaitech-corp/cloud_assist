@@ -8,7 +8,8 @@ import '../../models/comparison_model/comparison_model.dart';
 import '../../repositories/solutions_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
-import '../../services/functions.dart';
+
+import '../../services/firebase_functions/functions.dart';
 import '../../services/navigation/navigation.dart';
 import '../../services/ui/text_styles.dart';
 
