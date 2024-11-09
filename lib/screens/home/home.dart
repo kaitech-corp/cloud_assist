@@ -15,6 +15,7 @@ import '../database_comparison/database_comparison.dart';
 import '../search/search_bar.dart';
 import '../settings/settings.dart';
 import 'home_screen.dart';
+import 'home_v2.dart';
 
 /// Home Screen
 class Home extends StatefulWidget {
@@ -42,7 +43,7 @@ class _HomeState extends State<Home> {
                   repository: CloudDataRepository()),
         ),
       ],
-      child: const HomeScreen(),
+      child: const HomeScreenV2(),
     ),
     BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
         create: (BuildContext context) =>
