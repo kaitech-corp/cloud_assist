@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "module": "Node16",
-    "moduleResolution": "node16",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": false,
-    "target": "es2017"
+    "target": "ES2022"
   },
   "compileOnSave": true,
   "include": [

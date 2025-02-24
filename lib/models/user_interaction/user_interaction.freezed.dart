@@ -12,9 +12,9 @@ part of 'user_interaction.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-UserInteractionModel _$UserInteractionModelFromJson(Map<Object?, dynamic> json) {
+UserInteractionModel _$UserInteractionModelFromJson(Map<String, dynamic> json) {
   return _UserInteractionModel.fromJson(json);
 }
 
@@ -27,8 +27,12 @@ mixin _$UserInteractionModel {
   @TimestampConverter()
   DateTime? get endTime => throw _privateConstructorUsedError;
 
+  /// Serializes this UserInteractionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserInteractionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserInteractionModelCopyWith<UserInteractionModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,6 +61,8 @@ class _$UserInteractionModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserInteractionModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -87,11 +93,11 @@ class _$UserInteractionModelCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UserInteractionModelCopyWith<$Res>
+abstract class _$$UserInteractionModelImplCopyWith<$Res>
     implements $UserInteractionModelCopyWith<$Res> {
-  factory _$$_UserInteractionModelCopyWith(_$_UserInteractionModel value,
-          $Res Function(_$_UserInteractionModel) then) =
-      __$$_UserInteractionModelCopyWithImpl<$Res>;
+  factory _$$UserInteractionModelImplCopyWith(_$UserInteractionModelImpl value,
+          $Res Function(_$UserInteractionModelImpl) then) =
+      __$$UserInteractionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -102,13 +108,15 @@ abstract class _$$_UserInteractionModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserInteractionModelCopyWithImpl<$Res>
-    extends _$UserInteractionModelCopyWithImpl<$Res, _$_UserInteractionModel>
-    implements _$$_UserInteractionModelCopyWith<$Res> {
-  __$$_UserInteractionModelCopyWithImpl(_$_UserInteractionModel _value,
-      $Res Function(_$_UserInteractionModel) _then)
+class __$$UserInteractionModelImplCopyWithImpl<$Res>
+    extends _$UserInteractionModelCopyWithImpl<$Res, _$UserInteractionModelImpl>
+    implements _$$UserInteractionModelImplCopyWith<$Res> {
+  __$$UserInteractionModelImplCopyWithImpl(_$UserInteractionModelImpl _value,
+      $Res Function(_$UserInteractionModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserInteractionModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -117,7 +125,7 @@ class __$$_UserInteractionModelCopyWithImpl<$Res>
     Object? startTime = freezed,
     Object? endTime = freezed,
   }) {
-    return _then(_$_UserInteractionModel(
+    return _then(_$UserInteractionModelImpl(
       serviceId: freezed == serviceId
           ? _value.serviceId
           : serviceId // ignore: cast_nullable_to_non_nullable
@@ -140,15 +148,15 @@ class __$$_UserInteractionModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserInteractionModel implements _UserInteractionModel {
-  const _$_UserInteractionModel(
+class _$UserInteractionModelImpl implements _UserInteractionModel {
+  const _$UserInteractionModelImpl(
       {this.serviceId,
       this.featureId,
       @TimestampConverter() this.startTime,
       @TimestampConverter() this.endTime});
 
-  factory _$_UserInteractionModel.fromJson(Map<Object?, dynamic> json) =>
-      _$$_UserInteractionModelFromJson(json);
+  factory _$UserInteractionModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserInteractionModelImplFromJson(json);
 
   @override
   final String? serviceId;
@@ -167,10 +175,10 @@ class _$_UserInteractionModel implements _UserInteractionModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserInteractionModel &&
+            other is _$UserInteractionModelImpl &&
             (identical(other.serviceId, serviceId) ||
                 other.serviceId == serviceId) &&
             (identical(other.featureId, featureId) ||
@@ -180,21 +188,24 @@ class _$_UserInteractionModel implements _UserInteractionModel {
             (identical(other.endTime, endTime) || other.endTime == endTime));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, serviceId, featureId, startTime, endTime);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserInteractionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserInteractionModelCopyWith<_$_UserInteractionModel> get copyWith =>
-      __$$_UserInteractionModelCopyWithImpl<_$_UserInteractionModel>(
-          this, _$identity);
+  _$$UserInteractionModelImplCopyWith<_$UserInteractionModelImpl>
+      get copyWith =>
+          __$$UserInteractionModelImplCopyWithImpl<_$UserInteractionModelImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserInteractionModelToJson(
+    return _$$UserInteractionModelImplToJson(
       this,
     );
   }
@@ -202,13 +213,14 @@ class _$_UserInteractionModel implements _UserInteractionModel {
 
 abstract class _UserInteractionModel implements UserInteractionModel {
   const factory _UserInteractionModel(
-      {final String? serviceId,
-      final String? featureId,
-      @TimestampConverter() final DateTime? startTime,
-      @TimestampConverter() final DateTime? endTime}) = _$_UserInteractionModel;
+          {final String? serviceId,
+          final String? featureId,
+          @TimestampConverter() final DateTime? startTime,
+          @TimestampConverter() final DateTime? endTime}) =
+      _$UserInteractionModelImpl;
 
-  factory _UserInteractionModel.fromJson(Map<Object?, dynamic> json) =
-      _$_UserInteractionModel.fromJson;
+  factory _UserInteractionModel.fromJson(Map<String, dynamic> json) =
+      _$UserInteractionModelImpl.fromJson;
 
   @override
   String? get serviceId;
@@ -220,8 +232,11 @@ abstract class _UserInteractionModel implements UserInteractionModel {
   @override
   @TimestampConverter()
   DateTime? get endTime;
+
+  /// Create a copy of UserInteractionModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_UserInteractionModelCopyWith<_$_UserInteractionModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UserInteractionModelImplCopyWith<_$UserInteractionModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

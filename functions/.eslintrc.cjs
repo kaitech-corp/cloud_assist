@@ -1,8 +1,14 @@
 module.exports = {
   root: true,
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: null,
+    sourceType: "module",
+    ecmaVersion: "latest",
+  },
   env: {
-    es6: true,
     node: true,
+    es2022: true,
   },
   extends: [
     "eslint:recommended",
@@ -12,11 +18,6 @@ module.exports = {
     "google",
     "plugin:@typescript-eslint/recommended",
   ],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: ["tsconfig.json", "tsconfig.dev.json"],
-    sourceType: "module",
-  },
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
   ],

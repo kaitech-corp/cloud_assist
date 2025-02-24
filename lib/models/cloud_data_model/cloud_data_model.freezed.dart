@@ -12,7 +12,7 @@ part of 'cloud_data_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 CloudData _$CloudDataFromJson(Map<String, dynamic> json) {
   return _CloudData.fromJson(json);
@@ -31,8 +31,12 @@ mixin _$CloudData {
   List<String> get useCases => throw _privateConstructorUsedError;
   String get example => throw _privateConstructorUsedError;
 
+  /// Serializes this CloudData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CloudData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CloudDataCopyWith<CloudData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -65,6 +69,8 @@ class _$CloudDataCopyWithImpl<$Res, $Val extends CloudData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CloudData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -125,10 +131,11 @@ class _$CloudDataCopyWithImpl<$Res, $Val extends CloudData>
 }
 
 /// @nodoc
-abstract class _$$_CloudDataCopyWith<$Res> implements $CloudDataCopyWith<$Res> {
-  factory _$$_CloudDataCopyWith(
-          _$_CloudData value, $Res Function(_$_CloudData) then) =
-      __$$_CloudDataCopyWithImpl<$Res>;
+abstract class _$$CloudDataImplCopyWith<$Res>
+    implements $CloudDataCopyWith<$Res> {
+  factory _$$CloudDataImplCopyWith(
+          _$CloudDataImpl value, $Res Function(_$CloudDataImpl) then) =
+      __$$CloudDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -145,13 +152,15 @@ abstract class _$$_CloudDataCopyWith<$Res> implements $CloudDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_CloudDataCopyWithImpl<$Res>
-    extends _$CloudDataCopyWithImpl<$Res, _$_CloudData>
-    implements _$$_CloudDataCopyWith<$Res> {
-  __$$_CloudDataCopyWithImpl(
-      _$_CloudData _value, $Res Function(_$_CloudData) _then)
+class __$$CloudDataImplCopyWithImpl<$Res>
+    extends _$CloudDataCopyWithImpl<$Res, _$CloudDataImpl>
+    implements _$$CloudDataImplCopyWith<$Res> {
+  __$$CloudDataImplCopyWithImpl(
+      _$CloudDataImpl _value, $Res Function(_$CloudDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CloudData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -166,7 +175,7 @@ class __$$_CloudDataCopyWithImpl<$Res>
     Object? useCases = null,
     Object? example = null,
   }) {
-    return _then(_$_CloudData(
+    return _then(_$CloudDataImpl(
       service: null == service
           ? _value.service
           : service // ignore: cast_nullable_to_non_nullable
@@ -213,8 +222,8 @@ class __$$_CloudDataCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
-  const _$_CloudData(
+class _$CloudDataImpl with DiagnosticableTreeMixin implements _CloudData {
+  const _$CloudDataImpl(
       {required this.service,
       required this.description,
       required this.detail,
@@ -229,8 +238,8 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
         _cons = cons,
         _useCases = useCases;
 
-  factory _$_CloudData.fromJson(Map<String, dynamic> json) =>
-      _$$_CloudDataFromJson(json);
+  factory _$CloudDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CloudDataImplFromJson(json);
 
   @override
   final String service;
@@ -294,10 +303,10 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CloudData &&
+            other is _$CloudDataImpl &&
             (identical(other.service, service) || other.service == service) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -312,7 +321,7 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
             (identical(other.example, example) || other.example == example));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -327,15 +336,17 @@ class _$_CloudData with DiagnosticableTreeMixin implements _CloudData {
       const DeepCollectionEquality().hash(_useCases),
       example);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CloudData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CloudDataCopyWith<_$_CloudData> get copyWith =>
-      __$$_CloudDataCopyWithImpl<_$_CloudData>(this, _$identity);
+  _$$CloudDataImplCopyWith<_$CloudDataImpl> get copyWith =>
+      __$$CloudDataImplCopyWithImpl<_$CloudDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CloudDataToJson(
+    return _$$CloudDataImplToJson(
       this,
     );
   }
@@ -352,10 +363,10 @@ abstract class _CloudData implements CloudData {
       required final List<String> benefits,
       required final List<String> cons,
       required final List<String> useCases,
-      required final String example}) = _$_CloudData;
+      required final String example}) = _$CloudDataImpl;
 
   factory _CloudData.fromJson(Map<String, dynamic> json) =
-      _$_CloudData.fromJson;
+      _$CloudDataImpl.fromJson;
 
   @override
   String get service;
@@ -377,8 +388,11 @@ abstract class _CloudData implements CloudData {
   List<String> get useCases;
   @override
   String get example;
+
+  /// Create a copy of CloudData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_CloudDataCopyWith<_$_CloudData> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudDataImplCopyWith<_$CloudDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

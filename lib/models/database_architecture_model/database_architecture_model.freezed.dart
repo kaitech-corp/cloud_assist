@@ -12,7 +12,7 @@ part of 'database_architecture_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 DatabaseArchitecture _$DatabaseArchitectureFromJson(Map<String, dynamic> json) {
   return _DatabaseArchitecture.fromJson(json);
@@ -23,8 +23,12 @@ mixin _$DatabaseArchitecture {
   String get question => throw _privateConstructorUsedError;
   List<String> get answers => throw _privateConstructorUsedError;
 
+  /// Serializes this DatabaseArchitecture to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DatabaseArchitecture
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DatabaseArchitectureCopyWith<DatabaseArchitecture> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +53,8 @@ class _$DatabaseArchitectureCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DatabaseArchitecture
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -69,31 +75,33 @@ class _$DatabaseArchitectureCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_DatabaseArchitectureCopyWith<$Res>
+abstract class _$$DatabaseArchitectureImplCopyWith<$Res>
     implements $DatabaseArchitectureCopyWith<$Res> {
-  factory _$$_DatabaseArchitectureCopyWith(_$_DatabaseArchitecture value,
-          $Res Function(_$_DatabaseArchitecture) then) =
-      __$$_DatabaseArchitectureCopyWithImpl<$Res>;
+  factory _$$DatabaseArchitectureImplCopyWith(_$DatabaseArchitectureImpl value,
+          $Res Function(_$DatabaseArchitectureImpl) then) =
+      __$$DatabaseArchitectureImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String question, List<String> answers});
 }
 
 /// @nodoc
-class __$$_DatabaseArchitectureCopyWithImpl<$Res>
-    extends _$DatabaseArchitectureCopyWithImpl<$Res, _$_DatabaseArchitecture>
-    implements _$$_DatabaseArchitectureCopyWith<$Res> {
-  __$$_DatabaseArchitectureCopyWithImpl(_$_DatabaseArchitecture _value,
-      $Res Function(_$_DatabaseArchitecture) _then)
+class __$$DatabaseArchitectureImplCopyWithImpl<$Res>
+    extends _$DatabaseArchitectureCopyWithImpl<$Res, _$DatabaseArchitectureImpl>
+    implements _$$DatabaseArchitectureImplCopyWith<$Res> {
+  __$$DatabaseArchitectureImplCopyWithImpl(_$DatabaseArchitectureImpl _value,
+      $Res Function(_$DatabaseArchitectureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DatabaseArchitecture
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? question = null,
     Object? answers = null,
   }) {
-    return _then(_$_DatabaseArchitecture(
+    return _then(_$DatabaseArchitectureImpl(
       question: null == question
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
@@ -108,13 +116,13 @@ class __$$_DatabaseArchitectureCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DatabaseArchitecture implements _DatabaseArchitecture {
-  const _$_DatabaseArchitecture(
+class _$DatabaseArchitectureImpl implements _DatabaseArchitecture {
+  const _$DatabaseArchitectureImpl(
       {required this.question, required final List<String> answers})
       : _answers = answers;
 
-  factory _$_DatabaseArchitecture.fromJson(Map<String, dynamic> json) =>
-      _$$_DatabaseArchitectureFromJson(json);
+  factory _$DatabaseArchitectureImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DatabaseArchitectureImplFromJson(json);
 
   @override
   final String question;
@@ -132,30 +140,33 @@ class _$_DatabaseArchitecture implements _DatabaseArchitecture {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DatabaseArchitecture &&
+            other is _$DatabaseArchitectureImpl &&
             (identical(other.question, question) ||
                 other.question == question) &&
             const DeepCollectionEquality().equals(other._answers, _answers));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, question, const DeepCollectionEquality().hash(_answers));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DatabaseArchitecture
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DatabaseArchitectureCopyWith<_$_DatabaseArchitecture> get copyWith =>
-      __$$_DatabaseArchitectureCopyWithImpl<_$_DatabaseArchitecture>(
-          this, _$identity);
+  _$$DatabaseArchitectureImplCopyWith<_$DatabaseArchitectureImpl>
+      get copyWith =>
+          __$$DatabaseArchitectureImplCopyWithImpl<_$DatabaseArchitectureImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DatabaseArchitectureToJson(
+    return _$$DatabaseArchitectureImplToJson(
       this,
     );
   }
@@ -164,17 +175,20 @@ class _$_DatabaseArchitecture implements _DatabaseArchitecture {
 abstract class _DatabaseArchitecture implements DatabaseArchitecture {
   const factory _DatabaseArchitecture(
       {required final String question,
-      required final List<String> answers}) = _$_DatabaseArchitecture;
+      required final List<String> answers}) = _$DatabaseArchitectureImpl;
 
   factory _DatabaseArchitecture.fromJson(Map<String, dynamic> json) =
-      _$_DatabaseArchitecture.fromJson;
+      _$DatabaseArchitectureImpl.fromJson;
 
   @override
   String get question;
   @override
   List<String> get answers;
+
+  /// Create a copy of DatabaseArchitecture
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_DatabaseArchitectureCopyWith<_$_DatabaseArchitecture> get copyWith =>
-      throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DatabaseArchitectureImplCopyWith<_$DatabaseArchitectureImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

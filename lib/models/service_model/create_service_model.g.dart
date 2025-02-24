@@ -1,15 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names, always_specify_types
-
 part of 'create_service_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ServiceModel _$$_ServiceModelFromJson(Map<String, dynamic> json) =>
-    _$_ServiceModel(
+_$ServiceModelImpl _$$ServiceModelImplFromJson(Map<String, dynamic> json) =>
+    _$ServiceModelImpl(
       category: json['category'] as String?,
       description: json['description'] as String?,
       services: (json['services'] as List<dynamic>?)
@@ -17,19 +15,20 @@ _$_ServiceModel _$$_ServiceModelFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_ServiceModelToJson(_$_ServiceModel instance) =>
+Map<String, dynamic> _$$ServiceModelImplToJson(_$ServiceModelImpl instance) =>
     <String, dynamic>{
       'category': instance.category,
       'description': instance.description,
       'services': instance.services,
     };
 
-_$_Services _$$_ServicesFromJson(Map<String, dynamic> json) => _$_Services(
+_$ServicesImpl _$$ServicesImplFromJson(Map<String, dynamic> json) =>
+    _$ServicesImpl(
       service: json['service'] as String?,
       description: json['description'] as String?,
     );
 
-Map<String, dynamic> _$$_ServicesToJson(_$_Services instance) =>
+Map<String, dynamic> _$$ServicesImplToJson(_$ServicesImpl instance) =>
     <String, dynamic>{
       'service': instance.service,
       'description': instance.description,

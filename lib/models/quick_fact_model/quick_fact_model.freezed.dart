@@ -12,7 +12,7 @@ part of 'quick_fact_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 QuickFact _$QuickFactFromJson(Map<String, dynamic> json) {
   return _QuickFact.fromJson(json);
@@ -27,8 +27,12 @@ mixin _$QuickFact {
   @TimestampConverter()
   DateTime? get timestamp => throw _privateConstructorUsedError;
 
+  /// Serializes this QuickFact to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of QuickFact
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $QuickFactCopyWith<QuickFact> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,6 +60,8 @@ class _$QuickFactCopyWithImpl<$Res, $Val extends QuickFact>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of QuickFact
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,10 +97,11 @@ class _$QuickFactCopyWithImpl<$Res, $Val extends QuickFact>
 }
 
 /// @nodoc
-abstract class _$$_QuickFactCopyWith<$Res> implements $QuickFactCopyWith<$Res> {
-  factory _$$_QuickFactCopyWith(
-          _$_QuickFact value, $Res Function(_$_QuickFact) then) =
-      __$$_QuickFactCopyWithImpl<$Res>;
+abstract class _$$QuickFactImplCopyWith<$Res>
+    implements $QuickFactCopyWith<$Res> {
+  factory _$$QuickFactImplCopyWith(
+          _$QuickFactImpl value, $Res Function(_$QuickFactImpl) then) =
+      __$$QuickFactImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -106,13 +113,15 @@ abstract class _$$_QuickFactCopyWith<$Res> implements $QuickFactCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_QuickFactCopyWithImpl<$Res>
-    extends _$QuickFactCopyWithImpl<$Res, _$_QuickFact>
-    implements _$$_QuickFactCopyWith<$Res> {
-  __$$_QuickFactCopyWithImpl(
-      _$_QuickFact _value, $Res Function(_$_QuickFact) _then)
+class __$$QuickFactImplCopyWithImpl<$Res>
+    extends _$QuickFactCopyWithImpl<$Res, _$QuickFactImpl>
+    implements _$$QuickFactImplCopyWith<$Res> {
+  __$$QuickFactImplCopyWithImpl(
+      _$QuickFactImpl _value, $Res Function(_$QuickFactImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of QuickFact
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -122,7 +131,7 @@ class __$$_QuickFactCopyWithImpl<$Res>
     Object? flag = null,
     Object? timestamp = freezed,
   }) {
-    return _then(_$_QuickFact(
+    return _then(_$QuickFactImpl(
       fact: null == fact
           ? _value.fact
           : fact // ignore: cast_nullable_to_non_nullable
@@ -149,16 +158,16 @@ class __$$_QuickFactCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_QuickFact implements _QuickFact {
-  const _$_QuickFact(
+class _$QuickFactImpl implements _QuickFact {
+  const _$QuickFactImpl(
       {required this.fact,
       required this.docID,
       required this.service,
       required this.flag,
       @TimestampConverter() this.timestamp});
 
-  factory _$_QuickFact.fromJson(Map<String, dynamic> json) =>
-      _$$_QuickFactFromJson(json);
+  factory _$QuickFactImpl.fromJson(Map<String, dynamic> json) =>
+      _$$QuickFactImplFromJson(json);
 
   @override
   final String fact;
@@ -178,10 +187,10 @@ class _$_QuickFact implements _QuickFact {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_QuickFact &&
+            other is _$QuickFactImpl &&
             (identical(other.fact, fact) || other.fact == fact) &&
             (identical(other.docID, docID) || other.docID == docID) &&
             (identical(other.service, service) || other.service == service) &&
@@ -190,20 +199,22 @@ class _$_QuickFact implements _QuickFact {
                 other.timestamp == timestamp));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, fact, docID, service, flag, timestamp);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of QuickFact
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_QuickFactCopyWith<_$_QuickFact> get copyWith =>
-      __$$_QuickFactCopyWithImpl<_$_QuickFact>(this, _$identity);
+  _$$QuickFactImplCopyWith<_$QuickFactImpl> get copyWith =>
+      __$$QuickFactImplCopyWithImpl<_$QuickFactImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_QuickFactToJson(
+    return _$$QuickFactImplToJson(
       this,
     );
   }
@@ -215,10 +226,10 @@ abstract class _QuickFact implements QuickFact {
       required final String docID,
       required final String service,
       required final String flag,
-      @TimestampConverter() final DateTime? timestamp}) = _$_QuickFact;
+      @TimestampConverter() final DateTime? timestamp}) = _$QuickFactImpl;
 
   factory _QuickFact.fromJson(Map<String, dynamic> json) =
-      _$_QuickFact.fromJson;
+      _$QuickFactImpl.fromJson;
 
   @override
   String get fact;
@@ -231,8 +242,11 @@ abstract class _QuickFact implements QuickFact {
   @override
   @TimestampConverter()
   DateTime? get timestamp;
+
+  /// Create a copy of QuickFact
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_QuickFactCopyWith<_$_QuickFact> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$QuickFactImplCopyWith<_$QuickFactImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

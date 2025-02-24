@@ -9,13 +9,11 @@ import '../../models/quick_fact_model/quick_fact_model.dart';
 import '../../repositories/cloud_data_repository.dart';
 import '../../repositories/quick_facts_repository.dart';
 import '../../services/constants.dart';
-
 import '../../services/firebase_functions/cloud_functions.dart';
 import '../database_comparison/database_comparison.dart';
 import '../search/search_bar.dart';
 import '../settings/settings.dart';
 import 'home_screen.dart';
-import 'home_v2.dart';
 
 /// Home Screen
 class Home extends StatefulWidget {
@@ -43,7 +41,7 @@ class _HomeState extends State<Home> {
                   repository: CloudDataRepository()),
         ),
       ],
-      child: const HomeScreenV2(),
+      child: const HomeScreen(),
     ),
     BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
         create: (BuildContext context) =>

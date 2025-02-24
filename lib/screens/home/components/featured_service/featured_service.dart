@@ -32,121 +32,84 @@ class _FeaturedServiceState extends State<FeaturedService> {
 
   @override
   void dispose() {
+    // Uncomment if you intend to close the bloc here.
     // bloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text('FEATURED SERVICES', style: titleMedium(context)),
-            ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: SizeConfig.screenHeight * 0.4,
+      ),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('FEATURED SERVICES', style: titleMedium(context)),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
-              GenericState>(
-            bloc: bloc,
-            builder: (BuildContext context, GenericState state) {
-              if (state is LoadingState) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    for (int i = 0; i < 2; i++)
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 24.0,
-                                top: 16.0,
-                                right: 24,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      FadeShimmer(
-                                        height: 8,
-                                        width: SizeConfig.screenWidth * .2,
-                                        radius: 4,
-                                        highlightColor: Colors.white,
-                                        baseColor:
-                                            Theme.of(context).disabledColor,
-                                      ),
-                                      FadeShimmer.round(
-                                        size: SizeConfig.screenWidth * .05,
-                                        highlightColor: Colors.white,
-                                        baseColor:
-                                            Theme.of(context).disabledColor,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: SizeConfig.screenWidth * .05,
-                                  ),
-                                  FadeShimmer(
-                                    height: 8,
-                                    width: SizeConfig.screenWidth,
-                                    radius: 4,
-                                    highlightColor: Colors.white,
-                                    baseColor: Theme.of(context).disabledColor,
-                                  ),
-                                  SizedBox(
-                                    height: SizeConfig.screenWidth * .05,
-                                  ),
-                                  FadeShimmer(
-                                    height: 8,
-                                    width: SizeConfig.screenWidth,
-                                    radius: 4,
-                                    highlightColor: Colors.white,
-                                    baseColor: Theme.of(context).disabledColor,
-                                  ),
-                                  SizedBox(
-                                    height: SizeConfig.screenWidth * .05,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            greyLineBreak,
-                          ],
-                        ),
-                      ),
-                  ],
-                );
-              } else if (state is HasDataState) {
-                final List<CloudData> data = state.data as List<CloudData>;
-                final List<CloudData> uniqueServices = getUniqueValues(data);
-                return SingleChildScrollView(
-                  child: Column(
+          Expanded(
+            child: BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
+                GenericState>(
+              bloc: bloc,
+              builder: (BuildContext context, GenericState state) {
+                if (state is LoadingState) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      for (final CloudData service in uniqueServices)
-                        Column(
-                          children: <Widget>[
-                            FeaturedServiceWidget(cloudData: service),
-                            greyLineBreak,
-                          ],
+                      for (int i = 0; i < 2; i++)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              FadeShimmer(
+                                height: 8,
+                                width: SizeConfig.screenWidth * 0.2,
+                                radius: 4,
+                                highlightColor: Colors.white,
+                                baseColor: Theme.of(context).disabledColor,
+                              ),
+                              FadeShimmer.round(
+                                size: SizeConfig.screenWidth * 0.05,
+                                highlightColor: Colors.white,
+                                baseColor: Theme.of(context).disabledColor,
+                              ),
+                            ],
+                          ),
                         ),
                     ],
-                  ),
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
+                  );
+                } else if (state is HasDataState) {
+                  final List<CloudData> data = state.data as List<CloudData>;
+                  final List<CloudData> uniqueServices = getUniqueValues(data);
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        for (final CloudData service in uniqueServices)
+                          Column(
+                            children: <Widget>[
+                              FeaturedServiceWidget(cloudData: service),
+                              greyLineBreak,
+                            ],
+                          ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

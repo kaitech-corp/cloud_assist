@@ -1,15 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'report_content_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ReportContent _$$_ReportContentFromJson(Map<String, dynamic> json) =>
-    _$_ReportContent(
+_$ReportContentImpl _$$ReportContentImplFromJson(Map<String, dynamic> json) =>
+    _$ReportContentImpl(
       content: json['content'] as String,
       reportType: json['reportType'] as String,
       contentDocID: json['contentDocID'] as String,
@@ -18,7 +16,7 @@ _$_ReportContent _$$_ReportContentFromJson(Map<String, dynamic> json) =>
           json['timestamp'], const TimestampConverter().fromJson),
     );
 
-Map<String, dynamic> _$$_ReportContentToJson(_$_ReportContent instance) =>
+Map<String, dynamic> _$$ReportContentImplToJson(_$ReportContentImpl instance) =>
     <String, dynamic>{
       'content': instance.content,
       'reportType': instance.reportType,

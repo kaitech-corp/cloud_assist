@@ -12,7 +12,7 @@ part of 'comparison_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ComparisonModel _$ComparisonModelFromJson(Map<String, dynamic> json) {
   return _ComparisonModel.fromJson(json);
@@ -27,8 +27,12 @@ mixin _$ComparisonModel {
   List<Map<String, String>> get answersSelected =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this ComparisonModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ComparisonModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ComparisonModelCopyWith<ComparisonModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,6 +60,8 @@ class _$ComparisonModelCopyWithImpl<$Res, $Val extends ComparisonModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ComparisonModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,11 +92,11 @@ class _$ComparisonModelCopyWithImpl<$Res, $Val extends ComparisonModel>
 }
 
 /// @nodoc
-abstract class _$$_ComparisonModelCopyWith<$Res>
+abstract class _$$ComparisonModelImplCopyWith<$Res>
     implements $ComparisonModelCopyWith<$Res> {
-  factory _$$_ComparisonModelCopyWith(
-          _$_ComparisonModel value, $Res Function(_$_ComparisonModel) then) =
-      __$$_ComparisonModelCopyWithImpl<$Res>;
+  factory _$$ComparisonModelImplCopyWith(_$ComparisonModelImpl value,
+          $Res Function(_$ComparisonModelImpl) then) =
+      __$$ComparisonModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -101,13 +107,15 @@ abstract class _$$_ComparisonModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ComparisonModelCopyWithImpl<$Res>
-    extends _$ComparisonModelCopyWithImpl<$Res, _$_ComparisonModel>
-    implements _$$_ComparisonModelCopyWith<$Res> {
-  __$$_ComparisonModelCopyWithImpl(
-      _$_ComparisonModel _value, $Res Function(_$_ComparisonModel) _then)
+class __$$ComparisonModelImplCopyWithImpl<$Res>
+    extends _$ComparisonModelCopyWithImpl<$Res, _$ComparisonModelImpl>
+    implements _$$ComparisonModelImplCopyWith<$Res> {
+  __$$ComparisonModelImplCopyWithImpl(
+      _$ComparisonModelImpl _value, $Res Function(_$ComparisonModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ComparisonModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -116,7 +124,7 @@ class __$$_ComparisonModelCopyWithImpl<$Res>
     Object? timestamp = freezed,
     Object? answersSelected = null,
   }) {
-    return _then(_$_ComparisonModel(
+    return _then(_$ComparisonModelImpl(
       answer: null == answer
           ? _value.answer
           : answer // ignore: cast_nullable_to_non_nullable
@@ -139,16 +147,16 @@ class __$$_ComparisonModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ComparisonModel implements _ComparisonModel {
-  const _$_ComparisonModel(
+class _$ComparisonModelImpl implements _ComparisonModel {
+  const _$ComparisonModelImpl(
       {required this.answer,
       required this.docID,
       @TimestampConverter() this.timestamp,
       required final List<Map<String, String>> answersSelected})
       : _answersSelected = answersSelected;
 
-  factory _$_ComparisonModel.fromJson(Map<String, dynamic> json) =>
-      _$$_ComparisonModelFromJson(json);
+  factory _$ComparisonModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ComparisonModelImplFromJson(json);
 
   @override
   final String answer;
@@ -171,10 +179,10 @@ class _$_ComparisonModel implements _ComparisonModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ComparisonModel &&
+            other is _$ComparisonModelImpl &&
             (identical(other.answer, answer) || other.answer == answer) &&
             (identical(other.docID, docID) || other.docID == docID) &&
             (identical(other.timestamp, timestamp) ||
@@ -183,20 +191,23 @@ class _$_ComparisonModel implements _ComparisonModel {
                 .equals(other._answersSelected, _answersSelected));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, answer, docID, timestamp,
       const DeepCollectionEquality().hash(_answersSelected));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ComparisonModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ComparisonModelCopyWith<_$_ComparisonModel> get copyWith =>
-      __$$_ComparisonModelCopyWithImpl<_$_ComparisonModel>(this, _$identity);
+  _$$ComparisonModelImplCopyWith<_$ComparisonModelImpl> get copyWith =>
+      __$$ComparisonModelImplCopyWithImpl<_$ComparisonModelImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ComparisonModelToJson(
+    return _$$ComparisonModelImplToJson(
       this,
     );
   }
@@ -208,10 +219,10 @@ abstract class _ComparisonModel implements ComparisonModel {
           required final String docID,
           @TimestampConverter() final DateTime? timestamp,
           required final List<Map<String, String>> answersSelected}) =
-      _$_ComparisonModel;
+      _$ComparisonModelImpl;
 
   factory _ComparisonModel.fromJson(Map<String, dynamic> json) =
-      _$_ComparisonModel.fromJson;
+      _$ComparisonModelImpl.fromJson;
 
   @override
   String get answer;
@@ -222,8 +233,11 @@ abstract class _ComparisonModel implements ComparisonModel {
   DateTime? get timestamp;
   @override
   List<Map<String, String>> get answersSelected;
+
+  /// Create a copy of ComparisonModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_ComparisonModelCopyWith<_$_ComparisonModel> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ComparisonModelImplCopyWith<_$ComparisonModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

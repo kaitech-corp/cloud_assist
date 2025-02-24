@@ -12,7 +12,7 @@ part of 'report_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ReportModel _$ReportModelFromJson(Map<String, dynamic> json) {
   return _ReportModel.fromJson(json);
@@ -27,8 +27,12 @@ mixin _$ReportModel {
   @TimestampConverter()
   DateTime? get timestamp => throw _privateConstructorUsedError;
 
+  /// Serializes this ReportModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ReportModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ReportModelCopyWith<ReportModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,6 +61,8 @@ class _$ReportModelCopyWithImpl<$Res, $Val extends ReportModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ReportModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,11 +98,11 @@ class _$ReportModelCopyWithImpl<$Res, $Val extends ReportModel>
 }
 
 /// @nodoc
-abstract class _$$_ReportModelCopyWith<$Res>
+abstract class _$$ReportModelImplCopyWith<$Res>
     implements $ReportModelCopyWith<$Res> {
-  factory _$$_ReportModelCopyWith(
-          _$_ReportModel value, $Res Function(_$_ReportModel) then) =
-      __$$_ReportModelCopyWithImpl<$Res>;
+  factory _$$ReportModelImplCopyWith(
+          _$ReportModelImpl value, $Res Function(_$ReportModelImpl) then) =
+      __$$ReportModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -108,13 +114,15 @@ abstract class _$$_ReportModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ReportModelCopyWithImpl<$Res>
-    extends _$ReportModelCopyWithImpl<$Res, _$_ReportModel>
-    implements _$$_ReportModelCopyWith<$Res> {
-  __$$_ReportModelCopyWithImpl(
-      _$_ReportModel _value, $Res Function(_$_ReportModel) _then)
+class __$$ReportModelImplCopyWithImpl<$Res>
+    extends _$ReportModelCopyWithImpl<$Res, _$ReportModelImpl>
+    implements _$$ReportModelImplCopyWith<$Res> {
+  __$$ReportModelImplCopyWithImpl(
+      _$ReportModelImpl _value, $Res Function(_$ReportModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ReportModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -124,7 +132,7 @@ class __$$_ReportModelCopyWithImpl<$Res>
     Object? title = null,
     Object? timestamp = freezed,
   }) {
-    return _then(_$_ReportModel(
+    return _then(_$ReportModelImpl(
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -151,8 +159,8 @@ class __$$_ReportModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ReportModel implements _ReportModel {
-  const _$_ReportModel(
+class _$ReportModelImpl implements _ReportModel {
+  const _$ReportModelImpl(
       {required this.content,
       required this.docID,
       required final List<String> tags,
@@ -160,8 +168,8 @@ class _$_ReportModel implements _ReportModel {
       @TimestampConverter() this.timestamp})
       : _tags = tags;
 
-  factory _$_ReportModel.fromJson(Map<String, dynamic> json) =>
-      _$$_ReportModelFromJson(json);
+  factory _$ReportModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ReportModelImplFromJson(json);
 
   @override
   final String content;
@@ -187,10 +195,10 @@ class _$_ReportModel implements _ReportModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ReportModel &&
+            other is _$ReportModelImpl &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.docID, docID) || other.docID == docID) &&
             const DeepCollectionEquality().equals(other._tags, _tags) &&
@@ -199,20 +207,22 @@ class _$_ReportModel implements _ReportModel {
                 other.timestamp == timestamp));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, content, docID,
       const DeepCollectionEquality().hash(_tags), title, timestamp);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ReportModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ReportModelCopyWith<_$_ReportModel> get copyWith =>
-      __$$_ReportModelCopyWithImpl<_$_ReportModel>(this, _$identity);
+  _$$ReportModelImplCopyWith<_$ReportModelImpl> get copyWith =>
+      __$$ReportModelImplCopyWithImpl<_$ReportModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ReportModelToJson(
+    return _$$ReportModelImplToJson(
       this,
     );
   }
@@ -224,10 +234,10 @@ abstract class _ReportModel implements ReportModel {
       required final String docID,
       required final List<String> tags,
       required final String title,
-      @TimestampConverter() final DateTime? timestamp}) = _$_ReportModel;
+      @TimestampConverter() final DateTime? timestamp}) = _$ReportModelImpl;
 
   factory _ReportModel.fromJson(Map<String, dynamic> json) =
-      _$_ReportModel.fromJson;
+      _$ReportModelImpl.fromJson;
 
   @override
   String get content;
@@ -240,8 +250,11 @@ abstract class _ReportModel implements ReportModel {
   @override
   @TimestampConverter()
   DateTime? get timestamp;
+
+  /// Create a copy of ReportModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_ReportModelCopyWith<_$_ReportModel> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReportModelImplCopyWith<_$ReportModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

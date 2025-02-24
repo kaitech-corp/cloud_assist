@@ -12,7 +12,7 @@ part of 'cloud_options_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 CloudOptions _$CloudOptionsFromJson(Map<String, dynamic> json) {
   return _CloudOptions.fromJson(json);
@@ -31,8 +31,12 @@ mixin _$CloudOptions {
   String get dataGrowth => throw _privateConstructorUsedError;
   String get workload => throw _privateConstructorUsedError;
 
+  /// Serializes this CloudOptions to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CloudOptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CloudOptionsCopyWith<CloudOptions> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -66,6 +70,8 @@ class _$CloudOptionsCopyWithImpl<$Res, $Val extends CloudOptions>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CloudOptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -126,11 +132,11 @@ class _$CloudOptionsCopyWithImpl<$Res, $Val extends CloudOptions>
 }
 
 /// @nodoc
-abstract class _$$_CloudOptionsCopyWith<$Res>
+abstract class _$$CloudOptionsImplCopyWith<$Res>
     implements $CloudOptionsCopyWith<$Res> {
-  factory _$$_CloudOptionsCopyWith(
-          _$_CloudOptions value, $Res Function(_$_CloudOptions) then) =
-      __$$_CloudOptionsCopyWithImpl<$Res>;
+  factory _$$CloudOptionsImplCopyWith(
+          _$CloudOptionsImpl value, $Res Function(_$CloudOptionsImpl) then) =
+      __$$CloudOptionsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -147,13 +153,15 @@ abstract class _$$_CloudOptionsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CloudOptionsCopyWithImpl<$Res>
-    extends _$CloudOptionsCopyWithImpl<$Res, _$_CloudOptions>
-    implements _$$_CloudOptionsCopyWith<$Res> {
-  __$$_CloudOptionsCopyWithImpl(
-      _$_CloudOptions _value, $Res Function(_$_CloudOptions) _then)
+class __$$CloudOptionsImplCopyWithImpl<$Res>
+    extends _$CloudOptionsCopyWithImpl<$Res, _$CloudOptionsImpl>
+    implements _$$CloudOptionsImplCopyWith<$Res> {
+  __$$CloudOptionsImplCopyWithImpl(
+      _$CloudOptionsImpl _value, $Res Function(_$CloudOptionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CloudOptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -168,7 +176,7 @@ class __$$_CloudOptionsCopyWithImpl<$Res>
     Object? dataGrowth = null,
     Object? workload = null,
   }) {
-    return _then(_$_CloudOptions(
+    return _then(_$CloudOptionsImpl(
       architecture: null == architecture
           ? _value.architecture
           : architecture // ignore: cast_nullable_to_non_nullable
@@ -215,8 +223,8 @@ class __$$_CloudOptionsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CloudOptions implements _CloudOptions {
-  const _$_CloudOptions(
+class _$CloudOptionsImpl implements _CloudOptions {
+  const _$CloudOptionsImpl(
       {required this.architecture,
       required this.budget,
       required this.dataAccessFrequency,
@@ -228,8 +236,8 @@ class _$_CloudOptions implements _CloudOptions {
       required this.dataGrowth,
       required this.workload});
 
-  factory _$_CloudOptions.fromJson(Map<String, dynamic> json) =>
-      _$$_CloudOptionsFromJson(json);
+  factory _$CloudOptionsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CloudOptionsImplFromJson(json);
 
   @override
   final String architecture;
@@ -258,10 +266,10 @@ class _$_CloudOptions implements _CloudOptions {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CloudOptions &&
+            other is _$CloudOptionsImpl &&
             (identical(other.architecture, architecture) ||
                 other.architecture == architecture) &&
             (identical(other.budget, budget) || other.budget == budget) &&
@@ -283,7 +291,7 @@ class _$_CloudOptions implements _CloudOptions {
                 other.workload == workload));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -298,15 +306,17 @@ class _$_CloudOptions implements _CloudOptions {
       dataGrowth,
       workload);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CloudOptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CloudOptionsCopyWith<_$_CloudOptions> get copyWith =>
-      __$$_CloudOptionsCopyWithImpl<_$_CloudOptions>(this, _$identity);
+  _$$CloudOptionsImplCopyWith<_$CloudOptionsImpl> get copyWith =>
+      __$$CloudOptionsImplCopyWithImpl<_$CloudOptionsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CloudOptionsToJson(
+    return _$$CloudOptionsImplToJson(
       this,
     );
   }
@@ -323,10 +333,10 @@ abstract class _CloudOptions implements CloudOptions {
       required final String dataSize,
       required final String dataSecurity,
       required final String dataGrowth,
-      required final String workload}) = _$_CloudOptions;
+      required final String workload}) = _$CloudOptionsImpl;
 
   factory _CloudOptions.fromJson(Map<String, dynamic> json) =
-      _$_CloudOptions.fromJson;
+      _$CloudOptionsImpl.fromJson;
 
   @override
   String get architecture;
@@ -348,8 +358,11 @@ abstract class _CloudOptions implements CloudOptions {
   String get dataGrowth;
   @override
   String get workload;
+
+  /// Create a copy of CloudOptions
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_CloudOptionsCopyWith<_$_CloudOptions> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudOptionsImplCopyWith<_$CloudOptionsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

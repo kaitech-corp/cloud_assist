@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {SecretManagerServiceClient} from "@google-cloud/secret-manager";
-import * as functions from "firebase-functions";
-import axios from "axios";
-import {initializeApp} from "firebase-admin/app";
 import {firestore} from "firebase-admin";
-import {Configuration, OpenAIApi} from "openai";
+import {initializeApp} from "firebase-admin/app";
 import {FieldValue} from "firebase-admin/firestore";
+import * as functions from "firebase-functions/v1";
+import {onDocumentCreated} from "firebase-functions/firestore";
+import {HttpsError, onCall} from "firebase-functions/v2/https";
+import {SchemaType, VertexAI} from "@google-cloud/vertexai";
+import {OpenAI} from "openai";
+import axios from "axios";
 
 initializeApp();
 const db = firestore();
@@ -31,7 +35,7 @@ async function getSecretsClient(params) {
 /**
  * Retrieves the OpenAI client with the appropriate API key and organization.
  * @async
- * @return {Promise<OpenAIApi>} - The OpenAI client.
+ * @return {Promise<OpenAI>} - The OpenAI client.
  */
 async function getOpenaiClient() {
   // Get the organization and OpenAI API key from Google Cloud Secret Manager
@@ -39,397 +43,149 @@ async function getOpenaiClient() {
   const secretValue = await getSecretsClient("openAI_api_key");
 
   // Create a new configuration object with the retrieved keys
-  const configuration = new Configuration({
-    organization: orgKey,
-    apiKey: secretValue,
-  });
 
   // Create and return a new OpenAI client using the configuration object
-  return new OpenAIApi(configuration);
-}
-
-//  Combined data api call.
-exports.getCombinedData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/combined_data.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:70 ~ getCombinedData ~ error:", error);
-    return "Error in combined cloud data API call";
-  }
-});
-
-//  Cloud data api call.
-exports.getCloudData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/cloud_data.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:94 ~ getCloudData ~ error:", error);
-    return "Error in cloud data API call";
-  }
-});
-
-//    Networking data api call.
-exports.getNetworkingData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/cloud_networking.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:118 ~ getNetworkingData ~ error:", error);
-    return "Error in cloud networking data API call";
-  }
-});
-
-//    Database data api call.
-exports.getDatabaseData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/database_data.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:142 ~ getDatabaseData ~ error:", error);
-    return "Error in cloud database data API call";
-  }
-});
-
-//    Security data api call.
-exports.getSecurityData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/security_data.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:166 ~ getSecurityData ~ error:", error);
-    return "Error in cloud security data API call";
-  }
-});
-
-//    Gcloud command line data api call.
-exports.getGCloudData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/cmd_line_cheat_sheet.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:190 ~ getGCloudData ~ error:", error);
-    return "Error in gcloud data API call";
-  }
-});
-
-//    Gcloud command line data api call.
-exports.getDatabaseComparisonQuestions = functions.https.onCall(
-  async (data, context) => {
-    if (!context.auth) {
-      throw new functions.https.HttpsError(
-        "unauthenticated",
-        "Unable to perform action."
-      );
-    }
-    const url =
-      "https://storage.googleapis.com/api-project-371618.appspot.com/" +
-      "database_comparison_questions.json";
-
-    try {
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        return JSON.stringify(response.data);
-      } else {
-        return response.status;
-      }
-    } catch (error) {
-      console.log("🚀 ~ file: index.ts:216 ~ error:", error);
-      return "Error in getDatabaseComparisonQuestions data API call";
-    }
-  }
-);
-
-//    gcp service list data api call.
-exports.getGcpServiceList = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/" +
-    "gcp_service_list.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:243 ~ error:", error);
-    return "Error in getGcpServiceList data API call";
-  }
-});
-
-//    Facts api call.
-exports.getFactsData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/facts.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: index.ts:268 ~ getFactsData~ error:", error);
-    return "Error in facts data API call";
-  }
-});
-
-// Lessons api call.
-exports.getLessonsData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
-    );
-  }
-  const url =
-    "https://storage.googleapis.com/api-project-371618.appspot.com/lessons.json";
-
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return JSON.stringify(response.data);
-    } else {
-      return response.status;
-    }
-  } catch (error) {
-    console.log(
-      "🚀 ~ file: index.ts:292 ~ exports.getLessonsData ~ error:",
-      error
-    );
-    return "Error in facts data API call";
-  }
-});
-/**
- * Removes all text outside of a JSON format.
- *
- * @param {string} text - The input text that may contain JSON.
- * @return {string} - The JSON substring extracted from the input text.
- */
-function removeNonJSONText(text: string) {
-  // Find the first occurrence of a curly brace
-  const startIndex = text.indexOf("[");
-
-  // Find the last occurrence of a curly brace
-  const lastIndex = text.lastIndexOf("]");
-
-  // Extract the JSON substring
-  const json = text.substring(startIndex, lastIndex + 1);
-
-  // Return the JSON substring
-  return json;
+  return new OpenAI({organization: orgKey, apiKey: secretValue});
 }
 
 //  Create new fun facts
-exports.createFacts = functions.firestore
-  .document("services/{doc}")
-  .onCreate(async (snap, context) => {
+exports.createFacts = onDocumentCreated("services/{doc}", async (event) =>{
+  try {
+    // Initialize the OpenAI client.
     const openai = await getOpenaiClient();
-    const snapshot = snap.data();
-    const service = snapshot.service;
-    const prompt =
-      "Tell me 5 interesting facts " +
-      "about " +
-      service +
-      "return response in json list format using the following schema: [" +
-      "\"fun_fact\": \"Did you know that [fact 1]?\",\n" +
-      "\"fun_fact\": \"Companies like [fact 2].\",\n" +
-      "\"fun_fact\": \"An interesting fact about [fact 3]\",\n" +
-      "\"fun_fact\": \"A comparable service using [fact 4]?\",\n" +
-      "\"fun_fact\": \"A comparable service using [fact 5]}.\"]";
 
-    try {
-      const response = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo-0613",
-        messages: [
-          {role: "system", content: "Cloud Computing Expert"},
-          {role: "user", content: prompt},
-        ],
-      });
-      const result = response.data.choices[0].message.content.trim();
-      console.log("🚀 ~ result:", result);
-      // Save plain response for troubleshooting
-      savePlainResponse(service, result);
-      try {
-        const jsonResponse = await removeNonJSONText(result);
-        const parsedResponse = JSON.parse(jsonResponse);
-        const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
-        saveChatGPTResponse(adjustedResponse, service);
-      } catch (error) {
-        console.log("🚀 ~ file: index.ts:337 ~ error:", error);
-        const jsonResponse = await convertToJSON(result);
-        const parsedResponse = JSON.parse(jsonResponse);
-        const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
-        saveChatGPTResponse(adjustedResponse, service);
-      }
-    } catch (error) {
-      console.log("🚀 ~ file: index.js:340 ~ error:", error);
+    // Retrieve the service data from the Firestore document.
+    const snapshot = event.data;
+    if (!snapshot) {
+      console.log("No data associated with the event");
+      return;
     }
-  });
+    const data = snapshot.data();
+    const service = data.service;
+
+    // Build a simple prompt since the response format is enforced
+    // via the API option.
+    const prompt = `Tell me 5 interesting facts about ${service}.`;
+
+    // Call the OpenAI API with the response_format option to enforce
+    // the JSON schema.
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {role: "system", content: "Cloud Computing Expert"},
+        {role: "user", content: prompt},
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "my_response",
+          schema: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                fun_fact: {type: "string"},
+              },
+              required: ["fun_fact"],
+            },
+            minItems: 5,
+            maxItems: 5,
+          },
+        },
+      },
+    });
+
+    // Extract the raw result from the API response.
+    const resultText = response.choices[0].message.content.trim();
+    console.log("🚀 ~ result:", resultText);
+
+    // Optionally, save the plain response for troubleshooting.
+    await savePlainResponse(service, resultText);
+
+    // Save the final ChatGPT response.
+    await saveChatGPTResponse(resultText, service);
+  } catch (error) {
+    console.error("Error in createFacts function:", error);
+  }
+});
+
 
 //  Manually create new fun facts
-exports.createNewFactsManually = functions.https.onCall(
-  async (snap, context) => {
-    if (!context.auth) {
-      throw new functions.https.HttpsError(
-        "unauthenticated",
-        "Unable to perform action."
-      );
-    }
-    const openai = await getOpenaiClient();
-    const service = snap.service;
-    const prompt =
-      "Tell me 5 interesting facts " +
-      "about " +
-      service +
-      "return response in json list format using the following schema: [" +
-      "\"fun_fact\": \"Did you know that [fact 1]?\",\n" +
-      "\"fun_fact\": \"Companies like [fact 2].\",\n" +
-      "\"fun_fact\": \"An interesting fact about [fact 3]\",\n" +
-      "\"fun_fact\": \"A comparable service using [fact 4]?\",\n" +
-      "\"fun_fact\": \"A comparable service using [fact 5]}.\"]";
-
-    try {
-      const response = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo-0613",
-        messages: [
-          {role: "system", content: "Cloud Computing Expert"},
-          {role: "user", content: prompt},
-        ],
-      });
-      const result = response.data.choices[0].message.content.trim();
-      console.log("🚀 ~ result:", result);
-      // Save plain response for troubleshooting
-      savePlainResponse(service, result);
-      try {
-        const jsonResponse = await convertToJSON(result);
-        const parsedResponse = JSON.parse(jsonResponse);
-        const adjustedResponse = replaceNonFunFactKeys(parsedResponse);
-        saveChatGPTResponse(adjustedResponse, service);
-      } catch (error) {
-        console.log("🚀 ~ file: index.ts:337 ~ error:", error);
-      }
-    } catch (error) {
-      console.log("🚀 ~ file: index.js:340 ~ error:", error);
-    }
-  }
-);
-
-//  Create new fun facts
-exports.createNewFacts = functions.https.onCall(async (snap, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
+exports.createNewFactsManually = onCall(async (request) => {
+  if (!request.auth.uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "User is not authenticated.",
     );
   }
   const openai = await getOpenaiClient();
-  const service = snap.service;
-  const prompt = snap.prompt;
+  const service = request.data.service;
+  const prompt = `Tell me 5 interesting facts about ${service}.`;
+  try {
+    // Call the OpenAI API with the updated response_format option.
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {role: "system", content: "Cloud Computing Expert"},
+        {role: "user", content: prompt},
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "my_response",
+          schema: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                fun_fact: {type: "string"},
+              },
+              required: ["fun_fact"],
+            },
+            minItems: 5,
+            maxItems: 5,
+          },
+        },
+      },
+    });
+
+
+    const result = response.choices[0].message.content.trim();
+    console.log("🚀 ~ result:", result);
+    // Save plain response for troubleshooting
+    savePlainResponse(service, result);
+    try {
+      saveChatGPTResponse(result, service);
+    } catch (error) {
+      console.log("🚀 ~ file: index.ts:337 ~ error:", error);
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.js:340 ~ error:", error);
+  }
+},
+);
+
+//  Create new fun facts
+exports.createNewFacts = onCall(async (request) => {
+  if (!request.auth.uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "User is not authenticated.",
+    );
+  }
+  const openai = await getOpenaiClient();
+  const service = request.data.service;
+  const prompt = request.data.prompt.toString();
 
   try {
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
       messages: [
         {role: "system", content: "Cloud Computing Expert"},
         {role: "user", content: prompt},
       ],
     });
-    const result = response.data.choices[0].message.content.trim();
+    const result = response.choices[0].message.content.trim();
     console.log("🚀 ~ result:", result);
     // Save plain response for troubleshooting
     savePlainResponse(service, result);
@@ -456,77 +212,6 @@ async function savePlainResponse(service, result) {
   } catch (error) {
     console.log("🚀 ~ file: index.ts:391 ~ savePlainResponse ~ error:", error);
   }
-}
-
-/**
- * Converts the given string to JSON format using OpenAI's
- * text-davinci-003 model.
- * @async
- * @param {String} params - The string to convert to JSON format.
- * @return {Promise<String>} - The string converted to JSON format.
- */
-async function convertToJSON(params) {
-  const openai = await getOpenaiClient();
-  const prompt = "Remove everything but the json and format it correctly:" +
-  params;
-
-  try {
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {role: "system", content: "JSON Expert"},
-        {role: "user", content: prompt},
-      ],
-    });
-    const result = response.data.choices[0].message.content.trim();
-    console.log("🚀 ~ convertToJSON: completed");
-    return result;
-  } catch (error) {
-    console.error("🚨 ~ convertToJSON:", error.message);
-    throw new Error(`Failed to convert '${params}' to JSON: ${error.message}`);
-  }
-}
-
-/**
- * Replaces any key in each object of a JSON array that is not named
- * "fun_fact" with a new key named "fun_fact".
- *
- * @param {Array<FunFactObject>} jsonArray - The JSON array to be
- * checked and modified.
- * @return {Array<FunFactObject>} - The modified JSON array with each object
- * containing a key named "fun_fact".
- *
- * @interface FunFactObject
- * @property {string} fun_fact - The "fun_fact" key of the object.
- * @property {any} [key: string] - Optional additional keys of the object.
- *
- * @example
- * // returns [{fun_fact: "some fun fact"}, {fun_fact: "another fun fact"}]
- * replaceNonFunFactKeys([{fact: "some fun fact"},
- * {another_fact: "another fun fact"}]);
- */
-interface FunFactObject {
-  fun_fact: string;
-  [key: string]: any;
-}
-
-/**
- * Replaces non fun fact keys in a given object array with the
- * value of the first key
- * @param {FunFactObject[]} jsonArray - An array of objects with
- * fun_fact property
- * @return {FunFactObject[]} - An array of objects with only
- * fun_fact property
- */
-function replaceNonFunFactKeys(jsonArray: FunFactObject[]): FunFactObject[] {
-  for (let i = 0; i < jsonArray.length; i++) {
-    const obj = jsonArray[i];
-    if (!Object.prototype.hasOwnProperty.call(obj, "fun_fact")) {
-      obj.fun_fact = obj[Object.keys(obj)[0]];
-      delete obj[Object.keys(obj)[0]];
-    }
-  }
-  return jsonArray;
 }
 
 /**
@@ -558,7 +243,7 @@ async function saveChatGPTResponse(response, service) {
   } catch (error) {
     console.log(
       "🚀 ~ file: index.ts:498 ~ saveChatGPTResponse ~ error:",
-      error
+      error,
     );
   }
 }
@@ -615,55 +300,57 @@ function removeCloudAndWhitespace(str) {
   return newStr;
 }
 
-exports.fetchAPIData = functions.pubsub
-  .schedule("every sunday 00:00")
-  .onRun(async (context) => {
-    // List all api calls
-    const apiList = [
-      "getCombinedCloudData",
-      "getCloudData",
-      "getNetworkingData",
-      "getDatabaseData",
-      "getSecurityData",
-      "getGCloudData",
-    ];
-    try {
-      apiList.forEach(async (apiName) => {
-        // Update Firestore timestamp
-        const timestamp = firestore.FieldValue.serverTimestamp();
-        await firestore().collection("apiStatus").doc(apiName).update({
-          lastUpdated: timestamp,
-        });
-      });
-    } catch (error) {
-      console.log("🚀 ~ file: index.ts:581 ~ .onRun ~ error:", error);
-    }
-  });
+// exports.fetchAPIData = functions.pubsub
+//   .schedule("every sunday 00:00")
+//   .onRun(async (context) => {
+//     // List all api calls
+//     const apiList = [
+//       "getCombinedCloudData",
+//       "getCloudData",
+//       "getNetworkingData",
+//       "getDatabaseData",
+//       "getSecurityData",
+//       "getGCloudData",
+//     ];
+//     try {
+//       apiList.forEach(async (apiName) => {
+//         // Update Firestore timestamp
+//         const timestamp = firestore.FieldValue.serverTimestamp();
+//         await firestore().collection("apiStatus").doc(apiName).update({
+//           lastUpdated: timestamp,
+//         });
+//       });
+//     } catch (error) {
+//       console.log("🚀 ~ file: index.ts:581 ~ .onRun ~ error:", error);
+//     }
+//   });
 
-exports.reportGenerator = functions.https.onCall(async (snap, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
+exports.reportGenerator = onCall(async (request) => {
+  if (!request.auth.uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "User is not authenticated.",
     );
   }
   const openai = await getOpenaiClient();
-  const title = snap.title;
+  const title = request.data.title.toString();
   const content =
     "Write a 500 word report explaining to a high school student on " + title;
-  const model = "gpt-3.5-turbo";
+  const model = "gpt-4o-mini";
   const role = "user";
 
-  const completion = await openai.createChatCompletion({
+  const completion = await openai.chat.completions.create({
     model: model,
     messages: [{role: role, content: content}],
   });
 
-  const reportResponse = completion.data.choices[0].message.content;
+  const reportResponse = completion.choices[0].message.content;
 
   try {
     saveReportToFirestore(reportResponse, title);
   } catch (error) {
+    console.log("🚀 ~ file: index.ts:611 ~ exports.reportGenerator ~ error:",
+      error);
     saveReportToFirestore(reportResponse, title);
   }
 });
@@ -673,13 +360,13 @@ exports.reportGenerator = functions.https.onCall(async (snap, context) => {
 Saves a report to Firestore database.
 @async
 @function saveReportToFirestore
-@param {any} reportResponse - The report data to be saved.
+@param {string} reportResponse - The report data to be saved.
 @param {string} title - The title of the report.
 @throws {Error} - Throws an error if there was a problem saving
 the report to Firestore.
 @return {Promise<void>}
 */
-async function saveReportToFirestore(reportResponse: any, title: string) {
+async function saveReportToFirestore(reportResponse: string, title: string) {
   try {
     const ref = await firestore().collection("reports").add({
       content: reportResponse,
@@ -692,56 +379,53 @@ async function saveReportToFirestore(reportResponse: any, title: string) {
   } catch (error) {
     console.log(
       "🚀 ~ file: index.ts:637 ~ saveReportToFirestore ~ error:",
-      error
+      error,
     );
   }
 }
 
-exports.updateTags = functions.firestore
-  .document("reports/{doc}")
-  .onCreate(async (snap, context) => {
-    const openai = await getOpenaiClient();
-    const doc = context.params.doc;
-    const snapshot = snap.data();
-    const report = snapshot.content;
-    const docRef = firestore().collection("reports").doc(doc);
+exports.updateTags = onDocumentCreated("reports/{doc}", async (event) => {
+  const openai = await getOpenaiClient();
+  const doc = event.params.doc;
+  const snapshot = event.data.data();
+  const report = snapshot.content;
+  const docRef = firestore().collection("reports").doc(doc);
 
-    const content =
+  const content =
       report +
       " Create tags for this report to identify it " +
       "in a search. List them as a json array.";
-    const model = "gpt-3.5-turbo";
-    const role = "user";
+  const model = "gpt-4o-mini";
+  const role = "user";
 
-    try {
-      const completion = await openai.createChatCompletion({
-        model: model,
-        messages: [{role: role, content: content}],
-      });
-      const tagResponse = completion.data.choices[0].message.content;
-      const tagArray = JSON.parse(tagResponse);
-      console.log(
-        "🚀 ~ file: index.ts:664 ~ exports.reportGenerator ~ tagResponse:",
-        tagArray
-      );
-      await docRef.update({
-        tags: tagArray,
-      });
-    } catch (error) {
-      console.log(
-        "🚀 ~ file: index.ts:673 ~ exports.updateTags ~ error:",
-        error
-      );
-    }
-  });
+  try {
+    const completion = await openai.chat.completions.create({
+      model: model,
+      messages: [{role: role, content: content}],
+    });
+    const tagResponse = completion.choices[0].message.content;
+    const tagArray = JSON.parse(tagResponse);
+    console.log(
+      "🚀 ~ file: index.ts:664 ~ exports.reportGenerator ~ tagResponse:",
+      tagArray,
+    );
+    await docRef.update({
+      tags: tagArray,
+    });
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: index.ts:673 ~ exports.updateTags ~ error:",
+      error,
+    );
+  }
+});
 
-exports.databaseSolutionGenerator = functions.firestore
-  .document("databaseComparison/{docID}")
-  .onCreate(async (snap, context) => {
+exports.databaseSolutionGenerator = onDocumentCreated(
+  "databaseComparison/{docID}", async (event) => {
     const openai = await getOpenaiClient();
-    const docID = context.params.docID;
+    const docID = event.params.docID;
     const docRef = firestore().collection("databaseComparison").doc(docID);
-    const snapshot = snap.data();
+    const snapshot = event.data.data();
     interface MapType {
       question: string;
       answer: string;
@@ -753,18 +437,26 @@ exports.databaseSolutionGenerator = functions.firestore
       const answerList: string[] = answers.map((map: MapType) => map.answer);
       const answerString: string = answerList.join(" ");
       const content =
-        "Give suggestions and detailed reasons on what database service " +
-        `is best suited given the following parameters: ${answerString}.` +
-        "Include Description, Suggestions (list suggestions only), Reasons, " +
-        "Comparable services in GCP, AWS and Azure";
-      const model = "gpt-3.5-turbo";
+        "Please provide detailed recommendations for the best database" +
+        "service based on the following parameters: " +
+        {answerString} +
+        "Your response must include the following sections: " +
+        "Description: A brief summary of the recommended service. " +
+        "Suggestions: List the potential database services that best " +
+        "match the parameters. List only suggestions, one per line." +
+        "Reasons: Provide detailed reasons for each suggestion." +
+        "Comparable Services: Compare offerings from GCP, AWS, Azure, " +
+        "and other popular services highlighting key differences." +
+        "Format your response as plain text with clear section headings " +
+        "and no markdown.";
+      const model = "gpt-4o-mini";
       const role = "user";
 
-      const completion = await openai.createChatCompletion({
+      const completion = await openai.chat.completions.create({
         model,
         messages: [{role, content}],
       });
-      const response = completion.data.choices[0].message.content;
+      const response = completion.choices[0].message.content;
 
       try {
         docRef.update({
@@ -774,7 +466,7 @@ exports.databaseSolutionGenerator = functions.firestore
       } catch (error) {
         console.log(
           "🚀 ~ file: index.ts:717 ~ databaseSolutionGenerator ~ error:",
-          error
+          error,
         );
       }
     } catch (error) {
@@ -809,51 +501,263 @@ exports.createUserDocument = functions.auth.user().onCreate(async (user) => {
   } catch (error) {
     console.error(
       `Error creating user document for user with UID: ${uid}`,
-      error
+      error,
     );
   }
 });
 
 // Function to create new service document
-exports.serviceDataGenerator = functions.https.onCall(async (snap, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
+exports.serviceDataGenerator = onCall(async (request) => {
+  if (!request.auth.uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "User is not authenticated.",
     );
   }
   const openai = await getOpenaiClient();
-  const service = snap.service;
-  const serviceType = snap.serviceType;
-  const provider = snap.provider;
-  const content =
-    '{service: "", description: "", detail: "",benefits: [],cons: [],' +
-    'useCases: [],link: "",example: "",type:""} ' +
-    "Generate information that conforms to the above format for the " +
-    provider +
-    " service " +
-    service +
-    ", including service, description (12 words or less), " +
-    "detail, benefits (an array of strings), cons (an array of strings), " +
-    "useCases (an array of strings), link (a string in URI format), " +
-    "example (a string), and type ( a string with the value " +
-    serviceType +
-    "). Make each benefit and con 30 words or greater.";
-  const model = "gpt-3.5-turbo";
-  const role = "user";
+  const service = request.data.service;
+  const serviceType = request.data.serviceType;
+  const provider = request.data.provider;
+  const prompt = `Generate detailed information for the 
+  ${provider} service "${service}".
+Please include the following in your response:
+  - **service**: The service name.
+  - **description**: A short description (12 words or less).
+  - **detail**: Additional details about the service.
+  - **benefits**: An array of benefits (each should be at least 30 words).
+  - **cons**: An array of cons (each con should be at least 30 words).
+  - **useCases**: An array of use cases.
+  - **link**: A link (must be in valid URI format).
+  - **example**: An example.
+  - **type**: A string that must be "${serviceType}".
 
-  const completion = await openai.createChatCompletion({
+Output the result as a JSON object following the pre-defined schema.`;
+
+  const model = "gpt-4o-mini";
+
+  // Call the OpenAI API with the response_format option using
+  // the correct json_schema syntax.
+  const completion = await openai.chat.completions.create({
     model: model,
-    messages: [{role: role, content: content}],
+    messages: [{role: "user", content: prompt}],
+    response_format: {
+      type: "json_schema",
+      json_schema: {
+        name: "service_data_response",
+        schema: {
+          type: "object",
+          properties: {
+            service: {type: "string"},
+            description: {type: "string"},
+            detail: {type: "string"},
+            benefits: {type: "array", items: {type: "string"}},
+            cons: {type: "array", items: {type: "string"}},
+            useCases: {type: "array", items: {type: "string"}},
+            link: {type: "string", format: "uri"},
+            example: {type: "string"},
+            type: {type: "string"},
+          },
+          required: [
+            "service",
+            "description",
+            "detail",
+            "benefits",
+            "cons",
+            "useCases",
+            "link",
+            "example",
+            "type",
+          ],
+        },
+      },
+    },
   });
 
-  const response = completion.data.choices[0].message.content;
+  const response = completion.choices[0].message.content;
   console.log("🚀 ~ file: index.ts:788 ~ serviceDataGenerator:", response);
 
   try {
     saveServiceDataToFirestore(response, service, provider);
   } catch (error) {
     console.log("🚀 ~ file: index.ts:793 ~serviceDataGenerator~ error:", error);
+  }
+});
+
+exports.serviceDataGenerator = onCall(async (request) => {
+  if (!request.auth.uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "User is not authenticated.",
+    );
+  }
+
+  const service = request.data.service;
+  const serviceType = request.data.serviceType;
+  const provider = request.data.provider;
+
+  if (!service || !serviceType || !provider) {
+    throw new HttpsError(
+      "invalid-argument",
+      "Missing service, serviceType, or provider in the request.",
+    );
+  }
+
+  const prompt = `Generate detailed information for the
+$ service "${service}".
+Please include the following in your response:
+- **service**: The service name.
+- **description**: A short description (12 words or less).
+- **detail**: Additional details about the service.
+- **benefits**: An array of benefits (each should be at least 30 words).
+- **cons**: An array of cons (each con should be at least 30 words).
+- **useCases**: An array of use cases.
+- **link**: A link (must be in valid URI format).
+- **example**: An example.
+- **type**: A string that must be "${serviceType}".
+
+Output the result as a JSON object following the pre-defined schema.`;
+
+  const jsonSchema = {
+    type: SchemaType.OBJECT,
+    properties: {
+      service: {type: SchemaType.STRING},
+      description: {type: SchemaType.STRING},
+      detail: {type: SchemaType.STRING},
+      benefits: {type: SchemaType.ARRAY, items: {type: SchemaType.STRING}},
+      cons: {type: SchemaType.ARRAY, items: {type: SchemaType.STRING}},
+      useCases: {type: SchemaType.ARRAY, items: {type: SchemaType.STRING}},
+      link: {type: SchemaType.STRING, format: "uri"},
+      example: {type: SchemaType.STRING},
+      type: {type: SchemaType.STRING},
+    },
+    required: [
+      "service",
+      "description",
+      "detail",
+      "benefits",
+      "cons",
+      "useCases",
+      "link",
+      "example",
+      "type",
+    ],
+  };
+
+
+  if (provider === "openai") {
+    const openai = await getOpenaiClient(); // Assuming you have this function
+    const model = "gpt-4o-mini";
+
+    try {
+      const completion = await openai.chat.completions.create({
+        model: model,
+        messages: [{role: "user", content: prompt}],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "service_data_response",
+            schema: {
+              type: "object",
+              properties: {
+                service: {type: "string"},
+                description: {type: "string"},
+                detail: {type: "string"},
+                benefits: {type: "array", items: {type: "string"}},
+                cons: {type: "array", items: {type: "string"}},
+                useCases: {type: "array", items: {type: "string"}},
+                link: {type: "string", format: "uri"},
+                example: {type: "string"},
+                type: {type: "string"},
+              },
+              required: [
+                "service",
+                "description",
+                "detail",
+                "benefits",
+                "cons",
+                "useCases",
+                "link",
+                "example",
+                "type",
+              ],
+            },
+          },
+        },
+      });
+
+      const responseContent = completion.choices[0].message.content;
+      if (!responseContent) {
+        throw new HttpsError(
+          "unavailable", "OpenAI returned an empty response.");
+      }
+
+      try {
+        const parsedResponse = JSON.parse(responseContent);
+        return parsedResponse;
+      } catch (parseError) {
+        console.error(
+          "Error parsing OpenAI response:", parseError,
+          "Response content:", responseContent);
+        throw new HttpsError(
+          "internal", "Failed to parse OpenAI response as JSON.");
+      }
+    } catch (error) {
+      console.error("Error calling OpenAI:", error);
+      throw new HttpsError(
+        "unavailable", "Failed to get response from OpenAI: " + error.message);
+    }
+  } else if (provider === "google") {
+    try {
+      // Initialize Vertex AI
+      const vertexAI = new VertexAI({
+        project: process.env.GCLOUD_PROJECT,
+        location: "us-central1", // Or your desired location
+      });
+
+      const model = vertexAI.getGenerativeModel({
+        model: "gemini-1.5-pro-005",
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: jsonSchema,
+        },
+      });
+
+
+      // Call Vertex AI Gemini API
+
+      const response = await model.generateContent(prompt);
+
+      const content = response.response.candidates[0].content;
+
+      if (!content || !content.parts || content.parts.length === 0) {
+        throw new HttpsError(
+          "unavailable", "Vertex AI returned an empty content.");
+      }
+      const text = content.parts[0].text;
+
+      if (!text) {
+        throw new HttpsError("unavailable",
+          "Vertex AI returned an empty text.");
+      }
+      try {
+        const parsedResponse = JSON.parse(text);
+        return parsedResponse;
+      } catch (parseError) {
+        console.error("Error parsing Vertex AI response:",
+          parseError, "Response content:", text);
+        throw new HttpsError(
+          "internal", "Failed to parse Vertex AI response as JSON.");
+      }
+    } catch (error) {
+      console.error("Error calling Vertex AI:", error);
+      throw new HttpsError("unavailable",
+        "Failed to get response from Vertex AI: " + error.message);
+    }
+  } else {
+    throw new HttpsError(
+      "invalid-argument",
+      "Invalid provider.  Must be 'openai' or 'google'.",
+    );
   }
 });
 
@@ -875,10 +779,6 @@ async function saveServiceDataToFirestore(response, service, provider) {
     await saveServiceDataToFirestoreHelper(serviceData, service, provider);
   } catch (error) {
     console.error("🚨 ~ saveServiceDataToFirestore:", error.message);
-    const result = await convertToJSON(response);
-    const serviceData = JSON.parse(result);
-    console.log("saveServiceDataToFirestore: JSON.parse (fallback) completed");
-    await saveServiceDataToFirestoreHelper(serviceData, service, provider);
   }
 }
 /**
@@ -895,7 +795,7 @@ async function saveServiceDataToFirestore(response, service, provider) {
 async function saveServiceDataToFirestoreHelper(
   serviceData,
   service,
-  provider
+  provider,
 ) {
   const serviceName = removeCloudAndWhitespace(serviceData.service);
   await firestore().collection("services").doc(serviceName).set({
@@ -915,18 +815,10 @@ async function saveServiceDataToFirestoreHelper(
 }
 
 // Check if UID is Admin UID
-export const checkUserId = functions.https.onCall(async (data, context) => {
+export const checkUserId = onCall(async (request) => {
   try {
-    // Check if the request is authenticated
-    if (!context.auth) {
-      throw new functions.https.HttpsError(
-        "unauthenticated",
-        "Unable to perform action."
-      );
-    }
-
     // Get the UID of the authenticated user
-    const authenticatedUid = context.auth.uid;
+    const authenticatedUid = request.auth.uid;
 
     // Get the UID from secrets
     const adminUID = await getSecretsClient("adminUID");
@@ -939,89 +831,132 @@ export const checkUserId = functions.https.onCall(async (data, context) => {
       // Return an error if the UIDs do not match
       throw new functions.https.HttpsError(
         "permission-denied",
-        "User ID does not match."
+        "User ID does not match.",
       );
     }
   } catch (error) {
     console.log("🚀 ~ file: index.ts:825 ~ checkUserId ~ error:", error);
     // Catch any errors and throw as a Firebase Cloud Functions error
-    throw new functions.https.HttpsError("internal", error.message, error);
+    throw new HttpsError("internal", error.message, error);
   }
 });
 
 // Function to update service document
-exports.updateServiceField = functions.https.onCall(async (snap, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
+exports.updateServiceField = onCall(async (request) => {
+  if (!request.auth.uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "User is not authenticated.",
     );
   }
 
   const openai = await getOpenaiClient();
 
-  const service = snap.service;
-  const docID = removeCloudAndWhitespace(snap.service);
-  const field = snap.field;
+  const service = request.data.service;
+  const docID = removeCloudAndWhitespace(request.data.service);
+  const field = request.data.field;
   console.log("🚀 ~ field:", typeof field);
-  const provider = snap.provider;
+  const provider = request.data.provider;
   let content = "";
 
-  const model = "gpt-3.5-turbo";
+  const model = "gpt-4o-mini";
   const role = "user";
 
   const arrayDescription =
-    "This should be in an array of strings, with each " +
-    "string containing at least 30 words. Please ensure that " +
-    "the response is valid JSON and that the array is an array " +
-    "of strings, not an array of objects or maps.";
+  "Each item in the array must be a string with at least 30 words.";
 
-  // const arrayDescription2 =
-  //   "This should be in an array of non-numbered strings. " +
-  //   "Please ensure that the response is valid JSON and " +
-  //   "that the array is an array of strings, not an " +
-  //   "array of objects or maps.";
+  const responseFormat: {
+    type: "json_schema";
+    json_schema: {
+      name: string;
+      schema: {
+        type: "object";
+        properties: Record<string, any>;
+        required: string[];
+      };
+    };
+  } = {
+    type: "json_schema",
+    json_schema: {
+      name: "service_data_response",
+      schema: {
+        type: "object",
+        properties: {},
+        required: [],
+      },
+    },
+  };
 
   switch (field) {
   case "description":
-    content =
-        "Generate information that conforms to the json " +
-        `format {description: ""} for the ${provider} service ${service}.` +
-        "Make the description 12 words or less.";
+    content = `Generate a concise description (12 words or less) 
+    for the ${provider} service ${service}.`;
+    responseFormat.json_schema.schema.properties = {
+      description: {type: "string"},
+    };
+    responseFormat.json_schema.schema.required = ["description"];
     break;
+
   case "detail":
-    content =
-        "Generate a detailed explanation that conforms to the " +
-        `json format {detail: ""} for the ${provider} service ${service}.`;
+    content = `Provide a detailed explanation for the 
+    ${provider} service ${service}.`;
+    responseFormat.json_schema.schema.properties = {
+      detail: {type: "string"},
+    };
+    responseFormat.json_schema.schema.required = ["detail"];
     break;
+
   case "benefits":
-    content =
-        `Generate benefits for the ${provider} service ${service} ` +
-        `that conform to the JSON format {benefits: []}. ${arrayDescription}`;
+    content = `List benefits of the ${provider} 
+    service ${service}. ${arrayDescription}`;
+    responseFormat.json_schema.schema.properties = {
+      benefits: {
+        type: "array",
+        items: {type: "string"}, // Ensures each benefit has at least 30 words
+      },
+    };
+    responseFormat.json_schema.schema.required = ["benefits"];
     break;
+
   case "cons":
-    content =
-        `Generate cons for the ${provider} service ${service} ` +
-        `that conform to the JSON format {cons: []}. ${arrayDescription}`;
+    content = `List cons of the ${provider} 
+    service ${service}. ${arrayDescription}`;
+    responseFormat.json_schema.schema.properties = {
+      cons: {
+        type: "array",
+        items: {type: "string"},
+      },
+    };
+    responseFormat.json_schema.schema.required = ["cons"];
     break;
+
   case "useCases":
-    content =
-        `Generate use cases for the ${provider} service ${service} ` +
-        `that conform to the JSON format {useCases: []}. ${arrayDescription}`;
+    content = `List use cases of the ${provider} 
+    service ${service}. ${arrayDescription}`;
+    responseFormat.json_schema.schema.properties = {
+      useCases: {
+        type: "array",
+        items: {type: "string"},
+      },
+    };
+    responseFormat.json_schema.schema.required = ["useCases"];
     break;
+
   default:
-    console.log("🚀 ~ updateServiceField: Did not make api call.");
+    console.log("🚀 ~ updateServiceField: Did not make API call.");
     return;
   }
 
   console.log(content);
-  const completion = await openai.createChatCompletion({
+
+  const completion = await openai.chat.completions.create({
     model: model,
     messages: [{role: role, content: content}],
-    temperature: 0.5,
+    response_format: responseFormat,
   });
 
-  const response = completion.data.choices[0].message.content;
+
+  const response = completion.choices[0].message.content;
 
   try {
     updateFirestoreDocumentField(response, docID, field);
@@ -1035,7 +970,7 @@ exports.updateServiceField = functions.https.onCall(async (snap, context) => {
 Update firestore document fields.
 @async
 @function updateFirestoreDocumentField
-@param {any} response - The response data to be saved.
+@param {string} response - The response data to be saved.
 @param {string} docID - The document ID.
 @param {string} field - The document field to be updated.
 @throws {Error} - Throws an error if there was a problem saving
@@ -1043,9 +978,9 @@ the data to Firestore.
 @return {Promise<void>}
 */
 async function updateFirestoreDocumentField(
-  response: any,
+  response: string,
   docID: string,
-  field: string
+  field: string,
 ) {
   try {
     const serviceData = JSON.parse(response);
@@ -1069,8 +1004,7 @@ async function updateFirestoreDocumentField(
   } catch (error) {
     console.log("🚀 ~index.ts:969 ~ updateFirestoreDocumentField:", error);
     try {
-      const result = await convertToJSON(response);
-      const serviceData = JSON.parse(result);
+      const serviceData = JSON.parse(response);
       const updateData = {};
 
       if (field === "description") {
@@ -1116,11 +1050,11 @@ function removeLeadingNumbers(arr: string[]): string[] {
   return output;
 }
 
-exports.checkServices = functions.https.onCall(async (snap, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "Unable to perform action."
+exports.checkServices = onCall(async (request) => {
+  if (!request.auth.uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "User is not authenticated.",
     );
   }
   const servicesRef = firestore().collection("services");
@@ -1166,7 +1100,7 @@ exports.checkServices = functions.https.onCall(async (snap, context) => {
         console.error(
           `Document ${
             doc.id
-          } is missing the following fields: ${missingFields.join(", ")}`
+          } is missing the following fields: ${missingFields.join(", ")}`,
         );
       }
     });
@@ -1175,10 +1109,9 @@ exports.checkServices = functions.https.onCall(async (snap, context) => {
   }
 });
 
-exports.createPopularServicesDocument = functions.firestore
-  .document("services/{serviceId}")
-  .onCreate(async (snapshot, context) => {
-    const serviceId = context.params.serviceId;
+exports.createPopularServicesDocument = onDocumentCreated(
+  "services/{serviceId}", async (event) => {
+    const serviceId = event.params.serviceId;
     try {
       const popularServicesRef = firestore()
         .collection("popularServices")
@@ -1197,10 +1130,9 @@ exports.createPopularServicesDocument = functions.firestore
   });
 
 // Update interaction collection with last updated timestamp
-exports.lastInteractionTimestamp = functions.firestore
-  .document("userInteraction/{uid}/interactions/{doc}")
-  .onCreate(async (snapshot, context) => {
-    const uid = context.params.uid;
+exports.lastInteractionTimestamp = onDocumentCreated(
+  "userInteraction/{uid}/interactions/{doc}", async (event) => {
+    const uid = event.params.uid;
     try {
       const popularServicesRef = firestore()
         .collection("userInteraction")
@@ -1215,6 +1147,202 @@ exports.lastInteractionTimestamp = functions.firestore
       console.error(`Error updating user interaction document: ${error}`);
     }
   });
+
+
+//  Combined data api call.
+exports.getCombinedData = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+    "https://storage.googleapis.com/api-project-371618.appspot.com/combined_data.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:70 ~ getCombinedData ~ error:", error);
+    return "Error in combined cloud data API call";
+  }
+});
+
+//  Cloud data api call.
+exports.getCloudData = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+      "https://storage.googleapis.com/api-project-371618.appspot.com/cloud_data.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:94 ~ getCloudData ~ error:", error);
+    return "Error in cloud data API call";
+  }
+});
+
+//    Networking data api call.
+exports.getNetworkingData = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+      "https://storage.googleapis.com/api-project-371618.appspot.com/cloud_networking.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:118 ~ getNetworkingData ~ error:", error);
+    return "Error in cloud networking data API call";
+  }
+});
+
+//    Database data api call.
+exports.getDatabaseData = onCall(async (request) => {
+  if (!request.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+      "https://storage.googleapis.com/api-project-371618.appspot.com/database_data.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:142 ~ getDatabaseData ~ error:", error);
+    return "Error in cloud database data API call";
+  }
+});
+
+//    Security data api call.
+exports.getSecurityData = onCall(async (request) => {
+  if (!request.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+      "https://storage.googleapis.com/api-project-371618.appspot.com/security_data.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:166 ~ getSecurityData ~ error:", error);
+    return "Error in cloud security data API call";
+  }
+});
+
+//    Gcloud command line data api call.
+exports.getGCloudData = onCall(async (request) => {
+  if (!request.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+    "https://storage.googleapis.com/api-project-371618.appspot.com/cmd_line_cheat_sheet.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:190 ~ getGCloudData ~ error:", error);
+    return "Error in gcloud data API call";
+  }
+});
+
+// Get Database Comparison Questions
+exports.getDatabaseComparisonQuestions = onCall(async (request) => {
+  if (!request.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+    "https://storage.googleapis.com/api-project-371618.appspot.com/database_comparison_questions.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: index.ts:214 ~ getDatabaseComparisonQuestions ~ error:",
+      error,
+    );
+    return "Error in database comparison questions API call";
+  }
+});
+
+// Get Facts Data
+exports.getFactsData = onCall(async (request) => {
+  if (!request.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Unable to perform action.",
+    );
+  }
+  const url =
+    "https://storage.googleapis.com/api-project-371618.appspot.com/facts.json";
+
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200) {
+      return JSON.stringify(response.data);
+    } else {
+      return response.status;
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: index.ts:238 ~ getFactsData ~ error:", error);
+    return "Error in facts data API call";
+  }
+});
 
 // Delete user document
 // npm run lint -- --fix

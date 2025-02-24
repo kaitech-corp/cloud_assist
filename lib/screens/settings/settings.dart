@@ -5,7 +5,12 @@ import 'package:nil/nil.dart';
 
 import '../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../bloc/authentication_bloc/authentication_event.dart';
+import '../../bloc/generics/generic_bloc.dart';
+import '../../models/cloud_data_model/cloud_data_model.dart';
+import '../../models/quick_fact_model/quick_fact_model.dart';
 import '../../models/user_model/user_model.dart';
+import '../../repositories/cloud_data_repository.dart';
+import '../../repositories/quick_facts_repository.dart';
 import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
@@ -33,7 +38,8 @@ class SettingsPageState extends State<SettingsPage> {
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to delete this account? Account and all linked data will be deleted.'),
+                Text(
+                    'Are you sure you want to delete this account? Account and all linked data will be deleted.'),
               ],
             ),
           ),
@@ -49,10 +55,10 @@ class SettingsPageState extends State<SettingsPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 FirestoreDatabase().saveUserInteraction(
-                docID: '',
-                featureId: FeatureID.deleteAccount.toString(),
-                startTime: false,
-                endTime: true);
+                    docID: '',
+                    featureId: FeatureID.deleteAccount.toString(),
+                    startTime: false,
+                    endTime: true);
                 BlocProvider.of<AuthenticationBloc>(context)
                     .add(AuthenticationLoggedOut());
                 UserRepository().deleteUser();

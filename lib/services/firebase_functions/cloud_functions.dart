@@ -328,7 +328,6 @@ class CloudFunctions {
           .instance
           .httpsCallable('getDatabaseComparisonQuestions')
           .call();
-
       // Parse the JSON response from the callable as a List of Maps
       final List<dynamic> response =
           json.decode(callable.data as String) as List<dynamic>;

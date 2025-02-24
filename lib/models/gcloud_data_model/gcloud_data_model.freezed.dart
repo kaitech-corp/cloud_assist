@@ -12,7 +12,7 @@ part of 'gcloud_data_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 GCloudData _$GCloudDataFromJson(Map<String, dynamic> json) {
   return _GCloudData.fromJson(json);
@@ -24,8 +24,12 @@ mixin _$GCloudData {
   String get title => throw _privateConstructorUsedError;
   Map<String, String> get commands => throw _privateConstructorUsedError;
 
+  /// Serializes this GCloudData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GCloudData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GCloudDataCopyWith<GCloudData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +53,8 @@ class _$GCloudDataCopyWithImpl<$Res, $Val extends GCloudData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GCloudData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,24 +80,26 @@ class _$GCloudDataCopyWithImpl<$Res, $Val extends GCloudData>
 }
 
 /// @nodoc
-abstract class _$$_GCloudDataCopyWith<$Res>
+abstract class _$$GCloudDataImplCopyWith<$Res>
     implements $GCloudDataCopyWith<$Res> {
-  factory _$$_GCloudDataCopyWith(
-          _$_GCloudData value, $Res Function(_$_GCloudData) then) =
-      __$$_GCloudDataCopyWithImpl<$Res>;
+  factory _$$GCloudDataImplCopyWith(
+          _$GCloudDataImpl value, $Res Function(_$GCloudDataImpl) then) =
+      __$$GCloudDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String topic, String title, Map<String, String> commands});
 }
 
 /// @nodoc
-class __$$_GCloudDataCopyWithImpl<$Res>
-    extends _$GCloudDataCopyWithImpl<$Res, _$_GCloudData>
-    implements _$$_GCloudDataCopyWith<$Res> {
-  __$$_GCloudDataCopyWithImpl(
-      _$_GCloudData _value, $Res Function(_$_GCloudData) _then)
+class __$$GCloudDataImplCopyWithImpl<$Res>
+    extends _$GCloudDataCopyWithImpl<$Res, _$GCloudDataImpl>
+    implements _$$GCloudDataImplCopyWith<$Res> {
+  __$$GCloudDataImplCopyWithImpl(
+      _$GCloudDataImpl _value, $Res Function(_$GCloudDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GCloudData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -99,7 +107,7 @@ class __$$_GCloudDataCopyWithImpl<$Res>
     Object? title = null,
     Object? commands = null,
   }) {
-    return _then(_$_GCloudData(
+    return _then(_$GCloudDataImpl(
       topic: null == topic
           ? _value.topic
           : topic // ignore: cast_nullable_to_non_nullable
@@ -118,15 +126,15 @@ class __$$_GCloudDataCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_GCloudData with DiagnosticableTreeMixin implements _GCloudData {
-  const _$_GCloudData(
+class _$GCloudDataImpl with DiagnosticableTreeMixin implements _GCloudData {
+  const _$GCloudDataImpl(
       {required this.topic,
       required this.title,
       required final Map<String, String> commands})
       : _commands = commands;
 
-  factory _$_GCloudData.fromJson(Map<String, dynamic> json) =>
-      _$$_GCloudDataFromJson(json);
+  factory _$GCloudDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GCloudDataImplFromJson(json);
 
   @override
   final String topic;
@@ -156,29 +164,31 @@ class _$_GCloudData with DiagnosticableTreeMixin implements _GCloudData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GCloudData &&
+            other is _$GCloudDataImpl &&
             (identical(other.topic, topic) || other.topic == topic) &&
             (identical(other.title, title) || other.title == title) &&
             const DeepCollectionEquality().equals(other._commands, _commands));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, topic, title,
       const DeepCollectionEquality().hash(_commands));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GCloudData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GCloudDataCopyWith<_$_GCloudData> get copyWith =>
-      __$$_GCloudDataCopyWithImpl<_$_GCloudData>(this, _$identity);
+  _$$GCloudDataImplCopyWith<_$GCloudDataImpl> get copyWith =>
+      __$$GCloudDataImplCopyWithImpl<_$GCloudDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GCloudDataToJson(
+    return _$$GCloudDataImplToJson(
       this,
     );
   }
@@ -188,10 +198,10 @@ abstract class _GCloudData implements GCloudData {
   const factory _GCloudData(
       {required final String topic,
       required final String title,
-      required final Map<String, String> commands}) = _$_GCloudData;
+      required final Map<String, String> commands}) = _$GCloudDataImpl;
 
   factory _GCloudData.fromJson(Map<String, dynamic> json) =
-      _$_GCloudData.fromJson;
+      _$GCloudDataImpl.fromJson;
 
   @override
   String get topic;
@@ -199,8 +209,11 @@ abstract class _GCloudData implements GCloudData {
   String get title;
   @override
   Map<String, String> get commands;
+
+  /// Create a copy of GCloudData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_GCloudDataCopyWith<_$_GCloudData> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GCloudDataImplCopyWith<_$GCloudDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

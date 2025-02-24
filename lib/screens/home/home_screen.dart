@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/service_config/service_config.dart';
 import '../../bloc/generics/generic_bloc.dart';
 import '../../bloc/generics/generic_state.dart';
+import '../../bloc/generics/generics_event.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../repositories/cloud_data_repository.dart';
 import '../../services/constants.dart';
@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     bloc =
         BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context);
+    bloc.add(LoadingGenericData());
     super.initState();
   }
 
@@ -44,39 +45,36 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SizedBox(
-          height: SizeConfig.screenHeight,
-          width: SizeConfig.screenWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                child: Text(
-                  'Cloud Assist',
-                  style: headlineMedium(context),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Header text
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              child: Text(
+                'Cloud Assist',
+                style: headlineMedium(context),
               ),
-              Expanded(
-                  child: BlocBuilder<
-                          GenericBloc<CloudData, CloudDataRepository>,
-                          GenericState>(
-                      bloc: bloc,
-                      builder: (BuildContext context, GenericState state) {
-                        if (state is HasDataState) {
-                          final List<CloudData> cloudData =
-                              state.data as List<CloudData>;
-                          return TabControllerWidget(
-                            cloudData: cloudData,
-                          );
-                        } else {
-                          return const TabControllerWidget(
-                              cloudData: <CloudData>[]);
-                        }
-                      })),
-            ],
-          ),
+            ),
+            const SizedBox(height: 8.0),
+            // Expanded area for the main content
+            Expanded(
+              child: BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
+                  GenericState>(
+                bloc: bloc,
+                builder: (BuildContext context, GenericState state) {
+                  if (state is HasDataState) {
+                    final List<CloudData> cloudData =
+                        state.data as List<CloudData>;
+                    return TabControllerWidget(cloudData: cloudData);
+                  } else {
+                    return const TabControllerWidget(cloudData: <CloudData>[]);
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -86,43 +84,51 @@ class _HomeScreenState extends State<HomeScreen> {
 class TabControllerWidget extends StatelessWidget {
   const TabControllerWidget({super.key, required this.cloudData});
   final List<CloudData> cloudData;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5,
-        child: Column(
-          children: <Widget>[
-            TabBar(
-              tabs: List<Widget>.generate(5, (int index) => Text(tabs[index])),
-              isScrollable: true,
-              labelStyle: titleMedium(context),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Container(height: 2, color: Colors.grey),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: <Widget>[
-                  const Column(
+      length: 5,
+      child: Column(
+        children: <Widget>[
+          // Tab bar (scrollable if needed)
+          TabBar(
+            tabs:
+                List<Widget>.generate(5, (int index) => Tab(text: tabs[index])),
+            isScrollable: true,
+            indicatorColor: Theme.of(context).colorScheme.secondary,
+            labelColor: Theme.of(context).colorScheme.secondary,
+            unselectedLabelColor: Theme.of(context).textTheme.bodyMedium?.color,
+            labelStyle: titleMedium(context),
+            labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+          ),
+          const SizedBox(height: 16.0),
+          Container(height: 2, color: Colors.grey),
+          Expanded(
+            child: TabBarView(
+              children: <Widget>[
+                const SingleChildScrollView(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
                     children: <Widget>[
-                      Expanded(flex: 3, child: QuickFactWidget()),
+                      QuickFactWidget(),
+                      SizedBox(height: 16.0),
                       QuickLinks(),
-                      Expanded(flex: 3, child: FeaturedService())
+                      SizedBox(height: 16.0),
+                      FeaturedService(),
                     ],
                   ),
-                  PopularServices(
-                    cloudData: cloudData,
-                  ),
-                  AWSServices(cloudData: cloudData),
-                  GCPServices(
-                    cloudData: cloudData,
-                  ),
-                  const GCloudScreen()
-                ],
-              ),
-            )
-          ],
-        ));
+                ),
+                // Other tabs
+                PopularServices(cloudData: cloudData),
+                AWSServices(cloudData: cloudData),
+                GCPServices(cloudData: cloudData),
+                const GCloudScreen(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

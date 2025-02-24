@@ -70,6 +70,10 @@ class UserRepository {
       final result = await _firebaseAuth.signInAnonymously();
       return result;
     } catch (e) {
+      if (kDebugMode) {
+        print('Error signing in anonymously: $e');
+        
+      }
       crashlytics.log('Error signing in anonymously: $e');
       return null;
     }
@@ -92,6 +96,9 @@ class UserRepository {
       return await _firebaseAuth.signInWithCredential(credential);
     } catch (e) {
       crashlytics.log('Error in Apple sign in: $e');
+      if (kDebugMode) {
+        print( 'Error in Apple sign in: $e');
+      }
       return null;
     }
   }

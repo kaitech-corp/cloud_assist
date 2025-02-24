@@ -1,16 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'user_interaction.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UserInteractionModel _$$_UserInteractionModelFromJson(
-        Map<Object?, dynamic> json) =>
-    _$_UserInteractionModel(
+_$UserInteractionModelImpl _$$UserInteractionModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$UserInteractionModelImpl(
       serviceId: json['serviceId'] as String?,
       featureId: json['featureId'] as String?,
       startTime: _$JsonConverterFromJson<Timestamp, DateTime>(
@@ -19,8 +17,8 @@ _$_UserInteractionModel _$$_UserInteractionModelFromJson(
           json['endTime'], const TimestampConverter().fromJson),
     );
 
-Map<String, dynamic> _$$_UserInteractionModelToJson(
-        _$_UserInteractionModel instance) =>
+Map<String, dynamic> _$$UserInteractionModelImplToJson(
+        _$UserInteractionModelImpl instance) =>
     <String, dynamic>{
       'serviceId': instance.serviceId,
       'featureId': instance.featureId,

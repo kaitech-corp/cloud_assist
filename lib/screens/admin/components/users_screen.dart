@@ -114,22 +114,22 @@ class StatisticsScreen extends StatelessWidget {
     // );
   }
 
-  List<UserData> _createData(List<UserModel> userlist) {
-    final DateTime now = DateTime.now();
-    return <UserData>[
-      UserData(now.subtract(const Duration(days: 30)),
-          getUserCount(userlist, now.subtract(const Duration(days: 30)))),
-      UserData(now.subtract(const Duration(days: 25)),
-          getUserCount(userlist, now.subtract(const Duration(days: 25)))),
-      UserData(now.subtract(const Duration(days: 20)),
-          getUserCount(userlist, now.subtract(const Duration(days: 20)))),
-      UserData(now.subtract(const Duration(days: 15)),
-          getUserCount(userlist, now.subtract(const Duration(days: 15)))),
-      UserData(now.subtract(const Duration(days: 10)),
-          getUserCount(userlist, now.subtract(const Duration(days: 10)))),
-      UserData(now.subtract(const Duration(days: 5)),
-          getUserCount(userlist, now.subtract(const Duration(days: 5)))),
-      UserData(now, 25),
-    ];
-  }
+  // List<UserData> _createData(List<UserModel> userlist) {
+  //   final DateTime now = DateTime.now();
+  //   return <UserData>[
+  //     UserData(now.subtract(const Duration(days: 30)),
+  //         getUserCount(userlist, now.subtract(const Duration(days: 30)))),
+  //     UserData(now.subtract(const Duration(days: 25)),
+  //         getUserCount(userlist, now.subtract(const Duration(days: 25)))),
+  //     UserData(now.subtract(const Duration(days: 20)),
+  //         getUserCount(userlist, now.subtract(const Duration(days: 20)))),
+  //     UserData(now.subtract(const Duration(days: 15)),
+  //         getUserCount(userlist, now.subtract(const Duration(days: 15)))),
+  //     UserData(now.subtract(const Duration(days: 10)),
+  //         getUserCount(userlist, now.subtract(const Duration(days: 10)))),
+  //     UserData(now.subtract(const Duration(days: 5)),
+  //         getUserCount(userlist, now.subtract(const Duration(days: 5)))),
+  //     UserData(now, 25),
+  //   ];
+  // }
 }

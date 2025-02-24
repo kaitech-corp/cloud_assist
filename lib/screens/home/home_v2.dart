@@ -3,10 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/service_config/service_config.dart';
 import '../../bloc/generics/generic_bloc.dart';
-import '../../bloc/generics/generic_state.dart';
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../repositories/cloud_data_repository.dart';
-import '../../services/constants.dart';
 import '../../services/ui/text_styles.dart';
 import '../tabs/aws.dart';
 import '../tabs/command_lines.dart';
@@ -60,22 +58,9 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
                   ),
                 ),
 
-                // const QuickFactWidget(),
+                const QuickFactWidget(),
                 const FeaturedService(),
-                // BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
-                //         GenericState>(
-                //     bloc: bloc,
-                //     builder: (BuildContext context, GenericState state) {
-                //       if (state is HasDataState) {
-                //         final List<CloudData> cloudData =
-                //             state.data as List<CloudData>;
-                //         return Text(cloudData[0].service);
-                //       } else {
-                //         return Container(
-                //           color: Colors.yellow,
-                //         );
-                //       }
-                //     }),
+
               ],
             ),
           ),

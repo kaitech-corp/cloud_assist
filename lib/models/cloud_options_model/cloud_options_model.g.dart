@@ -1,15 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'cloud_options_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_CloudOptions _$$_CloudOptionsFromJson(Map<String, dynamic> json) =>
-    _$_CloudOptions(
+_$CloudOptionsImpl _$$CloudOptionsImplFromJson(Map<String, dynamic> json) =>
+    _$CloudOptionsImpl(
       architecture: json['architecture'] as String,
       budget: json['budget'] as String,
       dataAccessFrequency: json['dataAccessFrequency'] as String,
@@ -22,7 +20,7 @@ _$_CloudOptions _$$_CloudOptionsFromJson(Map<String, dynamic> json) =>
       workload: json['workload'] as String,
     );
 
-Map<String, dynamic> _$$_CloudOptionsToJson(_$_CloudOptions instance) =>
+Map<String, dynamic> _$$CloudOptionsImplToJson(_$CloudOptionsImpl instance) =>
     <String, dynamic>{
       'architecture': instance.architecture,
       'budget': instance.budget,

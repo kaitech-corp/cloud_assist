@@ -1,5 +1,21 @@
 {
-  "include": [
-    ".eslintrc.cjs"
-  ]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "strict": true,
+    "sourceMap": true,
+    "outDir": "./functions/lib",
+    "rootDir": "./functions/src",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,  
+    "noImplicitReturns": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "lib"]
 }

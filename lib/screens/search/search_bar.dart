@@ -54,7 +54,7 @@ class CustomSearchBarState extends State<CustomSearchBar> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
                 GenericState>(
               builder: (BuildContext context, GenericState state) {
@@ -62,7 +62,7 @@ class CustomSearchBarState extends State<CustomSearchBar> {
                   return Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,

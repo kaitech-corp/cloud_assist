@@ -67,8 +67,8 @@ class _LoginFormState extends State<LoginForm> {
                                 .style
                                 ?.copyWith(
                                     backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all(
+                                        WidgetStateProperty.all(Colors.white),
+                                    shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(30)))),
@@ -110,8 +110,9 @@ class _LoginFormState extends State<LoginForm> {
                           child: Text(
                             'Sign In Anonymously',
                             style: titleLarge(context)?.copyWith(
-                                color: Colors.blue,
+                                color: Colors.black,
                                 fontStyle: FontStyle.italic),
+                                
                           ),
                           onPressed: () {
                             _onPressedAnonymousSignIn();

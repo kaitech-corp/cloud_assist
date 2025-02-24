@@ -1,29 +1,33 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'report_model.dart';
+part of 'agent_data_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ReportModelImpl _$$ReportModelImplFromJson(Map<String, dynamic> json) =>
-    _$ReportModelImpl(
-      content: json['content'] as String,
-      docID: json['docID'] as String,
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      title: json['title'] as String,
+_$AgentDataImpl _$$AgentDataImplFromJson(Map<String, dynamic> json) =>
+    _$AgentDataImpl(
+      agent: json['agent'] as String,
+      context: json['context'] as String,
+      response: json['response'] as Map<String, dynamic>,
+      response_id: json['response_id'] as String,
       timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['timestamp'], const TimestampConverter().fromJson),
+      topic_id: json['topic_id'] as String,
+      user_id: json['user_id'] as String,
     );
 
-Map<String, dynamic> _$$ReportModelImplToJson(_$ReportModelImpl instance) =>
+Map<String, dynamic> _$$AgentDataImplToJson(_$AgentDataImpl instance) =>
     <String, dynamic>{
-      'content': instance.content,
-      'docID': instance.docID,
-      'tags': instance.tags,
-      'title': instance.title,
+      'agent': instance.agent,
+      'context': instance.context,
+      'response': instance.response,
+      'response_id': instance.response_id,
       'timestamp': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.timestamp, const TimestampConverter().toJson),
+      'topic_id': instance.topic_id,
+      'user_id': instance.user_id,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

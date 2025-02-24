@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'quick_fact_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_QuickFact _$$_QuickFactFromJson(Map<String, dynamic> json) => _$_QuickFact(
+_$QuickFactImpl _$$QuickFactImplFromJson(Map<String, dynamic> json) =>
+    _$QuickFactImpl(
       fact: json['fact'] as String,
       docID: json['docID'] as String,
       service: json['service'] as String,
@@ -17,7 +16,7 @@ _$_QuickFact _$$_QuickFactFromJson(Map<String, dynamic> json) => _$_QuickFact(
           json['timestamp'], const TimestampConverter().fromJson),
     );
 
-Map<String, dynamic> _$$_QuickFactToJson(_$_QuickFact instance) =>
+Map<String, dynamic> _$$QuickFactImplToJson(_$QuickFactImpl instance) =>
     <String, dynamic>{
       'fact': instance.fact,
       'docID': instance.docID,

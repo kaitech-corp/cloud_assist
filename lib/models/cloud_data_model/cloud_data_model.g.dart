@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names, always_specify_types
-
 part of 'cloud_data_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_CloudData _$$_CloudDataFromJson(Map<String, dynamic> json) => _$_CloudData(
+_$CloudDataImpl _$$CloudDataImplFromJson(Map<String, dynamic> json) =>
+    _$CloudDataImpl(
       service: json['service'] as String,
       description: json['description'] as String,
       detail: json['detail'] as String,
@@ -23,7 +22,7 @@ _$_CloudData _$$_CloudDataFromJson(Map<String, dynamic> json) => _$_CloudData(
       example: json['example'] as String,
     );
 
-Map<String, dynamic> _$$_CloudDataToJson(_$_CloudData instance) =>
+Map<String, dynamic> _$$CloudDataImplToJson(_$CloudDataImpl instance) =>
     <String, dynamic>{
       'service': instance.service,
       'description': instance.description,

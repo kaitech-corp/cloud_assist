@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bloc_observer/custom_bloc_observer.dart';
+import '../firebase_options.dart';
 
 Future<String> projectInitializer() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
   Bloc.observer = CustomBlocObserver();
 

@@ -1,15 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names, always_specify_types
-
 part of 'comparison_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ComparisonModel _$$_ComparisonModelFromJson(Map<String, dynamic> json) =>
-    _$_ComparisonModel(
+_$ComparisonModelImpl _$$ComparisonModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ComparisonModelImpl(
       answer: json['answer'] as String,
       docID: json['docID'] as String,
       timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
@@ -19,7 +18,8 @@ _$_ComparisonModel _$$_ComparisonModelFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_ComparisonModelToJson(_$_ComparisonModel instance) =>
+Map<String, dynamic> _$$ComparisonModelImplToJson(
+        _$ComparisonModelImpl instance) =>
     <String, dynamic>{
       'answer': instance.answer,
       'docID': instance.docID,

@@ -28,17 +28,42 @@ class DatabaseComparisonScreen extends StatefulWidget {
 
 class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   late QuestionsBloc _questionsBloc;
-  List<AnswersSelected> answerSelected = List<AnswersSelected>.generate(
-      10, (int index) => AnswersSelected(null, null));
+  late List<AnswersSelected> answerSelected;
 
   @override
   void initState() {
     super.initState();
     _questionsBloc = QuestionsBloc();
     FirestoreDatabase().saveUserInteraction(
-        featureId: FeatureID.database.toString(),
-        startTime: true,
-        endTime: false);
+      featureId: FeatureID.database.toString(),
+      startTime: true,
+      endTime: false,
+    );
+
+    // Initialize answerSelected only if questions are already available.
+    if (widget.questions.isNotEmpty) {
+      answerSelected = List<AnswersSelected>.generate(
+        widget.questions.length,
+        (int index) => AnswersSelected(null, null),
+      );
+    } else {
+      answerSelected = <AnswersSelected>[];
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant DatabaseComparisonScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // When widget.questions is updated (e.g. loaded asynchronously),
+    // ensure answerSelected is generated accordingly.
+    if (oldWidget.questions.isEmpty && widget.questions.isNotEmpty) {
+      setState(() {
+        answerSelected = List<AnswersSelected>.generate(
+          widget.questions.length,
+          (int index) => AnswersSelected(null, null),
+        );
+      });
+    }
   }
 
   @override
@@ -112,6 +137,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   }
 
   Widget _buildQuestionsList(BuildContext context) {
+    print(widget.questions.length);
     return Expanded(
       child: ListView.builder(
         itemCount: widget.questions.length,
@@ -200,8 +226,8 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
                   _questionsBloc.add(
                     AnswersSubmitted(answerSelected: state.answerSelected),
                   );
-                  answerSelected = List<AnswersSelected>.generate(
-                      10, (int index) => AnswersSelected(null, null));
+                  // answerSelected = List<AnswersSelected>.generate(
+                  //     widget.questions.length, (int index) => AnswersSelected(null, null));
                   final String docID = hashToString(state.answerSelected);
                   router.goNamed('solution', extra: docID);
                   FirestoreDatabase().saveUserInteraction(
@@ -217,24 +243,4 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
     );
   }
 }
-/*
-The code defines a StatefulWidget for comparing different database architectures.
-The widget contains a list of DatabaseArchitecture objects, each with a question 
-and a set of possible answers. The state of the widget contains a Bloc for 
-managing the state of the questions and a list of AnswersSelected objects, each 
-representing the selected answer for a particular question.
 
-
-The widget's build method returns a SafeArea widget containing a Column with the 
-title and subtitle, a divider, and a ListView containing the 
-DatabaseArchitecture questions as items. Each question is rendered as a Column 
-containing the question and a DropdownButtonFormField for selecting an answer. 
-The state of the answerSelected list is updated whenever an answer is selected, 
-and the new state is sent to the Bloc.
-
-
-The widget also contains two private methods for rendering the title and 
-subtitle, as well as a method for rendering each question item as a Column. 
-Finally, there is a private method for rendering a FloatingActionButton for 
-submitting the answers.
-*/
