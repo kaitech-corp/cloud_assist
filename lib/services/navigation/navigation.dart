@@ -21,6 +21,7 @@ import '../../screens/solutions/solution_list_screen.dart';
 import '../../screens/solutions/solution_screen.dart';
 import '../../screens/tabs/components/gcloud_detail_screen.dart';
 import '../../screens/tabs/services/service_details.dart';
+import '../service_locator.dart';
 
 ///Go router navigation
 final GoRouter router = GoRouter(
@@ -55,7 +56,7 @@ final GoRouter router = GoRouter(
                 GenericBloc<ComparisonModel, SolutionsRepository>>(
               create: (BuildContext context) =>
                   GenericBloc<ComparisonModel, SolutionsRepository>(
-                      repository: SolutionsRepository()),
+                      repository: locator<SolutionsRepository>()),
               child: const SolutionListScreen(),
             );
           },
@@ -67,8 +68,8 @@ final GoRouter router = GoRouter(
             final String docID = state.extra! as String;
             return BlocProvider<ComparisonModelBloc>(
               create: (BuildContext context) => ComparisonModelBloc(
-                  comparisonModelRepository: ComparisonModelRepository()
-                    ..refresh(docID)),
+                  comparisonModelRepository:
+                      locator<ComparisonModelRepository>()..refresh(docID)),
               child: const DatabaseSolutionScreen(),
             );
           },
@@ -90,7 +91,7 @@ final GoRouter router = GoRouter(
             return BlocProvider<GenericBloc<ReportModel, ReportRepository>>(
               create: (BuildContext context) =>
                   GenericBloc<ReportModel, ReportRepository>(
-                      repository: ReportRepository()),
+                      repository: locator<ReportRepository>()),
               child: const ReportsScreen(),
             );
           },

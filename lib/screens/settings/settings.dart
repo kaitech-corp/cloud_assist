@@ -5,19 +5,14 @@ import 'package:nil/nil.dart';
 
 import '../../bloc/authentication_bloc/authentication_bloc.dart';
 import '../../bloc/authentication_bloc/authentication_event.dart';
-import '../../bloc/generics/generic_bloc.dart';
-import '../../models/cloud_data_model/cloud_data_model.dart';
-import '../../models/quick_fact_model/quick_fact_model.dart';
 import '../../models/user_model/user_model.dart';
-import '../../repositories/cloud_data_repository.dart';
-import '../../repositories/quick_facts_repository.dart';
 import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
-
 import '../../services/firebase_functions/functions.dart';
 import '../../services/navigation/navigation.dart';
+import '../../services/service_locator.dart';
 import '../../services/ui/text_styles.dart';
 import 'components/network_image_fallback.dart';
 
@@ -61,7 +56,7 @@ class SettingsPageState extends State<SettingsPage> {
                     endTime: true);
                 BlocProvider.of<AuthenticationBloc>(context)
                     .add(AuthenticationLoggedOut());
-                UserRepository().deleteUser();
+                locator<UserRepository>().deleteUser();
               },
             ),
           ],

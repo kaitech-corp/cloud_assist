@@ -7,15 +7,14 @@ import '../../bloc/login_bloc/bloc.dart';
 
 import '../../repositories/user_repository.dart';
 import '../../services/service_config/service_config.dart';
+import '../../services/service_locator.dart';
 import '../../services/ui/text_styles.dart';
 // import 'components/curved_widget.dart';
 import 'login_form.dart';
 
 /// Login screen
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-
-  final UserRepository _userRepository = UserRepository();
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class LoginScreen extends StatelessWidget {
       ),
       body: BlocProvider<LoginBloc>(
         create: (BuildContext context) =>
-            LoginBloc(userRepository: _userRepository),
+            LoginBloc(userRepository: locator<UserRepository>()),
         child: Container(
           height: double.infinity,
           decoration: BoxDecoration(

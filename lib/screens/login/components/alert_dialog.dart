@@ -4,6 +4,7 @@ import '../../../repositories/user_repository.dart';
 import '../../../services/constants.dart';
 import '../../../services/firebase_functions/functions.dart';
 import '../../../services/navigation/navigation.dart';
+import '../../../services/service_locator.dart';
 
 Future<dynamic> resetPasswordAlertDialog(BuildContext context) {
   final TextEditingController emailController = TextEditingController();
@@ -55,7 +56,7 @@ Future<dynamic> resetPasswordAlertDialog(BuildContext context) {
               final FormState? form = formKey.currentState;
               if (form!.validate()) {
                 form.save();
-                final bool result = await UserRepository()
+                final bool result = await locator<UserRepository>()
                     .isRegistered(emailController.value.text);
                 ScaffoldMessenger.of(context)
                   ..removeCurrentSnackBar()

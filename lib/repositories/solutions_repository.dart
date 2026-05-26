@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../bloc/generics/generic_bloc.dart';
 import '../models/comparison_model/comparison_model.dart';
+import '../services/service_locator.dart';
 import 'user_repository.dart';
 
 class SolutionsRepository extends GenericBlocRepository<ComparisonModel> {
   @override
   Stream<List<ComparisonModel>> data() {
-    final String? uid = UserRepository().getUserID();
+    final String? uid = locator<UserRepository>().getUserID();
     final Query<Object> solutionCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(uid).collection('generatedSolution').orderBy('timestamp',descending: true);

@@ -15,6 +15,7 @@ import '../../models/report_model/report_model.dart';
 import '../../models/user_model/user_model.dart';
 import '../../repositories/user_repository.dart';
 import '../../screens/database_comparison/bloc/event.dart';
+import '../service_locator.dart';
 import 'cloud_functions.dart';
 import 'functions.dart';
 
@@ -179,7 +180,7 @@ class FirestoreDatabase {
 
         if (answerNotEmpty) {
           // Copy document to 'generatedSolution' collection in user's document
-          final String? uid = UserRepository().getUserID();
+          final String? uid = locator<UserRepository>().getUserID();
           final DocumentSnapshot<Object?> snapshot = await ref.get();
           final DocumentReference<Object?> userDocRef = usersCollection
               .doc(uid)
@@ -208,7 +209,7 @@ class FirestoreDatabase {
   }
 
   Future<void> saveSolutionToUserDocument(ComparisonModel model) async {
-    final String? uid = UserRepository().getUserID();
+    final String? uid = locator<UserRepository>().getUserID();
     try {
       final DocumentReference<Object?> ref = usersCollection
           .doc(uid)
@@ -234,7 +235,7 @@ class FirestoreDatabase {
   }
 
   Future<bool> checkDocExistsInUserDocument(String docID) async {
-    final String? uid = UserRepository().getUserID();
+    final String? uid = locator<UserRepository>().getUserID();
     try {
       final CollectionReference<Object?> usersGeneratedCollection =
           FirebaseFirestore.instance
@@ -280,7 +281,7 @@ class FirestoreDatabase {
   }
 
   Future<UserModel> getProfileData() async {
-    final User? currentUser = UserRepository().getUser();
+    final User? currentUser = locator<UserRepository>().getUser();
     try {
       final DocumentReference<Object?> ref =
           usersCollection.doc(currentUser!.uid);
@@ -481,7 +482,7 @@ class FirestoreDatabase {
     final String docID = reportedContentCollection.doc().id;
     final String contentDocID =
         removeCloudAndWhitespace(reportContent.contentDocID);
-    final String? uid = UserRepository().getUserID();
+    final String? uid = locator<UserRepository>().getUserID();
     reportedContentCollection.doc(docID).set(<String, dynamic>{
       'content': reportContent.content,
       'contentType': reportContent.reportType,
@@ -509,7 +510,7 @@ class FirestoreDatabase {
     required bool endTime,
     String? docID,
   }) async {
-    final String? userId = UserRepository().getUserID();
+    final String? userId = locator<UserRepository>().getUserID();
     final DocumentReference<Object?> userInteractionRef =
         userInteractionCollection.doc(userId).collection('interactions').doc();
 

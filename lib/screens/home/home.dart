@@ -10,6 +10,7 @@ import '../../repositories/cloud_data_repository.dart';
 import '../../repositories/quick_facts_repository.dart';
 import '../../services/constants.dart';
 import '../../services/firebase_functions/cloud_functions.dart';
+import '../../services/service_locator.dart';
 import '../database_comparison/database_comparison.dart';
 import '../search/search_bar.dart';
 import '../settings/settings.dart';
@@ -17,7 +18,6 @@ import 'home_screen.dart';
 
 /// Home Screen
 class Home extends StatefulWidget {
-  @override
   const Home({super.key});
 
   @override
@@ -33,12 +33,12 @@ class _HomeState extends State<Home> {
         BlocProvider<GenericBloc<QuickFact, QuickFactsRepository>>(
           create: (BuildContext context) =>
               GenericBloc<QuickFact, QuickFactsRepository>(
-                  repository: QuickFactsRepository()),
+                  repository: locator<QuickFactsRepository>()),
         ),
         BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
           create: (BuildContext context) =>
               GenericBloc<CloudData, CloudDataRepository>(
-                  repository: CloudDataRepository()),
+                  repository: locator<CloudDataRepository>()),
         ),
       ],
       child: const HomeScreen(),
@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
     BlocProvider<GenericBloc<CloudData, CloudDataRepository>>(
         create: (BuildContext context) =>
             GenericBloc<CloudData, CloudDataRepository>(
-                repository: CloudDataRepository()),
+                repository: locator<CloudDataRepository>()),
         child: const CustomSearchBar()),
     FutureBuilder<Object>(
         future: CloudFunctions().getDatabaseComparisonQuestions(),

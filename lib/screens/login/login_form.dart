@@ -9,6 +9,7 @@ import '../../bloc/login_bloc/event.dart';
 import '../../bloc/login_bloc/state.dart';
 import '../../repositories/user_repository.dart';
 import '../../services/constants.dart';
+import '../../services/service_locator.dart';
 import '../../services/ui/text_styles.dart';
 
 /// Form for login screen
@@ -88,11 +89,11 @@ class _LoginFormState extends State<LoginForm> {
                               ),
                             ),
                           ),
-                          if (UserRepository().appleSignInAvailable)
+                          if (locator<UserRepository>().appleSignInAvailable)
                             const SizedBox(
                               height: 16,
                             ),
-                          if (UserRepository().appleSignInAvailable)
+                          if (locator<UserRepository>().appleSignInAvailable)
                             SignInWithAppleButton(onPressed: () {
                               if (isAppleLoginButtonEnabled(state)) {
                                 _onPressedAppleSignIn();
