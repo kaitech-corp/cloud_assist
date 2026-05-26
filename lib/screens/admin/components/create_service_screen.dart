@@ -19,7 +19,7 @@ class _CreateServicesScreenState extends State<CreateServicesScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -36,7 +36,6 @@ class _CreateServicesScreenState extends State<CreateServicesScreen>
         bottom: TabBar(
           controller: _tabController,
           tabs: const <Tab>[
-            Tab(text: 'GCP'),
             Tab(text: 'AWS'),
             Tab(text: 'Azure'),
           ],
@@ -46,11 +45,9 @@ class _CreateServicesScreenState extends State<CreateServicesScreen>
         controller: _tabController,
         children: <Widget>[
           ServiceListWidget(
-              future: CloudFunctions().getGcpServiceList(), provider: 'GCP'),
-          ServiceListWidget(
               future: CloudFunctions().getAWSServiceList(), provider: 'AWS'),
           ServiceListWidget(
-              future: CloudFunctions().getAzureServiceList(), provider: 'Azure')
+              future: CloudFunctions().getAzureServiceList(), provider: 'Azure'),
         ],
       ),
     );

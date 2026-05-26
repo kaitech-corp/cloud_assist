@@ -122,36 +122,8 @@ class CloudFunctions {
   }
 
 //
-  Future<List<ServiceModel>> getGcpServiceList() async {
-    try {
-      // Call the Firebase Functions HTTP endpoint 'getGcpServiceList'
-      final HttpsCallableResult<dynamic> callable = await FirebaseFunctions
-          .instance
-          .httpsCallable('getGcpServiceList')
-          .call();
-
-      // Parse the JSON response from the callable as a List of Maps
-      final List<dynamic> response =
-          json.decode(callable.data as String) as List<dynamic>;
-      // Convert the List of Maps to a List of ServiceModel objects using ServiceModel.fromJson()
-      final List<ServiceModel> serviceModelList = response
-          .map((item) => ServiceModel.fromJson(item as Map<String, dynamic>))
-          .toList();
-
-      // Return the List of ServiceModel objects
-      return serviceModelList;
-    } catch (e, stackTrace) {
-      // Print an error message and return an empty List if an error occurs
-      if (kDebugMode) {
-        print('Error in getGcpServiceList: $e, $stackTrace');
-      }
-      return <ServiceModel>[];
-    }
-  }
-
   Future<List<ServiceModel>> getAWSServiceList() async {
     try {
-      // Call the Firebase Functions HTTP endpoint 'getGcpServiceList'
       final http.Response callable = await http.get(Uri.parse(
           'https://storage.googleapis.com/api-project-371618.appspot.com/aws_service_list.json'));
 
@@ -175,7 +147,23 @@ class CloudFunctions {
   }
 
   Future<List<ServiceModel>> getAzureServiceList() async {
-    return <ServiceModel>[];
+    try {
+      final HttpsCallableResult<dynamic> callable = await FirebaseFunctions
+          .instance
+          .httpsCallable('getAzureServiceList')
+          .call();
+      final List<dynamic> response =
+          json.decode(callable.data as String) as List<dynamic>;
+      return response
+          .map((dynamic item) =>
+              ServiceModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        print('Error in getAzureServiceList: $e, $stackTrace');
+      }
+      return <ServiceModel>[];
+    }
   }
 
   Future<List<CloudData>> getCloudData() async {
