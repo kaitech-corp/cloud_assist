@@ -9,7 +9,7 @@ part 'cloud_data_model.g.dart';
 
 ///Model for cloud data
 @freezed
-class CloudData with _$CloudData {
+abstract class CloudData with _$CloudData {
   const factory CloudData(
       {required String service,
       required String description,

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,211 +9,293 @@ part of 'gcloud_data_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
 
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-GCloudData _$GCloudDataFromJson(Map<String, dynamic> json) {
-  return _GCloudData.fromJson(json);
-}
-
 /// @nodoc
-mixin _$GCloudData {
-  String get topic => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  Map<String, String> get commands => throw _privateConstructorUsedError;
+mixin _$GCloudData implements DiagnosticableTreeMixin {
+
+ String get topic; String get title; Map<String, String> get commands;
+/// Create a copy of GCloudData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GCloudDataCopyWith<GCloudData> get copyWith => _$GCloudDataCopyWithImpl<GCloudData>(this as GCloudData, _$identity);
 
   /// Serializes this GCloudData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson();
 
-  /// Create a copy of GCloudData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $GCloudDataCopyWith<GCloudData> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'GCloudData'))
+    ..add(DiagnosticsProperty('topic', topic))..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('commands', commands));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GCloudData&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.commands, commands));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,topic,title,const DeepCollectionEquality().hash(commands));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'GCloudData(topic: $topic, title: $title, commands: $commands)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $GCloudDataCopyWith<$Res> {
-  factory $GCloudDataCopyWith(
-          GCloudData value, $Res Function(GCloudData) then) =
-      _$GCloudDataCopyWithImpl<$Res, GCloudData>;
-  @useResult
-  $Res call({String topic, String title, Map<String, String> commands});
-}
+abstract mixin class $GCloudDataCopyWith<$Res>  {
+  factory $GCloudDataCopyWith(GCloudData value, $Res Function(GCloudData) _then) = _$GCloudDataCopyWithImpl;
+@useResult
+$Res call({
+ String topic, String title, Map<String, String> commands
+});
 
+
+
+
+}
 /// @nodoc
-class _$GCloudDataCopyWithImpl<$Res, $Val extends GCloudData>
+class _$GCloudDataCopyWithImpl<$Res>
     implements $GCloudDataCopyWith<$Res> {
-  _$GCloudDataCopyWithImpl(this._value, this._then);
+  _$GCloudDataCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final GCloudData _self;
+  final $Res Function(GCloudData) _then;
 
-  /// Create a copy of GCloudData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? topic = null,
-    Object? title = null,
-    Object? commands = null,
-  }) {
-    return _then(_value.copyWith(
-      topic: null == topic
-          ? _value.topic
-          : topic // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      commands: null == commands
-          ? _value.commands
-          : commands // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
-    ) as $Val);
-  }
+/// Create a copy of GCloudData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? topic = null,Object? title = null,Object? commands = null,}) {
+  return _then(_self.copyWith(
+topic: null == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,commands: null == commands ? _self.commands : commands // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,
+  ));
 }
 
-/// @nodoc
-abstract class _$$GCloudDataImplCopyWith<$Res>
-    implements $GCloudDataCopyWith<$Res> {
-  factory _$$GCloudDataImplCopyWith(
-          _$GCloudDataImpl value, $Res Function(_$GCloudDataImpl) then) =
-      __$$GCloudDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String topic, String title, Map<String, String> commands});
 }
 
-/// @nodoc
-class __$$GCloudDataImplCopyWithImpl<$Res>
-    extends _$GCloudDataCopyWithImpl<$Res, _$GCloudDataImpl>
-    implements _$$GCloudDataImplCopyWith<$Res> {
-  __$$GCloudDataImplCopyWithImpl(
-      _$GCloudDataImpl _value, $Res Function(_$GCloudDataImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of GCloudData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? topic = null,
-    Object? title = null,
-    Object? commands = null,
-  }) {
-    return _then(_$GCloudDataImpl(
-      topic: null == topic
-          ? _value.topic
-          : topic // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      commands: null == commands
-          ? _value._commands
-          : commands // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
-    ));
-  }
+/// Adds pattern-matching-related methods to [GCloudData].
+extension GCloudDataPatterns on GCloudData {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _GCloudData value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _GCloudData() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _GCloudData value)  $default,){
+final _that = this;
+switch (_that) {
+case _GCloudData():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _GCloudData value)?  $default,){
+final _that = this;
+switch (_that) {
+case _GCloudData() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String topic,  String title,  Map<String, String> commands)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _GCloudData() when $default != null:
+return $default(_that.topic,_that.title,_that.commands);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String topic,  String title,  Map<String, String> commands)  $default,) {final _that = this;
+switch (_that) {
+case _GCloudData():
+return $default(_that.topic,_that.title,_that.commands);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String topic,  String title,  Map<String, String> commands)?  $default,) {final _that = this;
+switch (_that) {
+case _GCloudData() when $default != null:
+return $default(_that.topic,_that.title,_that.commands);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$GCloudDataImpl with DiagnosticableTreeMixin implements _GCloudData {
-  const _$GCloudDataImpl(
-      {required this.topic,
-      required this.title,
-      required final Map<String, String> commands})
-      : _commands = commands;
 
-  factory _$GCloudDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GCloudDataImplFromJson(json);
+class _GCloudData with DiagnosticableTreeMixin implements GCloudData {
+  const _GCloudData({required this.topic, required this.title, required final  Map<String, String> commands}): _commands = commands;
+  factory _GCloudData.fromJson(Map<String, dynamic> json) => _$GCloudDataFromJson(json);
 
-  @override
-  final String topic;
-  @override
-  final String title;
-  final Map<String, String> _commands;
-  @override
-  Map<String, String> get commands {
-    if (_commands is EqualUnmodifiableMapView) return _commands;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_commands);
-  }
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GCloudData(topic: $topic, title: $title, commands: $commands)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'GCloudData'))
-      ..add(DiagnosticsProperty('topic', topic))
-      ..add(DiagnosticsProperty('title', title))
-      ..add(DiagnosticsProperty('commands', commands));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GCloudDataImpl &&
-            (identical(other.topic, topic) || other.topic == topic) &&
-            (identical(other.title, title) || other.title == title) &&
-            const DeepCollectionEquality().equals(other._commands, _commands));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, topic, title,
-      const DeepCollectionEquality().hash(_commands));
-
-  /// Create a copy of GCloudData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GCloudDataImplCopyWith<_$GCloudDataImpl> get copyWith =>
-      __$$GCloudDataImplCopyWithImpl<_$GCloudDataImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$GCloudDataImplToJson(
-      this,
-    );
-  }
+@override final  String topic;
+@override final  String title;
+ final  Map<String, String> _commands;
+@override Map<String, String> get commands {
+  if (_commands is EqualUnmodifiableMapView) return _commands;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_commands);
 }
 
-abstract class _GCloudData implements GCloudData {
-  const factory _GCloudData(
-      {required final String topic,
-      required final String title,
-      required final Map<String, String> commands}) = _$GCloudDataImpl;
 
-  factory _GCloudData.fromJson(Map<String, dynamic> json) =
-      _$GCloudDataImpl.fromJson;
+/// Create a copy of GCloudData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GCloudDataCopyWith<_GCloudData> get copyWith => __$GCloudDataCopyWithImpl<_GCloudData>(this, _$identity);
 
-  @override
-  String get topic;
-  @override
-  String get title;
-  @override
-  Map<String, String> get commands;
-
-  /// Create a copy of GCloudData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GCloudDataImplCopyWith<_$GCloudDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$GCloudDataToJson(this, );
 }
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'GCloudData'))
+    ..add(DiagnosticsProperty('topic', topic))..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('commands', commands));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GCloudData&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._commands, _commands));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,topic,title,const DeepCollectionEquality().hash(_commands));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'GCloudData(topic: $topic, title: $title, commands: $commands)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$GCloudDataCopyWith<$Res> implements $GCloudDataCopyWith<$Res> {
+  factory _$GCloudDataCopyWith(_GCloudData value, $Res Function(_GCloudData) _then) = __$GCloudDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String topic, String title, Map<String, String> commands
+});
+
+
+
+
+}
+/// @nodoc
+class __$GCloudDataCopyWithImpl<$Res>
+    implements _$GCloudDataCopyWith<$Res> {
+  __$GCloudDataCopyWithImpl(this._self, this._then);
+
+  final _GCloudData _self;
+  final $Res Function(_GCloudData) _then;
+
+/// Create a copy of GCloudData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? topic = null,Object? title = null,Object? commands = null,}) {
+  return _then(_GCloudData(
+topic: null == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,commands: null == commands ? _self._commands : commands // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,
+  ));
+}
+
+
+}
+
+// dart format on

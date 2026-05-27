@@ -6,8 +6,8 @@ part of 'cloud_options_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CloudOptionsImpl _$$CloudOptionsImplFromJson(Map<String, dynamic> json) =>
-    _$CloudOptionsImpl(
+_CloudOptions _$CloudOptionsFromJson(Map<String, dynamic> json) =>
+    _CloudOptions(
       architecture: json['architecture'] as String,
       budget: json['budget'] as String,
       dataAccessFrequency: json['dataAccessFrequency'] as String,
@@ -20,7 +20,7 @@ _$CloudOptionsImpl _$$CloudOptionsImplFromJson(Map<String, dynamic> json) =>
       workload: json['workload'] as String,
     );
 
-Map<String, dynamic> _$$CloudOptionsImplToJson(_$CloudOptionsImpl instance) =>
+Map<String, dynamic> _$CloudOptionsToJson(_CloudOptions instance) =>
     <String, dynamic>{
       'architecture': instance.architecture,
       'budget': instance.budget,

@@ -30,7 +30,7 @@ class TimestampNullableConverter implements JsonConverter<DateTime?, Timestamp?>
 }
 
 @freezed
-class QuickFact with _$QuickFact {
+abstract class QuickFact with _$QuickFact {
   const factory QuickFact({
     required String fact,
     required String docID,

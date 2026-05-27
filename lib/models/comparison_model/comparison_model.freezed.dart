@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,235 +9,284 @@ part of 'comparison_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-ComparisonModel _$ComparisonModelFromJson(Map<String, dynamic> json) {
-  return _ComparisonModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ComparisonModel {
-  String get answer => throw _privateConstructorUsedError;
-  String get docID => throw _privateConstructorUsedError;
-  @TimestampConverter()
-  DateTime? get timestamp => throw _privateConstructorUsedError;
-  List<Map<String, String>> get answersSelected =>
-      throw _privateConstructorUsedError;
+
+ String get answer; String get docID;@TimestampConverter() DateTime? get timestamp; List<Map<String, String>> get answersSelected;
+/// Create a copy of ComparisonModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ComparisonModelCopyWith<ComparisonModel> get copyWith => _$ComparisonModelCopyWithImpl<ComparisonModel>(this as ComparisonModel, _$identity);
 
   /// Serializes this ComparisonModel to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson();
 
-  /// Create a copy of ComparisonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ComparisonModelCopyWith<ComparisonModel> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ComparisonModel&&(identical(other.answer, answer) || other.answer == answer)&&(identical(other.docID, docID) || other.docID == docID)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&const DeepCollectionEquality().equals(other.answersSelected, answersSelected));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,answer,docID,timestamp,const DeepCollectionEquality().hash(answersSelected));
+
+@override
+String toString() {
+  return 'ComparisonModel(answer: $answer, docID: $docID, timestamp: $timestamp, answersSelected: $answersSelected)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ComparisonModelCopyWith<$Res> {
-  factory $ComparisonModelCopyWith(
-          ComparisonModel value, $Res Function(ComparisonModel) then) =
-      _$ComparisonModelCopyWithImpl<$Res, ComparisonModel>;
-  @useResult
-  $Res call(
-      {String answer,
-      String docID,
-      @TimestampConverter() DateTime? timestamp,
-      List<Map<String, String>> answersSelected});
-}
+abstract mixin class $ComparisonModelCopyWith<$Res>  {
+  factory $ComparisonModelCopyWith(ComparisonModel value, $Res Function(ComparisonModel) _then) = _$ComparisonModelCopyWithImpl;
+@useResult
+$Res call({
+ String answer, String docID,@TimestampConverter() DateTime? timestamp, List<Map<String, String>> answersSelected
+});
 
+
+
+
+}
 /// @nodoc
-class _$ComparisonModelCopyWithImpl<$Res, $Val extends ComparisonModel>
+class _$ComparisonModelCopyWithImpl<$Res>
     implements $ComparisonModelCopyWith<$Res> {
-  _$ComparisonModelCopyWithImpl(this._value, this._then);
+  _$ComparisonModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ComparisonModel _self;
+  final $Res Function(ComparisonModel) _then;
 
-  /// Create a copy of ComparisonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? answer = null,
-    Object? docID = null,
-    Object? timestamp = freezed,
-    Object? answersSelected = null,
-  }) {
-    return _then(_value.copyWith(
-      answer: null == answer
-          ? _value.answer
-          : answer // ignore: cast_nullable_to_non_nullable
-              as String,
-      docID: null == docID
-          ? _value.docID
-          : docID // ignore: cast_nullable_to_non_nullable
-              as String,
-      timestamp: freezed == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      answersSelected: null == answersSelected
-          ? _value.answersSelected
-          : answersSelected // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, String>>,
-    ) as $Val);
-  }
+/// Create a copy of ComparisonModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? answer = null,Object? docID = null,Object? timestamp = freezed,Object? answersSelected = null,}) {
+  return _then(_self.copyWith(
+answer: null == answer ? _self.answer : answer // ignore: cast_nullable_to_non_nullable
+as String,docID: null == docID ? _self.docID : docID // ignore: cast_nullable_to_non_nullable
+as String,timestamp: freezed == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
+as DateTime?,answersSelected: null == answersSelected ? _self.answersSelected : answersSelected // ignore: cast_nullable_to_non_nullable
+as List<Map<String, String>>,
+  ));
 }
 
-/// @nodoc
-abstract class _$$ComparisonModelImplCopyWith<$Res>
-    implements $ComparisonModelCopyWith<$Res> {
-  factory _$$ComparisonModelImplCopyWith(_$ComparisonModelImpl value,
-          $Res Function(_$ComparisonModelImpl) then) =
-      __$$ComparisonModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String answer,
-      String docID,
-      @TimestampConverter() DateTime? timestamp,
-      List<Map<String, String>> answersSelected});
 }
 
-/// @nodoc
-class __$$ComparisonModelImplCopyWithImpl<$Res>
-    extends _$ComparisonModelCopyWithImpl<$Res, _$ComparisonModelImpl>
-    implements _$$ComparisonModelImplCopyWith<$Res> {
-  __$$ComparisonModelImplCopyWithImpl(
-      _$ComparisonModelImpl _value, $Res Function(_$ComparisonModelImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of ComparisonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? answer = null,
-    Object? docID = null,
-    Object? timestamp = freezed,
-    Object? answersSelected = null,
-  }) {
-    return _then(_$ComparisonModelImpl(
-      answer: null == answer
-          ? _value.answer
-          : answer // ignore: cast_nullable_to_non_nullable
-              as String,
-      docID: null == docID
-          ? _value.docID
-          : docID // ignore: cast_nullable_to_non_nullable
-              as String,
-      timestamp: freezed == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      answersSelected: null == answersSelected
-          ? _value._answersSelected
-          : answersSelected // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, String>>,
-    ));
-  }
+/// Adds pattern-matching-related methods to [ComparisonModel].
+extension ComparisonModelPatterns on ComparisonModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ComparisonModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ComparisonModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ComparisonModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _ComparisonModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ComparisonModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ComparisonModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String answer,  String docID, @TimestampConverter()  DateTime? timestamp,  List<Map<String, String>> answersSelected)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ComparisonModel() when $default != null:
+return $default(_that.answer,_that.docID,_that.timestamp,_that.answersSelected);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String answer,  String docID, @TimestampConverter()  DateTime? timestamp,  List<Map<String, String>> answersSelected)  $default,) {final _that = this;
+switch (_that) {
+case _ComparisonModel():
+return $default(_that.answer,_that.docID,_that.timestamp,_that.answersSelected);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String answer,  String docID, @TimestampConverter()  DateTime? timestamp,  List<Map<String, String>> answersSelected)?  $default,) {final _that = this;
+switch (_that) {
+case _ComparisonModel() when $default != null:
+return $default(_that.answer,_that.docID,_that.timestamp,_that.answersSelected);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ComparisonModelImpl implements _ComparisonModel {
-  const _$ComparisonModelImpl(
-      {required this.answer,
-      required this.docID,
-      @TimestampConverter() this.timestamp,
-      required final List<Map<String, String>> answersSelected})
-      : _answersSelected = answersSelected;
 
-  factory _$ComparisonModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ComparisonModelImplFromJson(json);
+class _ComparisonModel implements ComparisonModel {
+  const _ComparisonModel({required this.answer, required this.docID, @TimestampConverter() this.timestamp, required final  List<Map<String, String>> answersSelected}): _answersSelected = answersSelected;
+  factory _ComparisonModel.fromJson(Map<String, dynamic> json) => _$ComparisonModelFromJson(json);
 
-  @override
-  final String answer;
-  @override
-  final String docID;
-  @override
-  @TimestampConverter()
-  final DateTime? timestamp;
-  final List<Map<String, String>> _answersSelected;
-  @override
-  List<Map<String, String>> get answersSelected {
-    if (_answersSelected is EqualUnmodifiableListView) return _answersSelected;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_answersSelected);
-  }
-
-  @override
-  String toString() {
-    return 'ComparisonModel(answer: $answer, docID: $docID, timestamp: $timestamp, answersSelected: $answersSelected)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ComparisonModelImpl &&
-            (identical(other.answer, answer) || other.answer == answer) &&
-            (identical(other.docID, docID) || other.docID == docID) &&
-            (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp) &&
-            const DeepCollectionEquality()
-                .equals(other._answersSelected, _answersSelected));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, answer, docID, timestamp,
-      const DeepCollectionEquality().hash(_answersSelected));
-
-  /// Create a copy of ComparisonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ComparisonModelImplCopyWith<_$ComparisonModelImpl> get copyWith =>
-      __$$ComparisonModelImplCopyWithImpl<_$ComparisonModelImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ComparisonModelImplToJson(
-      this,
-    );
-  }
+@override final  String answer;
+@override final  String docID;
+@override@TimestampConverter() final  DateTime? timestamp;
+ final  List<Map<String, String>> _answersSelected;
+@override List<Map<String, String>> get answersSelected {
+  if (_answersSelected is EqualUnmodifiableListView) return _answersSelected;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_answersSelected);
 }
 
-abstract class _ComparisonModel implements ComparisonModel {
-  const factory _ComparisonModel(
-          {required final String answer,
-          required final String docID,
-          @TimestampConverter() final DateTime? timestamp,
-          required final List<Map<String, String>> answersSelected}) =
-      _$ComparisonModelImpl;
 
-  factory _ComparisonModel.fromJson(Map<String, dynamic> json) =
-      _$ComparisonModelImpl.fromJson;
+/// Create a copy of ComparisonModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ComparisonModelCopyWith<_ComparisonModel> get copyWith => __$ComparisonModelCopyWithImpl<_ComparisonModel>(this, _$identity);
 
-  @override
-  String get answer;
-  @override
-  String get docID;
-  @override
-  @TimestampConverter()
-  DateTime? get timestamp;
-  @override
-  List<Map<String, String>> get answersSelected;
-
-  /// Create a copy of ComparisonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ComparisonModelImplCopyWith<_$ComparisonModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$ComparisonModelToJson(this, );
 }
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ComparisonModel&&(identical(other.answer, answer) || other.answer == answer)&&(identical(other.docID, docID) || other.docID == docID)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&const DeepCollectionEquality().equals(other._answersSelected, _answersSelected));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,answer,docID,timestamp,const DeepCollectionEquality().hash(_answersSelected));
+
+@override
+String toString() {
+  return 'ComparisonModel(answer: $answer, docID: $docID, timestamp: $timestamp, answersSelected: $answersSelected)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ComparisonModelCopyWith<$Res> implements $ComparisonModelCopyWith<$Res> {
+  factory _$ComparisonModelCopyWith(_ComparisonModel value, $Res Function(_ComparisonModel) _then) = __$ComparisonModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String answer, String docID,@TimestampConverter() DateTime? timestamp, List<Map<String, String>> answersSelected
+});
+
+
+
+
+}
+/// @nodoc
+class __$ComparisonModelCopyWithImpl<$Res>
+    implements _$ComparisonModelCopyWith<$Res> {
+  __$ComparisonModelCopyWithImpl(this._self, this._then);
+
+  final _ComparisonModel _self;
+  final $Res Function(_ComparisonModel) _then;
+
+/// Create a copy of ComparisonModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? answer = null,Object? docID = null,Object? timestamp = freezed,Object? answersSelected = null,}) {
+  return _then(_ComparisonModel(
+answer: null == answer ? _self.answer : answer // ignore: cast_nullable_to_non_nullable
+as String,docID: null == docID ? _self.docID : docID // ignore: cast_nullable_to_non_nullable
+as String,timestamp: freezed == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
+as DateTime?,answersSelected: null == answersSelected ? _self._answersSelected : answersSelected // ignore: cast_nullable_to_non_nullable
+as List<Map<String, String>>,
+  ));
+}
+
+
+}
+
+// dart format on

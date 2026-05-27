@@ -30,7 +30,7 @@ class TimestampNullableConverter implements JsonConverter<DateTime?, Timestamp?>
 }
 
 @freezed
-class UserModel with _$UserModel {
+abstract class UserModel with _$UserModel {
   const factory UserModel({
     required String displayName,
     required String email,

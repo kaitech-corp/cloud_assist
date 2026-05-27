@@ -6,36 +6,36 @@ part of 'comparison_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ComparisonModelImpl _$$ComparisonModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ComparisonModelImpl(
+_ComparisonModel _$ComparisonModelFromJson(Map<String, dynamic> json) =>
+    _ComparisonModel(
       answer: json['answer'] as String,
       docID: json['docID'] as String,
       timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
-          json['timestamp'], const TimestampConverter().fromJson),
+        json['timestamp'],
+        const TimestampConverter().fromJson,
+      ),
       answersSelected: (json['answersSelected'] as List<dynamic>)
           .map((e) => Map<String, String>.from(e as Map))
           .toList(),
     );
 
-Map<String, dynamic> _$$ComparisonModelImplToJson(
-        _$ComparisonModelImpl instance) =>
+Map<String, dynamic> _$ComparisonModelToJson(_ComparisonModel instance) =>
     <String, dynamic>{
       'answer': instance.answer,
       'docID': instance.docID,
       'timestamp': _$JsonConverterToJson<Timestamp, DateTime>(
-          instance.timestamp, const TimestampConverter().toJson),
+        instance.timestamp,
+        const TimestampConverter().toJson,
+      ),
       'answersSelected': instance.answersSelected,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,
   Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
+) => json == null ? null : fromJson(json as Json);
 
 Json? _$JsonConverterToJson<Json, Value>(
   Value? value,
   Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);
+) => value == null ? null : toJson(value);

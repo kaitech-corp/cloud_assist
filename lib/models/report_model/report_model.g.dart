@@ -6,34 +6,35 @@ part of 'report_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ReportModelImpl _$$ReportModelImplFromJson(Map<String, dynamic> json) =>
-    _$ReportModelImpl(
-      content: json['content'] as String,
-      docID: json['docID'] as String,
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      title: json['title'] as String,
-      timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
-          json['timestamp'], const TimestampConverter().fromJson),
-    );
+_ReportModel _$ReportModelFromJson(Map<String, dynamic> json) => _ReportModel(
+  content: json['content'] as String,
+  docID: json['docID'] as String,
+  tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+  title: json['title'] as String,
+  timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
+    json['timestamp'],
+    const TimestampConverter().fromJson,
+  ),
+);
 
-Map<String, dynamic> _$$ReportModelImplToJson(_$ReportModelImpl instance) =>
+Map<String, dynamic> _$ReportModelToJson(_ReportModel instance) =>
     <String, dynamic>{
       'content': instance.content,
       'docID': instance.docID,
       'tags': instance.tags,
       'title': instance.title,
       'timestamp': _$JsonConverterToJson<Timestamp, DateTime>(
-          instance.timestamp, const TimestampConverter().toJson),
+        instance.timestamp,
+        const TimestampConverter().toJson,
+      ),
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,
   Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
+) => json == null ? null : fromJson(json as Json);
 
 Json? _$JsonConverterToJson<Json, Value>(
   Value? value,
   Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);
+) => value == null ? null : toJson(value);

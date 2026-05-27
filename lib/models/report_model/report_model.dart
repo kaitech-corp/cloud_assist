@@ -32,7 +32,7 @@ class TimestampNullableConverter
 }
 
 @freezed
-class ReportModel with _$ReportModel {
+abstract class ReportModel with _$ReportModel {
   const factory ReportModel({
     required String content,
     required String docID,

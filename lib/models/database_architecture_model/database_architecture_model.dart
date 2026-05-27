@@ -8,7 +8,7 @@ part 'database_architecture_model.g.dart';
 
 ///Model for cloud data
 @freezed
-class DatabaseArchitecture with _$DatabaseArchitecture {
+abstract class DatabaseArchitecture with _$DatabaseArchitecture {
   const factory DatabaseArchitecture(
       {required String question,
       required List<String> answers,

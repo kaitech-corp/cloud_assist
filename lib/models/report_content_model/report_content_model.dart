@@ -39,7 +39,7 @@ enum ReportType {
 
 ///Model for cloud data
 @freezed
-class ReportContent with _$ReportContent {
+abstract class ReportContent with _$ReportContent {
   const factory ReportContent({
     required String content,
     required String reportType,

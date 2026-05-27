@@ -8,7 +8,7 @@ part 'cloud_options_model.g.dart';
 
 ///Model for cloud data
 @freezed
-class CloudOptions with _$CloudOptions {
+abstract class CloudOptions with _$CloudOptions {
   const factory CloudOptions(
       {required String architecture,
       required String budget,

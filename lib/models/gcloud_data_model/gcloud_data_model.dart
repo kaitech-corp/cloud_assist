@@ -9,7 +9,7 @@ part 'gcloud_data_model.g.dart';
 
 ///Model for gcloud data
 @freezed
-class GCloudData with _$GCloudData {
+abstract class GCloudData with _$GCloudData {
   const factory GCloudData({
     required String topic,
     required String title,

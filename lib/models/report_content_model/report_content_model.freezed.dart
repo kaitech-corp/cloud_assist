@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,248 +9,281 @@ part of 'report_content_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-ReportContent _$ReportContentFromJson(Map<String, dynamic> json) {
-  return _ReportContent.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ReportContent {
-  String get content => throw _privateConstructorUsedError;
-  String get reportType => throw _privateConstructorUsedError;
-  String get contentDocID => throw _privateConstructorUsedError;
-  String? get contentField => throw _privateConstructorUsedError;
-  @TimestampConverter()
-  DateTime? get timestamp => throw _privateConstructorUsedError;
+
+ String get content; String get reportType; String get contentDocID; String? get contentField;@TimestampConverter() DateTime? get timestamp;
+/// Create a copy of ReportContent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ReportContentCopyWith<ReportContent> get copyWith => _$ReportContentCopyWithImpl<ReportContent>(this as ReportContent, _$identity);
 
   /// Serializes this ReportContent to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson();
 
-  /// Create a copy of ReportContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ReportContentCopyWith<ReportContent> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReportContent&&(identical(other.content, content) || other.content == content)&&(identical(other.reportType, reportType) || other.reportType == reportType)&&(identical(other.contentDocID, contentDocID) || other.contentDocID == contentDocID)&&(identical(other.contentField, contentField) || other.contentField == contentField)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,content,reportType,contentDocID,contentField,timestamp);
+
+@override
+String toString() {
+  return 'ReportContent(content: $content, reportType: $reportType, contentDocID: $contentDocID, contentField: $contentField, timestamp: $timestamp)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ReportContentCopyWith<$Res> {
-  factory $ReportContentCopyWith(
-          ReportContent value, $Res Function(ReportContent) then) =
-      _$ReportContentCopyWithImpl<$Res, ReportContent>;
-  @useResult
-  $Res call(
-      {String content,
-      String reportType,
-      String contentDocID,
-      String? contentField,
-      @TimestampConverter() DateTime? timestamp});
-}
+abstract mixin class $ReportContentCopyWith<$Res>  {
+  factory $ReportContentCopyWith(ReportContent value, $Res Function(ReportContent) _then) = _$ReportContentCopyWithImpl;
+@useResult
+$Res call({
+ String content, String reportType, String contentDocID, String? contentField,@TimestampConverter() DateTime? timestamp
+});
 
+
+
+
+}
 /// @nodoc
-class _$ReportContentCopyWithImpl<$Res, $Val extends ReportContent>
+class _$ReportContentCopyWithImpl<$Res>
     implements $ReportContentCopyWith<$Res> {
-  _$ReportContentCopyWithImpl(this._value, this._then);
+  _$ReportContentCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ReportContent _self;
+  final $Res Function(ReportContent) _then;
 
-  /// Create a copy of ReportContent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? content = null,
-    Object? reportType = null,
-    Object? contentDocID = null,
-    Object? contentField = freezed,
-    Object? timestamp = freezed,
-  }) {
-    return _then(_value.copyWith(
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
-      reportType: null == reportType
-          ? _value.reportType
-          : reportType // ignore: cast_nullable_to_non_nullable
-              as String,
-      contentDocID: null == contentDocID
-          ? _value.contentDocID
-          : contentDocID // ignore: cast_nullable_to_non_nullable
-              as String,
-      contentField: freezed == contentField
-          ? _value.contentField
-          : contentField // ignore: cast_nullable_to_non_nullable
-              as String?,
-      timestamp: freezed == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
-  }
+/// Create a copy of ReportContent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? content = null,Object? reportType = null,Object? contentDocID = null,Object? contentField = freezed,Object? timestamp = freezed,}) {
+  return _then(_self.copyWith(
+content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String,reportType: null == reportType ? _self.reportType : reportType // ignore: cast_nullable_to_non_nullable
+as String,contentDocID: null == contentDocID ? _self.contentDocID : contentDocID // ignore: cast_nullable_to_non_nullable
+as String,contentField: freezed == contentField ? _self.contentField : contentField // ignore: cast_nullable_to_non_nullable
+as String?,timestamp: freezed == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$ReportContentImplCopyWith<$Res>
-    implements $ReportContentCopyWith<$Res> {
-  factory _$$ReportContentImplCopyWith(
-          _$ReportContentImpl value, $Res Function(_$ReportContentImpl) then) =
-      __$$ReportContentImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String content,
-      String reportType,
-      String contentDocID,
-      String? contentField,
-      @TimestampConverter() DateTime? timestamp});
 }
 
-/// @nodoc
-class __$$ReportContentImplCopyWithImpl<$Res>
-    extends _$ReportContentCopyWithImpl<$Res, _$ReportContentImpl>
-    implements _$$ReportContentImplCopyWith<$Res> {
-  __$$ReportContentImplCopyWithImpl(
-      _$ReportContentImpl _value, $Res Function(_$ReportContentImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of ReportContent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? content = null,
-    Object? reportType = null,
-    Object? contentDocID = null,
-    Object? contentField = freezed,
-    Object? timestamp = freezed,
-  }) {
-    return _then(_$ReportContentImpl(
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
-      reportType: null == reportType
-          ? _value.reportType
-          : reportType // ignore: cast_nullable_to_non_nullable
-              as String,
-      contentDocID: null == contentDocID
-          ? _value.contentDocID
-          : contentDocID // ignore: cast_nullable_to_non_nullable
-              as String,
-      contentField: freezed == contentField
-          ? _value.contentField
-          : contentField // ignore: cast_nullable_to_non_nullable
-              as String?,
-      timestamp: freezed == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
-  }
+/// Adds pattern-matching-related methods to [ReportContent].
+extension ReportContentPatterns on ReportContent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ReportContent value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ReportContent() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ReportContent value)  $default,){
+final _that = this;
+switch (_that) {
+case _ReportContent():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ReportContent value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ReportContent() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String content,  String reportType,  String contentDocID,  String? contentField, @TimestampConverter()  DateTime? timestamp)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ReportContent() when $default != null:
+return $default(_that.content,_that.reportType,_that.contentDocID,_that.contentField,_that.timestamp);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String content,  String reportType,  String contentDocID,  String? contentField, @TimestampConverter()  DateTime? timestamp)  $default,) {final _that = this;
+switch (_that) {
+case _ReportContent():
+return $default(_that.content,_that.reportType,_that.contentDocID,_that.contentField,_that.timestamp);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String content,  String reportType,  String contentDocID,  String? contentField, @TimestampConverter()  DateTime? timestamp)?  $default,) {final _that = this;
+switch (_that) {
+case _ReportContent() when $default != null:
+return $default(_that.content,_that.reportType,_that.contentDocID,_that.contentField,_that.timestamp);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ReportContentImpl implements _ReportContent {
-  const _$ReportContentImpl(
-      {required this.content,
-      required this.reportType,
-      required this.contentDocID,
-      this.contentField,
-      @TimestampConverter() this.timestamp});
 
-  factory _$ReportContentImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ReportContentImplFromJson(json);
+class _ReportContent implements ReportContent {
+  const _ReportContent({required this.content, required this.reportType, required this.contentDocID, this.contentField, @TimestampConverter() this.timestamp});
+  factory _ReportContent.fromJson(Map<String, dynamic> json) => _$ReportContentFromJson(json);
 
-  @override
-  final String content;
-  @override
-  final String reportType;
-  @override
-  final String contentDocID;
-  @override
-  final String? contentField;
-  @override
-  @TimestampConverter()
-  final DateTime? timestamp;
+@override final  String content;
+@override final  String reportType;
+@override final  String contentDocID;
+@override final  String? contentField;
+@override@TimestampConverter() final  DateTime? timestamp;
 
-  @override
-  String toString() {
-    return 'ReportContent(content: $content, reportType: $reportType, contentDocID: $contentDocID, contentField: $contentField, timestamp: $timestamp)';
-  }
+/// Create a copy of ReportContent
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ReportContentCopyWith<_ReportContent> get copyWith => __$ReportContentCopyWithImpl<_ReportContent>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ReportContentImpl &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.reportType, reportType) ||
-                other.reportType == reportType) &&
-            (identical(other.contentDocID, contentDocID) ||
-                other.contentDocID == contentDocID) &&
-            (identical(other.contentField, contentField) ||
-                other.contentField == contentField) &&
-            (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, content, reportType, contentDocID, contentField, timestamp);
-
-  /// Create a copy of ReportContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ReportContentImplCopyWith<_$ReportContentImpl> get copyWith =>
-      __$$ReportContentImplCopyWithImpl<_$ReportContentImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ReportContentImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$ReportContentToJson(this, );
 }
 
-abstract class _ReportContent implements ReportContent {
-  const factory _ReportContent(
-      {required final String content,
-      required final String reportType,
-      required final String contentDocID,
-      final String? contentField,
-      @TimestampConverter() final DateTime? timestamp}) = _$ReportContentImpl;
-
-  factory _ReportContent.fromJson(Map<String, dynamic> json) =
-      _$ReportContentImpl.fromJson;
-
-  @override
-  String get content;
-  @override
-  String get reportType;
-  @override
-  String get contentDocID;
-  @override
-  String? get contentField;
-  @override
-  @TimestampConverter()
-  DateTime? get timestamp;
-
-  /// Create a copy of ReportContent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ReportContentImplCopyWith<_$ReportContentImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ReportContent&&(identical(other.content, content) || other.content == content)&&(identical(other.reportType, reportType) || other.reportType == reportType)&&(identical(other.contentDocID, contentDocID) || other.contentDocID == contentDocID)&&(identical(other.contentField, contentField) || other.contentField == contentField)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,content,reportType,contentDocID,contentField,timestamp);
+
+@override
+String toString() {
+  return 'ReportContent(content: $content, reportType: $reportType, contentDocID: $contentDocID, contentField: $contentField, timestamp: $timestamp)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ReportContentCopyWith<$Res> implements $ReportContentCopyWith<$Res> {
+  factory _$ReportContentCopyWith(_ReportContent value, $Res Function(_ReportContent) _then) = __$ReportContentCopyWithImpl;
+@override @useResult
+$Res call({
+ String content, String reportType, String contentDocID, String? contentField,@TimestampConverter() DateTime? timestamp
+});
+
+
+
+
+}
+/// @nodoc
+class __$ReportContentCopyWithImpl<$Res>
+    implements _$ReportContentCopyWith<$Res> {
+  __$ReportContentCopyWithImpl(this._self, this._then);
+
+  final _ReportContent _self;
+  final $Res Function(_ReportContent) _then;
+
+/// Create a copy of ReportContent
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? content = null,Object? reportType = null,Object? contentDocID = null,Object? contentField = freezed,Object? timestamp = freezed,}) {
+  return _then(_ReportContent(
+content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String,reportType: null == reportType ? _self.reportType : reportType // ignore: cast_nullable_to_non_nullable
+as String,contentDocID: null == contentDocID ? _self.contentDocID : contentDocID // ignore: cast_nullable_to_non_nullable
+as String,contentField: freezed == contentField ? _self.contentField : contentField // ignore: cast_nullable_to_non_nullable
+as String?,timestamp: freezed == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+
+}
+
+// dart format on

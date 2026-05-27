@@ -6,8 +6,8 @@ part of 'create_service_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ServiceModelImpl _$$ServiceModelImplFromJson(Map<String, dynamic> json) =>
-    _$ServiceModelImpl(
+_ServiceModel _$ServiceModelFromJson(Map<String, dynamic> json) =>
+    _ServiceModel(
       category: json['category'] as String?,
       description: json['description'] as String?,
       services: (json['services'] as List<dynamic>?)
@@ -15,21 +15,19 @@ _$ServiceModelImpl _$$ServiceModelImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$ServiceModelImplToJson(_$ServiceModelImpl instance) =>
+Map<String, dynamic> _$ServiceModelToJson(_ServiceModel instance) =>
     <String, dynamic>{
       'category': instance.category,
       'description': instance.description,
       'services': instance.services,
     };
 
-_$ServicesImpl _$$ServicesImplFromJson(Map<String, dynamic> json) =>
-    _$ServicesImpl(
-      service: json['service'] as String?,
-      description: json['description'] as String?,
-    );
+_Services _$ServicesFromJson(Map<String, dynamic> json) => _Services(
+  service: json['service'] as String?,
+  description: json['description'] as String?,
+);
 
-Map<String, dynamic> _$$ServicesImplToJson(_$ServicesImpl instance) =>
-    <String, dynamic>{
-      'service': instance.service,
-      'description': instance.description,
-    };
+Map<String, dynamic> _$ServicesToJson(_Services instance) => <String, dynamic>{
+  'service': instance.service,
+  'description': instance.description,
+};

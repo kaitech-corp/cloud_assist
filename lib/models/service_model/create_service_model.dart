@@ -4,7 +4,7 @@ part 'create_service_model.freezed.dart';
 part 'create_service_model.g.dart';
 
 @freezed
-class ServiceModel with _$ServiceModel {
+abstract class ServiceModel with _$ServiceModel {
   const factory ServiceModel({
     String? category,
     String? description,
@@ -16,7 +16,7 @@ class ServiceModel with _$ServiceModel {
 }
 
 @freezed
-class Services with _$Services {
+abstract class Services with _$Services {
   const factory Services({
     String? service,
     String? description,

@@ -32,7 +32,7 @@ class TimestampNullableConverter implements JsonConverter<DateTime?, Timestamp?>
 }
 
 @freezed
-class ComparisonModel with _$ComparisonModel {
+abstract class ComparisonModel with _$ComparisonModel {
   const factory ComparisonModel(
       {required String answer,
       required String docID,

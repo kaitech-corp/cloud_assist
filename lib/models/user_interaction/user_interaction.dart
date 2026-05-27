@@ -32,7 +32,7 @@ class TimestampNullableConverter
 }
 
 @freezed
-class UserInteractionModel with _$UserInteractionModel {
+abstract class UserInteractionModel with _$UserInteractionModel {
   const factory UserInteractionModel({
      String? serviceId,
      String? featureId,

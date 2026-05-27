@@ -6,34 +6,35 @@ part of 'quick_fact_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$QuickFactImpl _$$QuickFactImplFromJson(Map<String, dynamic> json) =>
-    _$QuickFactImpl(
-      fact: json['fact'] as String,
-      docID: json['docID'] as String,
-      service: json['service'] as String,
-      flag: json['flag'] as String,
-      timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
-          json['timestamp'], const TimestampConverter().fromJson),
-    );
+_QuickFact _$QuickFactFromJson(Map<String, dynamic> json) => _QuickFact(
+  fact: json['fact'] as String,
+  docID: json['docID'] as String,
+  service: json['service'] as String,
+  flag: json['flag'] as String,
+  timestamp: _$JsonConverterFromJson<Timestamp, DateTime>(
+    json['timestamp'],
+    const TimestampConverter().fromJson,
+  ),
+);
 
-Map<String, dynamic> _$$QuickFactImplToJson(_$QuickFactImpl instance) =>
+Map<String, dynamic> _$QuickFactToJson(_QuickFact instance) =>
     <String, dynamic>{
       'fact': instance.fact,
       'docID': instance.docID,
       'service': instance.service,
       'flag': instance.flag,
       'timestamp': _$JsonConverterToJson<Timestamp, DateTime>(
-          instance.timestamp, const TimestampConverter().toJson),
+        instance.timestamp,
+        const TimestampConverter().toJson,
+      ),
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,
   Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
+) => json == null ? null : fromJson(json as Json);
 
 Json? _$JsonConverterToJson<Json, Value>(
   Value? value,
   Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);
+) => value == null ? null : toJson(value);
