@@ -1,17 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {firestore} from "firebase-admin";
-import * as functions from "firebase-functions/v1";
 import {onDocumentCreated} from "firebase-functions/firestore";
+import * as auth from "firebase-functions/v1/auth";
 import {HttpsError, onCall} from "firebase-functions/v2/https";
 import {db} from "../core/config";
 import {getSecretsClient} from "../core/secrets";
+import { setGlobalOptions} from "firebase-functions/v2";
 
+setGlobalOptions({ region: "us-central1" });
 /**
  * Creates a user document in Firestore when a new user is created in
  * Firebase Auth.
  */
-export const createUserDocument = functions.auth.user().onCreate(
+export const createUserDocument = auth.user().onCreate(
   async (user) => {
+    if (!user) {
+      console.error("User creation event did not include user data.");
+      return;
+    }
     const {uid, displayName, email, photoURL} = user;
 
     try {
