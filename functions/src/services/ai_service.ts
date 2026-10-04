@@ -1,11 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {SchemaType, VertexAI} from "@google-cloud/vertexai";
+import {GoogleGenAI, Type} from "@google/genai";
 import {HttpsError} from "firebase-functions/v2/https";
 import {getOpenaiClient} from "../core/secrets";
 
 export interface DiscoveredService {
   service: string;
   type: string;
+}
+
+export interface ReportAnalysis {
+  shouldUpdate: boolean;
+  verified: boolean;
+  reasoningMatches: boolean;
+  reason: string;
+  replacementText?: string;
+  replacementList?: string[];
 }
 
 export const FACTS_OPENAI_SCHEMA = {
@@ -45,23 +54,35 @@ export const SERVICE_DATA_OPENAI_SCHEMA = {
 };
 
 export const SERVICE_DATA_VERTEX_SCHEMA = {
-  type: SchemaType.OBJECT,
+  type: Type.OBJECT,
   properties: {
-    service: {type: SchemaType.STRING},
-    description: {type: SchemaType.STRING},
-    detail: {type: SchemaType.STRING},
-    benefits: {type: SchemaType.ARRAY, items: {type: SchemaType.STRING}},
-    cons: {type: SchemaType.ARRAY, items: {type: SchemaType.STRING}},
-    useCases: {type: SchemaType.ARRAY, items: {type: SchemaType.STRING}},
-    link: {type: SchemaType.STRING, format: "uri"},
-    example: {type: SchemaType.STRING},
-    type: {type: SchemaType.STRING},
+    service: {type: Type.STRING},
+    description: {type: Type.STRING},
+    detail: {type: Type.STRING},
+    benefits: {type: Type.ARRAY, items: {type: Type.STRING}},
+    cons: {type: Type.ARRAY, items: {type: Type.STRING}},
+    useCases: {type: Type.ARRAY, items: {type: Type.STRING}},
+    link: {type: Type.STRING, format: "uri"},
+    example: {type: Type.STRING},
+    type: {type: Type.STRING},
   },
   required: [
     "service", "description", "detail", "benefits",
     "cons", "useCases", "link", "example", "type",
   ],
 };
+
+/**
+ * Creates a Google Gen AI client backed by Gemini Enterprise/Vertex auth.
+ * @return {GoogleGenAI} Configured Google Gen AI client.
+ */
+function getGoogleGenAIClient(): GoogleGenAI {
+  return new GoogleGenAI({
+    enterprise: true,
+    project: process.env.GCLOUD_PROJECT,
+    location: "us-central1",
+  });
+}
 
 /**
  * Builds the prompt for service data generation.
@@ -127,7 +148,7 @@ export async function generateServiceDataOpenAI(
 }
 
 /**
- * Generates structured service data using Vertex AI (Gemini).
+ * Generates structured service data using Google Gen AI (Gemini).
  * @param {string} service - The service name.
  * @param {string} serviceType - The service type category.
  * @return {Promise<any>} Parsed service data object.
@@ -138,30 +159,27 @@ export async function generateServiceDataVertex(
 ): Promise<any> {
   const prompt = buildServiceDataPrompt(service, serviceType);
   try {
-    const vertexAI = new VertexAI({
-      project: process.env.GCLOUD_PROJECT,
-      location: "us-central1",
-    });
-    const model = vertexAI.getGenerativeModel({
-      model: "gemini-1.5-pro-005",
-      generationConfig: {
+    const ai = getGoogleGenAIClient();
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
         responseMimeType: "application/json",
         responseSchema: SERVICE_DATA_VERTEX_SCHEMA,
       },
     });
-    const response = await model.generateContent(prompt);
-    const text = response.response.candidates?.[0].content.parts[0].text;
+    const text = response.text;
     if (!text) {
-      throw new HttpsError("unavailable", "Vertex AI returned empty response.");
+      throw new HttpsError("unavailable", "Gemini returned empty response.");
     }
     return JSON.parse(text);
   } catch (error: any) {
-    throw new HttpsError("unavailable", "Vertex AI error: " + error.message);
+    throw new HttpsError("unavailable", "Gemini error: " + error.message);
   }
 }
 
 /**
- * Uses Vertex AI with Google Search grounding to discover the current list
+ * Uses Google Gen AI with Google Search grounding to discover the current list
  * of services for a given cloud provider.
  * @param {string} cloudProvider - Cloud provider name (GCP, AWS, Azure).
  * @return {Promise<DiscoveredService[]>} Array of discovered services.
@@ -169,17 +187,7 @@ export async function generateServiceDataVertex(
 export async function discoverCloudServices(
   cloudProvider: string,
 ): Promise<DiscoveredService[]> {
-  const vertexAI = new VertexAI({
-    project: process.env.GCLOUD_PROJECT,
-    location: "us-central1",
-  });
-
-  // googleSearchRetrieval grounds the model against live web results,
-  // bypassing the training cutoff for service discovery.
-  const model = vertexAI.getGenerativeModel({
-    model: "gemini-1.5-pro-005",
-    tools: [{googleSearchRetrieval: {}}],
-  });
+  const ai = getGoogleGenAIClient();
 
   const prompt =
     `List all current ${cloudProvider} cloud services available today. ` +
@@ -189,9 +197,14 @@ export async function discoverCloudServices(
     "security, ai_ml, devops, analytics, identity, monitoring, other.";
 
   try {
-    const result = await model.generateContent(prompt);
-    const raw =
-      result.response.candidates?.[0].content.parts[0].text || "[]";
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
+        tools: [{googleSearch: {}}],
+      },
+    });
+    const raw = result.text || "[]";
     const jsonMatch = raw.match(/\[[\s\S]*\]/);
     if (!jsonMatch) return [];
     return JSON.parse(jsonMatch[0]) as DiscoveredService[];
@@ -200,5 +213,88 @@ export async function discoverCloudServices(
       `discoverCloudServices failed for ${cloudProvider}:`, error,
     );
     return [];
+  }
+}
+
+/**
+ * Analyzes a user content report and proposes a verified correction only when
+ * the report is specific enough and the correction can be grounded.
+ *
+ * @param {object} params - Report and current service content.
+ * @param {string} params.service - Service name.
+ * @param {string} params.provider - Cloud provider name.
+ * @param {string} params.field - Service field being reported.
+ * @param {string} params.reportType - User-selected report reason.
+ * @param {string | string[]} params.currentValue - Current service field value.
+ * @return {Promise<ReportAnalysis>} Structured report analysis.
+ */
+export async function analyzeReportedServiceContent(params: {
+  service: string;
+  provider: string;
+  field: string;
+  reportType: string;
+  currentValue: string | string[];
+}): Promise<ReportAnalysis> {
+  const ai = getGoogleGenAIClient();
+
+  const valueType = Array.isArray(params.currentValue) ? "array" : "string";
+  const prompt = [
+    "You review cloud service educational content reports.",
+    "Use Google Search grounding when current facts are needed.",
+    "Only approve an update when the report reason matches the content issue",
+    "and the correction can be verified. If verification is weak, uncertain,",
+    "or the reason does not match, return shouldUpdate false.",
+    "Return ONLY valid JSON with this shape:",
+    "{\"shouldUpdate\": boolean, \"verified\": boolean,",
+    "\"reasoningMatches\": boolean, \"reason\": string,",
+    "\"replacementText\": string, \"replacementList\": string[]}.",
+    "For array fields, replacementList must be the complete replacement array,",
+    "not one item. Do not include numbering, bullets, markdown, citations,",
+    "or nested lists inside list items. For example fields, return plain text",
+    "that will display correctly as a paragraph or short code-free example.",
+    `Service: ${params.service}`,
+    `Provider: ${params.provider}`,
+    `Field: ${params.field}`,
+    `Field value type: ${valueType}`,
+    `Report reason: ${params.reportType}`,
+    `Current field value: ${JSON.stringify(params.currentValue)}`,
+  ].join("\n");
+
+  const result = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
+    config: {
+      tools: [{googleSearch: {}}],
+    },
+  });
+  const raw = result.text || "{}";
+  const jsonMatch = raw.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    return {
+      shouldUpdate: false,
+      verified: false,
+      reasoningMatches: false,
+      reason: "The analysis did not return parseable JSON.",
+    };
+  }
+
+  try {
+    const parsed = JSON.parse(jsonMatch[0]) as ReportAnalysis;
+    return {
+      shouldUpdate: parsed.shouldUpdate === true,
+      verified: parsed.verified === true,
+      reasoningMatches: parsed.reasoningMatches === true,
+      reason: parsed.reason || "No reason provided.",
+      replacementText: parsed.replacementText,
+      replacementList: Array.isArray(parsed.replacementList) ?
+        parsed.replacementList : undefined,
+    };
+  } catch (error: any) {
+    return {
+      shouldUpdate: false,
+      verified: false,
+      reasoningMatches: false,
+      reason: "The analysis JSON could not be parsed: " + error.message,
+    };
   }
 }

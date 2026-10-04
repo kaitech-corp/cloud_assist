@@ -50,7 +50,7 @@ export const refreshStaleServices = onSchedule({
 });
 
 /**
- * Monthly: uses Vertex AI with Google Search grounding to discover the
+ * Monthly: uses Google Gen AI with Google Search grounding to discover the
  * current service catalog for each cloud provider. Creates stub documents
  * for new services (triggering createFacts automatically) and flags
  * services that no longer appear in the catalog as deprecated.

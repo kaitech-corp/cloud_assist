@@ -1,0 +1,232 @@
+[
+  {
+    "service": "Cloud SQL",
+    "description": "Fully managed relational databases for MySQL, PostgreSQL, and SQL Server.",
+    "detail": "Cloud SQL provides managed relational database instances with automated backups, maintenance, replication options, IAM integration, private networking, and high availability configurations. It is a strong default for traditional application databases that need familiar SQL engines.",
+    "benefits": [
+      "Managed MySQL, PostgreSQL, and SQL Server operations",
+      "Automated backups, patching, and high availability options",
+      "Works with private IP, IAM, and Google Cloud observability"
+    ],
+    "cons": [
+      "Instance sizing and connection limits still require planning",
+      "Not designed for unlimited horizontal relational scale"
+    ],
+    "useCases": [
+      "Web and mobile application backends",
+      "Lift-and-shift relational database migrations",
+      "Operational systems that need standard SQL engines"
+    ],
+    "link": "https://cloud.google.com/sql",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A startup migrates a PostgreSQL application from a self-managed VM to Cloud SQL to gain automated backups, private networking, and managed maintenance."
+  },
+  {
+    "service": "AlloyDB for PostgreSQL",
+    "description": "PostgreSQL-compatible database for demanding enterprise workloads.",
+    "detail": "AlloyDB is a fully managed PostgreSQL-compatible database designed for high performance, high availability, analytics acceleration, and AI-ready application development. AlloyDB AI adds vector search and integrations for generative AI applications.",
+    "benefits": [
+      "PostgreSQL compatibility with managed operations",
+      "High performance for transactional and analytical workloads",
+      "Supports vector search and AI application patterns"
+    ],
+    "cons": [
+      "Best fit is PostgreSQL workloads, not every relational engine",
+      "Migration planning is needed for extensions and operational behavior"
+    ],
+    "useCases": [
+      "Modernizing PostgreSQL applications",
+      "Enterprise transactional systems",
+      "AI-enabled apps using embeddings and vector search"
+    ],
+    "link": "https://cloud.google.com/alloydb",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A retail platform moves a high-traffic PostgreSQL catalog service to AlloyDB and adds vector similarity search for product recommendations."
+  },
+  {
+    "service": "Spanner",
+    "description": "Globally scalable relational database with strong consistency.",
+    "detail": "Spanner combines relational SQL, horizontal scale, strong consistency, high availability, and multi-region replication. It is designed for mission-critical applications that need relational semantics without traditional single-instance scaling limits.",
+    "benefits": [
+      "Horizontal relational scale",
+      "Strong consistency and high availability",
+      "Supports relational, key-value, graph, full-text, and vector patterns"
+    ],
+    "cons": [
+      "Requires careful schema and key design",
+      "Can be more complex and costly than smaller relational options"
+    ],
+    "useCases": [
+      "Global financial and inventory systems",
+      "High-scale SaaS control planes",
+      "Applications requiring multi-region availability"
+    ],
+    "link": "https://cloud.google.com/spanner",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A payments company uses Spanner for a globally replicated ledger that requires strong consistency and uptime across regions."
+  },
+  {
+    "service": "Firestore",
+    "description": "Serverless document database for app development.",
+    "detail": "Firestore stores JSON-like documents in collections with real-time synchronization, offline support for client apps, automatic scaling, security rules, and serverless operations. It is built for rich web, mobile, and IoT applications.",
+    "benefits": [
+      "Serverless document model",
+      "Real-time sync and offline client support",
+      "Scales automatically for app workloads"
+    ],
+    "cons": [
+      "Query patterns must fit document and index design",
+      "Complex joins and relational transactions are not its strength"
+    ],
+    "useCases": [
+      "Mobile and web application state",
+      "Real-time collaboration features",
+      "User profiles, preferences, and activity feeds"
+    ],
+    "link": "https://cloud.google.com/firestore",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A field-service app uses Firestore to sync work orders between technicians' phones and the back office, even when devices temporarily go offline."
+  },
+  {
+    "service": "Bigtable",
+    "description": "Wide-column database for large low-latency workloads.",
+    "detail": "Bigtable is a fully managed wide-column database built for massive scale, high throughput, and low-latency reads and writes. It is commonly used for time-series, personalization, fraud detection, IoT, and analytical serving workloads.",
+    "benefits": [
+      "Very high throughput and low latency",
+      "Scales to large operational and analytical datasets",
+      "Integrates with data and AI services"
+    ],
+    "cons": [
+      "Requires row-key design expertise",
+      "Not intended for ad hoc relational querying"
+    ],
+    "useCases": [
+      "Time-series metrics and telemetry",
+      "IoT and event ingestion",
+      "Feature stores and personalization"
+    ],
+    "link": "https://cloud.google.com/bigtable",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "An IoT company stores device telemetry in Bigtable so dashboards and anomaly detection services can read recent events with low latency."
+  },
+  {
+    "service": "Memorystore",
+    "description": "Managed in-memory data stores for Redis, Valkey, and Memcached patterns.",
+    "detail": "Memorystore provides managed in-memory caching and data structures for low-latency application access. It supports common caching, session, queue, leaderboard, and vector embedding use cases depending on the selected engine and tier.",
+    "benefits": [
+      "Low-latency in-memory access",
+      "Managed operations for common cache engines",
+      "Useful for reducing database load"
+    ],
+    "cons": [
+      "Memory capacity and eviction behavior must be planned",
+      "Not a replacement for durable system-of-record databases"
+    ],
+    "useCases": [
+      "Application caching",
+      "Session storage",
+      "Real-time counters, queues, and leaderboards"
+    ],
+    "link": "https://cloud.google.com/memorystore",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A gaming service stores live leaderboard data in Memorystore so user score updates are reflected with very low latency."
+  },
+  {
+    "service": "BigQuery",
+    "description": "Serverless data warehouse for analytics and AI workloads.",
+    "detail": "BigQuery is a serverless analytical database and data warehouse for SQL analytics, streaming ingestion, machine learning, governance, and data sharing. It is optimized for large-scale analysis rather than transactional application serving.",
+    "benefits": [
+      "Serverless analytics at large scale",
+      "Supports SQL, streaming, ML, and governed data sharing",
+      "Separates analytical storage and compute concerns"
+    ],
+    "cons": [
+      "Not designed for low-latency OLTP transactions",
+      "Cost controls require partitioning, clustering, and query discipline"
+    ],
+    "useCases": [
+      "Business intelligence and reporting",
+      "Data lakehouse analytics",
+      "Large-scale event and log analysis"
+    ],
+    "link": "https://cloud.google.com/bigquery",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A marketing team analyzes clickstream and purchase data in BigQuery to measure campaign performance across millions of events."
+  },
+  {
+    "service": "Database Migration Service",
+    "description": "Managed service for migrating databases to Google Cloud.",
+    "detail": "Database Migration Service helps migrate MySQL, PostgreSQL, SQL Server, and Oracle workloads to Cloud SQL and AlloyDB. It supports guided migration flows and conversion assistance for modernization projects.",
+    "benefits": [
+      "Simplifies database migration planning and execution",
+      "Supports common source engines",
+      "Targets managed Google Cloud database services"
+    ],
+    "cons": [
+      "Complex schemas and stored procedures still need assessment",
+      "Cutover planning and application testing remain customer responsibilities"
+    ],
+    "useCases": [
+      "Moving self-managed databases to Cloud SQL",
+      "Modernizing PostgreSQL workloads with AlloyDB",
+      "Reducing migration downtime and manual steps"
+    ],
+    "link": "https://cloud.google.com/database-migration",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "An enterprise uses Database Migration Service to migrate a legacy MySQL database to Cloud SQL while validating replication before final cutover."
+  },
+  {
+    "service": "Datastream",
+    "description": "Serverless change data capture and replication service.",
+    "detail": "Datastream captures and streams database changes from sources such as MySQL, PostgreSQL, SQL Server, and Oracle. It is commonly used to replicate operational data into BigQuery or downstream processing systems for near real-time analytics.",
+    "benefits": [
+      "Serverless change data capture",
+      "Supports near real-time analytics pipelines",
+      "Reduces custom replication code"
+    ],
+    "cons": [
+      "Requires source database configuration and permissions",
+      "Schema evolution and downstream consistency need governance"
+    ],
+    "useCases": [
+      "Operational analytics replication",
+      "Database change streams into BigQuery",
+      "Event-driven data integration"
+    ],
+    "link": "https://cloud.google.com/datastream",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A logistics company streams order database changes into BigQuery with Datastream so operations dashboards update within minutes."
+  },
+  {
+    "service": "Database Center",
+    "description": "Fleet management and health dashboard for Google Cloud databases.",
+    "detail": "Database Center provides a unified view of managed database fleet health, availability, performance, protection, security, and compliance signals across services such as Cloud SQL, AlloyDB, Spanner, Bigtable, Memorystore, and Firestore.",
+    "benefits": [
+      "Centralized database fleet visibility",
+      "Health, cost, security, and performance insights",
+      "AI-assisted troubleshooting for supported database services"
+    ],
+    "cons": [
+      "Works best when database resources follow consistent tagging and governance",
+      "Does not replace service-specific operational expertise"
+    ],
+    "useCases": [
+      "Database platform operations",
+      "Fleet health and compliance review",
+      "Prioritizing remediation across many database instances"
+    ],
+    "link": "https://cloud.google.com/database-center",
+    "provider": "GCP",
+    "type": "Databases",
+    "example": "A database platform team uses Database Center each morning to identify high-risk instances, backup gaps, and performance anomalies across projects."
+  }
+]

@@ -33,10 +33,9 @@ export async function getSecretsClient(params: string): Promise<string> {
  * @return {Promise<OpenAI>} - The OpenAI client.
  */
 export async function getOpenaiClient(): Promise<OpenAI> {
-  // Get the organization and OpenAI API key from Google Cloud Secret Manager
-  const orgKey = await getSecretsClient("orgKey");
-  const secretValue = await getSecretsClient("openAI_api_key");
+  // Get the OpenAI API key from Google Cloud Secret Manager
+  const secretValue = await getSecretsClient("openai_cloud_assist_key");
 
   // Create and return a new OpenAI client using the configuration object
-  return new OpenAI({organization: orgKey, apiKey: secretValue});
+  return new OpenAI({apiKey: secretValue});
 }

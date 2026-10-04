@@ -88,7 +88,7 @@ export const getFactsData = onCall(async (request) => {
 });
 
 /**
- * Returns the Azure service catalog grouped by type, using Vertex AI
+ * Returns the Azure service catalog grouped by type, using Google Gen AI
  * with Google Search grounding for up-to-date results.
  */
 export const getAzureServiceList = onCall(async (request) => {

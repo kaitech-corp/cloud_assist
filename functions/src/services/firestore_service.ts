@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {firestore} from "firebase-admin";
 import {db} from "../core/config";
-import {removeCloudAndWhitespace, removeLeadingNumbers} from "./utils";
+import {
+  normalizeListContent,
+  normalizeTextContent,
+  removeCloudAndWhitespace,
+} from "./utils";
 
 /**
  * Saves the response from ChatGPT to Firestore.
@@ -158,12 +162,14 @@ export async function saveServiceDataToFirestore(
  */
 function buildFieldUpdate(serviceData: any, field: string): any {
   switch (field) {
-  case "description": return {description: serviceData.description};
-  case "detail": return {detail: serviceData.detail};
-  case "benefits": return {benefits: serviceData.benefits};
-  case "cons": return {cons: serviceData.cons};
+  case "description":
+    return {description: normalizeTextContent(serviceData.description)};
+  case "detail": return {detail: normalizeTextContent(serviceData.detail)};
+  case "example": return {example: normalizeTextContent(serviceData.example)};
+  case "benefits": return {benefits: normalizeListContent(serviceData.benefits)};
+  case "cons": return {cons: normalizeListContent(serviceData.cons)};
   case "useCases":
-    return {useCases: removeLeadingNumbers(serviceData.useCases)};
+    return {useCases: normalizeListContent(serviceData.useCases)};
   default: return {};
   }
 }

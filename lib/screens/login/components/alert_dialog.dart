@@ -57,7 +57,7 @@ Future<dynamic> resetPasswordAlertDialog(BuildContext context) {
               if (form!.validate()) {
                 form.save();
                 final bool result = await locator<UserRepository>()
-                    .isRegistered(emailController.value.text);
+                    .resetPassword(emailController.value.text);
                 ScaffoldMessenger.of(context)
                   ..removeCurrentSnackBar()
                   ..showSnackBar(

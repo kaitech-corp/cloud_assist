@@ -6,15 +6,16 @@ import 'bloc/authentication_bloc/authentication_bloc.dart';
 import 'repositories/user_repository.dart';
 import 'services/navigation/navigation.dart';
 import 'services/project_initializer.dart';
+import 'services/service_locator.dart';
 import 'services/ui/responsive.dart';
 import 'services/ui/theme.dart';
 
 void main() async {
   await projectInitializer();
-  final UserRepository userRepository = UserRepository();
+  setupLocator();
   runApp(BlocProvider<AuthenticationBloc>(
     create: (BuildContext context) =>
-        AuthenticationBloc(userRepository: userRepository),
+        AuthenticationBloc(userRepository: locator<UserRepository>()),
     child: const MyApp(),
   ));
 }

@@ -127,44 +127,119 @@ export const updateTags = onDocumentCreated("reports/{doc}", async (event) => {
 
 /**
  * Generates database recommendations based on user answers.
+ * @param {string} docID Firestore solution document ID.
+ * @param {FirebaseFirestore.DocumentReference} docRef Solution document ref.
+ * @param {any} snapshot Solution document data.
+ * @return {Promise<void>}
  */
+async function generateDatabaseSolutionForDoc(
+  docID: string,
+  docRef: firestore.DocumentReference,
+  snapshot: any,
+): Promise<void> {
+  const openai = await getOpenaiClient();
+
+  interface MapType {
+    question: string;
+    answer: string;
+  }
+
+  try {
+    await docRef.update({
+      status: "generating",
+      errorMessage: firestore.FieldValue.delete(),
+      updatedAt: firestore.FieldValue.serverTimestamp(),
+    });
+
+    const answers: MapType[] = snapshot.answersSelected || [];
+    const answerString = answers.map((m: MapType) => m.answer).join(" ");
+    const content = "Please provide detailed recommendations for the " +
+      "best database service based on the following parameters: " +
+      `${answerString}. Your response must include: Description, ` +
+      "Suggestions, Reasons, Comparable Services. Format as plain text " +
+      "with section headings and no markdown.";
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{role: "user", content: content}],
+    });
+    const response = completion.choices[0].message.content;
+    if (!response) {
+      throw new Error("OpenAI returned an empty database solution.");
+    }
+
+    const completedData = {
+      answer: response,
+      docID,
+      status: "complete",
+      timestamp: firestore.FieldValue.serverTimestamp(),
+      updatedAt: firestore.FieldValue.serverTimestamp(),
+    };
+    await docRef.update(completedData);
+
+    if (snapshot.uid) {
+      await db.collection("users")
+        .doc(snapshot.uid)
+        .collection("generatedSolution")
+        .doc(docID)
+        .set({
+          answersSelected: snapshot.answersSelected || [],
+          ...completedData,
+          uid: snapshot.uid,
+        }, {merge: true});
+    }
+  } catch (error: any) {
+    console.log("🚀 ~ databaseSolutionGenerator ~ error:", error);
+    await docRef.update({
+      status: "failed",
+      errorMessage: error.message || "Unable to generate database solution.",
+      updatedAt: firestore.FieldValue.serverTimestamp(),
+    });
+  }
+}
+
 export const databaseSolutionGenerator = onDocumentCreated(
   "databaseComparison/{docID}", async (event) => {
-    const openai = await getOpenaiClient();
     const docID = event.params.docID;
     const docRef = db.collection("databaseComparison").doc(docID);
     const snapshot = event.data?.data();
     if (!snapshot) return;
-
-    interface MapType {
-      question: string;
-      answer: string;
-    }
-
-    try {
-      const answers: MapType[] = snapshot.answersSelected;
-      const answerString = answers.map((m: MapType) => m.answer).join(" ");
-      const content = "Please provide detailed recommendations for the " +
-        "best database service based on the following parameters: " +
-        `${answerString}. Your response must include: Description, ` +
-        "Suggestions, Reasons, Comparable Services. Format as plain text " +
-        "with section headings and no markdown.";
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{role: "user", content: content}],
-      });
-      const response = completion.choices[0].message.content;
-      await docRef.update({
-        answer: response,
-        timestamp: firestore.FieldValue.serverTimestamp(),
-      });
-    } catch (error) {
-      console.log("🚀 ~ databaseSolutionGenerator ~ error:", error);
-    }
+    await generateDatabaseSolutionForDoc(docID, docRef, snapshot);
   });
 
 /**
- * Generates structured service data using OpenAI or Vertex AI.
+ * Retries a failed database recommendation for the owning user.
+ */
+export const retryDatabaseSolution = onCall(async (request) => {
+  const uid = request.auth?.uid;
+  if (!uid) {
+    throw new HttpsError("permission-denied", "User is not authenticated.");
+  }
+
+  const docID = String(request.data.docID || "");
+  if (!docID) {
+    throw new HttpsError("invalid-argument", "Missing solution document ID.");
+  }
+
+  const docRef = db.collection("databaseComparison").doc(docID);
+  const snapshot = await docRef.get();
+  if (!snapshot.exists) {
+    throw new HttpsError("not-found", "Database solution was not found.");
+  }
+
+  const data = snapshot.data() || {};
+  if (data.uid !== uid) {
+    throw new HttpsError("permission-denied", "You do not own this solution.");
+  }
+  if (data.status !== "failed") {
+    return {status: data.status || "pending"};
+  }
+
+  await generateDatabaseSolutionForDoc(docID, docRef, data);
+  return {status: "retry_started"};
+});
+
+/**
+ * Generates structured service data using OpenAI or Google Gen AI.
  */
 export const serviceDataGenerator = onCall(async (request) => {
   if (!request.auth?.uid) {
@@ -229,6 +304,14 @@ export const updateServiceField = onCall(async (request) => {
         `${provider} service ${service}.`;
     responseFormat.json_schema.schema.properties = {detail: {type: "string"}};
     responseFormat.json_schema.schema.required = ["detail"];
+    break;
+  case "example":
+    content = "Provide a practical plain-text example for the " +
+        `${provider} service ${service}. Do not use markdown or numbering.`;
+    responseFormat.json_schema.schema.properties = {
+      example: {type: "string"},
+    };
+    responseFormat.json_schema.schema.required = ["example"];
     break;
   case "benefits":
     content = `List benefits of the ${provider} service ${service}. ` +

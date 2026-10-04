@@ -53,10 +53,12 @@ final GoRouter router = GoRouter(
           path: 'solutions',
           builder: (BuildContext context, GoRouterState state) {
             return BlocProvider<
-                GenericBloc<ComparisonModel, SolutionsRepository>>(
+              GenericBloc<ComparisonModel, SolutionsRepository>
+            >(
               create: (BuildContext context) =>
                   GenericBloc<ComparisonModel, SolutionsRepository>(
-                      repository: locator<SolutionsRepository>()),
+                    repository: locator<SolutionsRepository>(),
+                  ),
               child: const SolutionListScreen(),
             );
           },
@@ -68,8 +70,9 @@ final GoRouter router = GoRouter(
             final String docID = state.extra! as String;
             return BlocProvider<ComparisonModelBloc>(
               create: (BuildContext context) => ComparisonModelBloc(
-                  comparisonModelRepository:
-                      locator<ComparisonModelRepository>()..refresh(docID)),
+                comparisonModelRepository: ComparisonModelRepository()
+                  ..refresh(docID),
+              ),
               child: const DatabaseSolutionScreen(),
             );
           },
@@ -79,9 +82,7 @@ final GoRouter router = GoRouter(
           path: 'solutionDetail',
           builder: (BuildContext context, GoRouterState state) {
             final ComparisonModel model = state.extra! as ComparisonModel;
-            return SolutionScreen(
-              model: model,
-            );
+            return SolutionScreen(model: model);
           },
         ),
         GoRoute(
@@ -91,7 +92,8 @@ final GoRouter router = GoRouter(
             return BlocProvider<GenericBloc<ReportModel, ReportRepository>>(
               create: (BuildContext context) =>
                   GenericBloc<ReportModel, ReportRepository>(
-                      repository: locator<ReportRepository>()),
+                    repository: locator<ReportRepository>(),
+                  ),
               child: const ReportsScreen(),
             );
           },

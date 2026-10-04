@@ -7,14 +7,15 @@ import 'state.dart';
 
 class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
   QuestionsBloc() : super(QuestionsState.submitting()) {
-    on<AnswersSubmitted>(
-        (AnswersSubmitted event, Emitter<QuestionsState> emit) async {
+    on<AnswersSubmitted>((
+      AnswersSubmitted event,
+      Emitter<QuestionsState> emit,
+    ) async {
       if (event.answerSelected.isNotEmpty) {
         emit(QuestionsState.submitting());
         try {
-          FirestoreDatabase().saveAnswers(event.answerSelected);
+          await FirestoreDatabase().saveAnswers(event.answerSelected);
           emit(QuestionsState.success(answerSelected: event.answerSelected));
-          
         } catch (e) {
           emit(QuestionsState.failure());
           if (kDebugMode) {
@@ -25,10 +26,14 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
         emit(QuestionsState.failure());
       }
     });
-    on<AnswersSelected>(
-        (AnswersSelected event, Emitter<QuestionsState> emit) async {
-      final AnswersSelected newSelectedAnswer =
-          AnswersSelected(event.question, event.answer);
+    on<AnswersSelected>((
+      AnswersSelected event,
+      Emitter<QuestionsState> emit,
+    ) async {
+      final AnswersSelected newSelectedAnswer = AnswersSelected(
+        event.question,
+        event.answer,
+      );
       final QuestionsState currentState = state;
       final List<AnswersSelected> updatedSelectedAnswers =
           List<AnswersSelected>.from(currentState.answerSelected);
@@ -43,8 +48,10 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
       }
       emit(currentState.copyWith(answerSelected: updatedSelectedAnswers));
     });
-    on<SolutionViewed>(
-        (SolutionViewed event, Emitter<QuestionsState> emit) async {
+    on<SolutionViewed>((
+      SolutionViewed event,
+      Emitter<QuestionsState> emit,
+    ) async {
       emit(QuestionsState.submitting());
     });
   }

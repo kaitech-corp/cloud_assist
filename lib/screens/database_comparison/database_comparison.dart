@@ -70,9 +70,10 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   void dispose() {
     _questionsBloc.close();
     FirestoreDatabase().saveUserInteraction(
-        featureId: FeatureID.database.toString(),
-        startTime: false,
-        endTime: true);
+      featureId: FeatureID.database.toString(),
+      startTime: false,
+      endTime: true,
+    );
     super.dispose();
   }
 
@@ -123,10 +124,7 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   }
 
   Widget _buildTitle(BuildContext context) {
-    return Text(
-      'Database Solution',
-      style: headlineSmall(context),
-    );
+    return Text('Database Solution', style: headlineSmall(context));
   }
 
   Widget _buildSubtitle(BuildContext context) {
@@ -151,7 +149,9 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   }
 
   Widget _buildQuestionItem(
-      BuildContext context, DatabaseArchitecture databaseArchitecture) {
+    BuildContext context,
+    DatabaseArchitecture databaseArchitecture,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,7 +169,9 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
   }
 
   Widget _buildDropdownButtonFormField(
-      BuildContext context, DatabaseArchitecture databaseArchitecture) {
+    BuildContext context,
+    DatabaseArchitecture databaseArchitecture,
+  ) {
     final int index = widget.questions.indexOf(databaseArchitecture);
     return DropdownButtonFormField<String>(
       dropdownColor: Colors.grey[300],
@@ -178,20 +180,20 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
       value: answerSelected[index].answer,
       onChanged: (String? value) {
         setState(() {
-          answerSelected[index] =
-              AnswersSelected(databaseArchitecture.question, value);
+          answerSelected[index] = AnswersSelected(
+            databaseArchitecture.question,
+            value,
+          );
         });
         _questionsBloc.add(
-          AnswersSelected(
-            databaseArchitecture.question,
-            value!,
-          ),
+          AnswersSelected(databaseArchitecture.question, value!),
         );
         FirestoreDatabase().saveUserInteraction(
-            serviceId: databaseArchitecture.question,
-            featureId: FeatureID.database.toString(),
-            startTime: true,
-            endTime: false);
+          serviceId: databaseArchitecture.question,
+          featureId: FeatureID.database.toString(),
+          startTime: true,
+          endTime: false,
+        );
       },
       items: databaseArchitecture.answers
           .map<DropdownMenuItem<String>>(
@@ -219,28 +221,47 @@ class DatabaseComparisonScreenState extends State<DatabaseComparisonScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocBuilder<QuestionsBloc, QuestionsState>(
-            bloc: _questionsBloc,
-            builder: (BuildContext context, QuestionsState state) {
-              return CustomFloatingActionButton(
-                onPressed: () {
-                  _questionsBloc.add(
-                    AnswersSubmitted(answerSelected: state.answerSelected),
+          bloc: _questionsBloc,
+          builder: (BuildContext context, QuestionsState state) {
+            return CustomFloatingActionButton(
+              onPressed: () {
+                final bool hasAllAnswers =
+                    answerSelected.length == widget.questions.length &&
+                    answerSelected.every(
+                      (AnswersSelected answer) =>
+                          answer.question != null && answer.answer != null,
+                    );
+                if (!hasAllAnswers) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please answer every question first.'),
+                    ),
                   );
-                  // answerSelected = List<AnswersSelected>.generate(
-                  //     widget.questions.length, (int index) => AnswersSelected(null, null));
-                  final String docID = hashToString(state.answerSelected);
-                  router.goNamed('solution', extra: docID);
-                  FirestoreDatabase().saveUserInteraction(
-                      featureId: FeatureID.popularServices.toString(),
-                      startTime: false,
-                      endTime: true);
-                  _questionsBloc.add(SolutionViewed());
-                },
-                icon: Icons.send,
-              );
-            }),
+                  return;
+                }
+                _questionsBloc.add(
+                  AnswersSubmitted(answerSelected: answerSelected),
+                );
+                // answerSelected = List<AnswersSelected>.generate(
+                //     widget.questions.length, (int index) => AnswersSelected(null, null));
+                final String docID = hashToString(
+                  answerSelected
+                      .map((AnswersSelected answer) => answer.toJson())
+                      .toList(),
+                );
+                router.goNamed('solution', extra: docID);
+                FirestoreDatabase().saveUserInteraction(
+                  featureId: FeatureID.popularServices.toString(),
+                  startTime: false,
+                  endTime: true,
+                );
+                _questionsBloc.add(SolutionViewed());
+              },
+              icon: Icons.send,
+            );
+          },
+        ),
       ),
     );
   }
 }
-

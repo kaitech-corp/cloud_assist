@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../../models/cloud_data_model/cloud_data_model.dart';
 import '../../models/database_architecture_model/database_architecture_model.dart';
 import '../../models/gcloud_data_model/gcloud_data_model.dart';
+import '../../models/report_content_model/report_content_model.dart';
 import '../../models/service_model/create_service_model.dart';
 import 'firebase_functions.dart';
 
@@ -14,11 +15,9 @@ class CloudFunctions {
   // Create new quick facts
   Future<void> createFacts(String service) async {
     try {
-      final HttpsCallable newQuickFacts =
-          FirebaseFunctions.instance.httpsCallable('createFacts');
-      newQuickFacts(<String, dynamic>{
-        'service': service,
-      });
+      final HttpsCallable newQuickFacts = FirebaseFunctions.instance
+          .httpsCallable('createFacts');
+      newQuickFacts(<String, dynamic>{'service': service});
       await newQuickFacts.call();
     } on FirebaseFunctionsException catch (error) {
       if (kDebugMode) {
@@ -32,11 +31,9 @@ class CloudFunctions {
   // Create new quick facts manually
   Future<void> createNewFactsManually(String service) async {
     try {
-      final HttpsCallable newQuickFacts =
-          FirebaseFunctions.instance.httpsCallable('createNewFactsManually');
-      newQuickFacts(<String, dynamic>{
-        'service': service,
-      });
+      final HttpsCallable newQuickFacts = FirebaseFunctions.instance
+          .httpsCallable('createNewFactsManually');
+      newQuickFacts(<String, dynamic>{'service': service});
       await newQuickFacts.call();
     } catch (error) {
       if (kDebugMode) {
@@ -48,8 +45,10 @@ class CloudFunctions {
   // Check if Admin
   Future<void> checkUserId() async {
     try {
-      final HttpsCallableResult<dynamic> checkUserId =
-          await FirebaseFunctions.instance.httpsCallable('checkUserId').call();
+      final HttpsCallableResult<dynamic> checkUserId = await FirebaseFunctions
+          .instance
+          .httpsCallable('checkUserId')
+          .call();
       final dynamic result = checkUserId.data;
       return result;
     } on FirebaseFunctionsException catch (error) {
@@ -64,13 +63,13 @@ class CloudFunctions {
   // Retrieve quick facts
   Future<void> retrieveQuickFacts() async {
     try {
-      final HttpsCallable retrieveQuickFacts =
-          FirebaseFunctions.instance.httpsCallable('retrieveQuickFacts');
+      final HttpsCallable retrieveQuickFacts = FirebaseFunctions.instance
+          .httpsCallable('retrieveQuickFacts');
       // retrieveQuickFacts(<String, dynamic>{
       //   'prompt': 'GCP Anthos',
       // });
-      final HttpsCallableResult<dynamic> result =
-          await retrieveQuickFacts.call();
+      final HttpsCallableResult<dynamic> result = await retrieveQuickFacts
+          .call();
       if (kDebugMode) {
         print(result.data);
       }
@@ -121,11 +120,14 @@ class CloudFunctions {
     }
   }
 
-//
+  //
   Future<List<ServiceModel>> getAWSServiceList() async {
     try {
-      final http.Response callable = await http.get(Uri.parse(
-          'https://storage.googleapis.com/api-project-371618.appspot.com/aws_service_list.json'));
+      final http.Response callable = await http.get(
+        Uri.parse(
+          'https://storage.googleapis.com/api-project-371618.appspot.com/aws_service_list.json',
+        ),
+      );
 
       // Parse the JSON response from the callable as a List of Maps
       final List<dynamic> response =
@@ -155,8 +157,10 @@ class CloudFunctions {
       final List<dynamic> response =
           json.decode(callable.data as String) as List<dynamic>;
       return response
-          .map((dynamic item) =>
-              ServiceModel.fromJson(item as Map<String, dynamic>))
+          .map(
+            (dynamic item) =>
+                ServiceModel.fromJson(item as Map<String, dynamic>),
+          )
           .toList();
     } catch (e, stackTrace) {
       if (kDebugMode) {
@@ -169,8 +173,10 @@ class CloudFunctions {
   Future<List<CloudData>> getCloudData() async {
     try {
       // Call the Firebase Functions HTTP endpoint 'getCloudData'
-      final HttpsCallableResult<dynamic> callable =
-          await FirebaseFunctions.instance.httpsCallable('getCloudData').call();
+      final HttpsCallableResult<dynamic> callable = await FirebaseFunctions
+          .instance
+          .httpsCallable('getCloudData')
+          .call();
 
       // Parse the JSON response from the callable as a List of Maps
       final List<dynamic> response =
@@ -323,8 +329,9 @@ class CloudFunctions {
 
       // Convert the List of Maps to a List of GCloudData objects using GCloudData.fromJson()
       final List<DatabaseArchitecture> items = result
-          .map((Map<String, dynamic> item) =>
-              DatabaseArchitecture.fromJson(item))
+          .map(
+            (Map<String, dynamic> item) => DatabaseArchitecture.fromJson(item),
+          )
           .toList();
 
       // Return the List of GCloudData objects
@@ -341,8 +348,10 @@ class CloudFunctions {
   Future<List<String>> getFactsData() async {
     try {
       // Call the Firebase Functions HTTP endpoint 'getFactsData'
-      final HttpsCallableResult<dynamic> callable =
-          await FirebaseFunctions.instance.httpsCallable('getFactsData').call();
+      final HttpsCallableResult<dynamic> callable = await FirebaseFunctions
+          .instance
+          .httpsCallable('getFactsData')
+          .call();
 
       // Parse the JSON response from the callable as a List of Maps
       final List<dynamic> response =
@@ -366,37 +375,78 @@ class CloudFunctions {
   }
 
   Future<void> openAITest(String service) async {
-    final HttpsCallable createFacts =
-        FirebaseFunctions.instance.httpsCallable('createFacts');
-    createFacts(<String, dynamic>{
-      'service': service,
-    });
+    final HttpsCallable createFacts = FirebaseFunctions.instance.httpsCallable(
+      'createFacts',
+    );
+    createFacts(<String, dynamic>{'service': service});
   }
 
   Future<void> serviceDataGenerator(
-      String service, String serviceType, String provider) async {
-    final HttpsCallable serviceDataGenerator =
-        FirebaseFunctions.instance.httpsCallable('serviceDataGenerator');
+    String service,
+    String serviceType,
+    String provider,
+  ) async {
+    final HttpsCallable serviceDataGenerator = FirebaseFunctions.instance
+        .httpsCallable('serviceDataGenerator');
     serviceDataGenerator(<String, dynamic>{
       'service': service,
       'serviceType': serviceType,
-      'provider': provider
+      'provider': provider,
     });
   }
 
-  Future<void> updateServiceField(
-      {required String service,
-      required String field,
-      required String provider}) async {
+  Future<void> updateServiceField({
+    required String service,
+    required String field,
+    required String provider,
+  }) async {
     if (kDebugMode) {
       print('$service $field $provider');
     }
-    final HttpsCallable updateServiceField =
-        FirebaseFunctions.instance.httpsCallable('updateServiceField');
+    final HttpsCallable updateServiceField = FirebaseFunctions.instance
+        .httpsCallable('updateServiceField');
     updateServiceField(<String, dynamic>{
       'service': service,
       'field': field,
-      'provider': provider
+      'provider': provider,
     });
+  }
+
+  Future<String> submitContentReport(ReportContent reportContent) async {
+    try {
+      final HttpsCallable submitContentReport = FirebaseFunctions.instance
+          .httpsCallable('submitContentReport');
+      final HttpsCallableResult<dynamic> result = await submitContentReport
+          .call(<String, dynamic>{
+            'content': reportContent.content,
+            'reportType': reportContent.reportType,
+            'contentDocID': reportContent.contentDocID,
+            'contentField': reportContent.contentField,
+          });
+      final Map<Object?, Object?> data = result.data as Map<Object?, Object?>;
+      return data['docID'].toString();
+    } on FirebaseFunctionsException catch (error) {
+      if (kDebugMode) {
+        print(error.code);
+        print(error.details);
+        print(error.message);
+      }
+      throw Exception(error.message ?? 'Unable to submit report.');
+    }
+  }
+
+  Future<void> retryDatabaseSolution(String docID) async {
+    try {
+      final HttpsCallable retryDatabaseSolution = FirebaseFunctions.instance
+          .httpsCallable('retryDatabaseSolution');
+      await retryDatabaseSolution.call(<String, dynamic>{'docID': docID});
+    } on FirebaseFunctionsException catch (error) {
+      if (kDebugMode) {
+        print(error.code);
+        print(error.details);
+        print(error.message);
+      }
+      throw Exception(error.message ?? 'Unable to retry solution generation.');
+    }
   }
 }

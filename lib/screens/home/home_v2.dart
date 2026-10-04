@@ -9,6 +9,8 @@ import '../../services/ui/text_styles.dart';
 import '../tabs/aws.dart';
 import '../tabs/command_lines.dart';
 import '../tabs/gcp.dart';
+import '../tabs/networking.dart';
+import '../tabs/security.dart';
 import '../tabs/services.dart';
 import 'components/featured_service/featured_service.dart';
 import 'components/quick_fact/quick_fact_widget.dart';
@@ -26,15 +28,10 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
 
   @override
   void initState() {
-    bloc =
-        BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context);
+    bloc = BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(
+      context,
+    );
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    bloc.close();
-    super.dispose();
   }
 
   @override
@@ -51,16 +48,14 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 8.0),
-                  child: Text(
-                    'Cloud Assist',
-                    style: headlineMedium(context),
+                    vertical: 8.0,
+                    horizontal: 8.0,
                   ),
+                  child: Text('Cloud Assist', style: headlineMedium(context)),
                 ),
 
                 const QuickFactWidget(),
                 const FeaturedService(),
-
               ],
             ),
           ),
@@ -88,20 +83,18 @@ class TabControllerWidget extends StatelessWidget {
                 children: <Widget>[
                   Expanded(flex: 3, child: QuickFactWidget()),
                   QuickLinks(),
-                  Expanded(flex: 3, child: FeaturedService())
+                  Expanded(flex: 3, child: FeaturedService()),
                 ],
               ),
-              PopularServices(
-                cloudData: cloudData,
-              ),
+              PopularServices(cloudData: cloudData),
               AWSServices(cloudData: cloudData),
-              GCPServices(
-                cloudData: cloudData,
-              ),
-              const GCloudScreen()
+              GCPServices(cloudData: cloudData),
+              NetworkingServices(cloudData: cloudData),
+              SecurityServices(cloudData: cloudData),
+              const GCloudScreen(),
             ],
           ),
-        )
+        ),
       ],
     );
   }

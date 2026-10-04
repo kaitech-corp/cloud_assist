@@ -1,0 +1,122 @@
+{
+  "1": {
+    "Question": "What is cloud computing?",
+    "Answer": "Cloud computing is the on-demand delivery of computing resources such as servers, storage, databases, networking, analytics, AI, and software over the internet. Instead of buying and maintaining physical hardware, teams rent capacity from a cloud provider and scale it as needs change."
+  },
+  "2": {
+    "Question": "What are the main benefits of cloud computing?",
+    "Answer": "The main benefits are faster provisioning, elastic scaling, reduced hardware management, global reach, improved resilience options, access to managed services, and usage-based pricing. Cloud can reduce operational burden, but cost and governance still need active management."
+  },
+  "3": {
+    "Question": "What are IaaS, PaaS, and SaaS?",
+    "Answer": "Infrastructure as a Service (IaaS) provides raw compute, storage, and networking resources. Platform as a Service (PaaS) provides managed runtimes and developer platforms. Software as a Service (SaaS) provides complete applications that users access directly."
+  },
+  "4": {
+    "Question": "What is serverless computing?",
+    "Answer": "Serverless computing lets developers deploy code or containers without managing servers. The provider handles scaling, capacity, and much of the operations work. Common examples include functions, serverless containers, event-driven services, and managed workflow services."
+  },
+  "5": {
+    "Question": "What is the difference between public, private, hybrid, and multicloud?",
+    "Answer": "A public cloud is operated by a third-party provider and shared across customers with logical isolation. A private cloud is dedicated to one organization. Hybrid cloud connects private or on-premises systems with public cloud. Multicloud uses services from more than one cloud provider."
+  },
+  "6": {
+    "Question": "How do I choose the right cloud service?",
+    "Answer": "Start with the workload requirements: performance, availability, latency, security, compliance, data model, integration needs, team skills, and budget. Prefer managed services when they meet the requirements because they usually reduce operational work."
+  },
+  "7": {
+    "Question": "What is cloud migration?",
+    "Answer": "Cloud migration is the process of moving applications, data, or infrastructure to cloud services. Common approaches include rehosting, replatforming, refactoring, replacing with SaaS, retiring unused systems, and retaining systems that should stay where they are."
+  },
+  "8": {
+    "Question": "What is a landing zone?",
+    "Answer": "A landing zone is a prepared cloud foundation for teams and workloads. It usually includes account or project structure, networking, identity, security controls, logging, monitoring, billing, deployment standards, and governance policies."
+  },
+  "9": {
+    "Question": "What is the shared responsibility model?",
+    "Answer": "The shared responsibility model defines which security and operations tasks belong to the cloud provider and which belong to the customer. Providers secure the underlying cloud infrastructure, while customers remain responsible for configuration, identities, data, application code, and access decisions."
+  },
+  "10": {
+    "Question": "How should cloud workloads be secured?",
+    "Answer": "Use least-privilege identity access, strong authentication, private networking where appropriate, encryption, secure software supply chains, logging, vulnerability management, backup and recovery testing, and policy automation. Security should be built into architecture and deployment pipelines, not added only after release."
+  },
+  "11": {
+    "Question": "How can I control cloud costs?",
+    "Answer": "Use budgets, alerts, labels or tags, rightsizing, autoscaling, committed-use discounts where appropriate, storage lifecycle rules, idle resource cleanup, and regular cost reviews. Cost ownership works best when engineering teams can see the cost of the services they run."
+  },
+  "12": {
+    "Question": "What is FinOps?",
+    "Answer": "FinOps is an operating model for managing cloud spend collaboratively across engineering, finance, product, and leadership teams. It focuses on visibility, accountability, optimization, forecasting, and making cost-aware technical decisions."
+  },
+  "13": {
+    "Question": "What is high availability in the cloud?",
+    "Answer": "High availability means designing systems to keep running when individual components fail. Cloud patterns include multiple zones, health checks, load balancing, automated failover, replicated data, tested backups, and clear recovery objectives."
+  },
+  "14": {
+    "Question": "What is disaster recovery?",
+    "Answer": "Disaster recovery is the plan and technical design for restoring service after a major outage, data loss, or regional failure. It usually defines recovery time objective (RTO), recovery point objective (RPO), backup strategy, failover process, and regular recovery tests."
+  },
+  "15": {
+    "Question": "What is infrastructure as code?",
+    "Answer": "Infrastructure as code manages cloud resources with version-controlled configuration instead of manual console changes. It improves repeatability, reviewability, automation, rollback, and consistency across environments."
+  },
+  "16": {
+    "Question": "What is a container?",
+    "Answer": "A container packages an application with its dependencies so it can run consistently across environments. Containers are commonly used with orchestration platforms such as Kubernetes or managed container services."
+  },
+  "17": {
+    "Question": "What is Kubernetes used for?",
+    "Answer": "Kubernetes orchestrates containers by handling scheduling, scaling, service discovery, rollout management, and recovery from failed containers or nodes. Managed Kubernetes services reduce the effort required to operate the control plane."
+  },
+  "18": {
+    "Question": "What is the difference between object, block, and file storage?",
+    "Answer": "Object storage stores data as objects and is good for backups, media, logs, and data lakes. Block storage provides disk-like volumes for virtual machines and databases. File storage provides shared file systems for applications that need standard file access."
+  },
+  "19": {
+    "Question": "What cloud database should I use?",
+    "Answer": "Use a relational database for structured transactional data, a document database for flexible app data, a wide-column database for massive low-latency workloads, an in-memory store for caching, and a data warehouse for analytics. The right choice depends on query patterns, scale, consistency, and operational needs."
+  },
+  "20": {
+    "Question": "What skills are important for cloud careers?",
+    "Answer": "Important skills include networking, Linux, scripting, identity and access management, security, databases, containers, CI/CD, infrastructure as code, monitoring, cost management, and architecture tradeoff analysis. Strong troubleshooting and communication skills matter as much as tool knowledge."
+  },
+  "21": {
+    "Question": "What is generative AI?",
+    "Answer": "Generative AI is a type of artificial intelligence that creates new content such as text, images, code, audio, video, or structured data. It is commonly powered by large models trained on broad datasets and adapted for specific business tasks."
+  },
+  "22": {
+    "Question": "How is AI used in cloud computing?",
+    "Answer": "Cloud platforms provide managed AI services for model training, inference, data preparation, vector search, automation, monitoring, and governance. This lets teams build AI-powered applications without managing every layer of machine learning infrastructure themselves."
+  },
+  "23": {
+    "Question": "What is the difference between AI, machine learning, and generative AI?",
+    "Answer": "Artificial intelligence is the broad field of building systems that perform tasks associated with human intelligence. Machine learning is a subset that learns patterns from data. Generative AI is a subset focused on producing new content or predictions from prompts and context."
+  },
+  "24": {
+    "Question": "What is a foundation model?",
+    "Answer": "A foundation model is a large pre-trained model that can be adapted to many tasks, such as summarization, classification, code generation, search, chat, and image understanding. Teams usually customize foundation model behavior with prompting, retrieval, fine-tuning, or tool integrations."
+  },
+  "25": {
+    "Question": "What is retrieval augmented generation (RAG)?",
+    "Answer": "Retrieval augmented generation, or RAG, combines a language model with relevant external data retrieved at request time. It helps AI applications answer with fresher, more specific information without putting all knowledge directly into the model."
+  },
+  "26": {
+    "Question": "What is a vector database?",
+    "Answer": "A vector database stores numerical representations of text, images, audio, or other data so applications can search by semantic similarity. Vector search is commonly used for RAG, recommendations, personalization, duplicate detection, and AI-powered search."
+  },
+  "27": {
+    "Question": "What is MLOps?",
+    "Answer": "MLOps is the practice of managing machine learning systems through repeatable workflows for data preparation, training, deployment, monitoring, evaluation, versioning, and governance. It applies DevOps-style discipline to AI and machine learning workloads."
+  },
+  "28": {
+    "Question": "How should AI applications be secured?",
+    "Answer": "AI applications should use strong identity controls, private data access where possible, input and output filtering, prompt injection defenses, logging, model and data governance, secrets protection, abuse monitoring, and clear boundaries for what tools or data the model can access."
+  },
+  "29": {
+    "Question": "How can I control AI costs in the cloud?",
+    "Answer": "Control AI costs by selecting the smallest capable model, caching repeated responses, limiting prompt and response length, batching where appropriate, monitoring token and GPU usage, setting quotas, and using retrieval or traditional code for tasks that do not need a large model."
+  },
+  "30": {
+    "Question": "What skills are important for AI cloud roles?",
+    "Answer": "Important skills include Python, APIs, data engineering, model evaluation, prompt design, vector search, security, cloud architecture, MLOps, observability, and product thinking. AI cloud roles also require judgment about privacy, reliability, cost, and when not to use AI."
+  }
+}

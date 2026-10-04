@@ -11,6 +11,8 @@ import '../../services/ui/text_styles.dart';
 import '../tabs/aws.dart';
 import '../tabs/command_lines.dart';
 import '../tabs/gcp.dart';
+import '../tabs/networking.dart';
+import '../tabs/security.dart';
 import '../tabs/services.dart';
 import 'components/featured_service/featured_service.dart';
 import 'components/quick_fact/quick_fact_widget.dart';
@@ -28,16 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    bloc =
-        BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context);
+    bloc = BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(
+      context,
+    );
     bloc.add(LoadingGenericData());
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    bloc.close();
-    super.dispose();
   }
 
   @override
@@ -50,29 +47,33 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             // Header text
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-              child: Text(
-                'Cloud Assist',
-                style: headlineMedium(context),
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 8.0,
               ),
+              child: Text('Cloud Assist', style: headlineMedium(context)),
             ),
             const SizedBox(height: 8.0),
             // Expanded area for the main content
             Expanded(
-              child: BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
-                  GenericState>(
-                bloc: bloc,
-                builder: (BuildContext context, GenericState state) {
-                  if (state is HasDataState) {
-                    final List<CloudData> cloudData =
-                        state.data as List<CloudData>;
-                    return TabControllerWidget(cloudData: cloudData);
-                  } else {
-                    return const TabControllerWidget(cloudData: <CloudData>[]);
-                  }
-                },
-              ),
+              child:
+                  BlocBuilder<
+                    GenericBloc<CloudData, CloudDataRepository>,
+                    GenericState
+                  >(
+                    bloc: bloc,
+                    builder: (BuildContext context, GenericState state) {
+                      if (state is HasDataState) {
+                        final List<CloudData> cloudData =
+                            state.data as List<CloudData>;
+                        return TabControllerWidget(cloudData: cloudData);
+                      } else {
+                        return const TabControllerWidget(
+                          cloudData: <CloudData>[],
+                        );
+                      }
+                    },
+                  ),
             ),
           ],
         ),
@@ -88,13 +89,15 @@ class TabControllerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: tabs.length,
       child: Column(
         children: <Widget>[
           // Tab bar (scrollable if needed)
           TabBar(
-            tabs:
-                List<Widget>.generate(5, (int index) => Tab(text: tabs[index])),
+            tabs: List<Widget>.generate(
+              tabs.length,
+              (int index) => Tab(text: tabs[index]),
+            ),
             isScrollable: true,
             indicatorColor: Theme.of(context).colorScheme.secondary,
             labelColor: Theme.of(context).colorScheme.secondary,
@@ -123,6 +126,8 @@ class TabControllerWidget extends StatelessWidget {
                 PopularServices(cloudData: cloudData),
                 AWSServices(cloudData: cloudData),
                 GCPServices(cloudData: cloudData),
+                NetworkingServices(cloudData: cloudData),
+                SecurityServices(cloudData: cloudData),
                 const GCloudScreen(),
               ],
             ),

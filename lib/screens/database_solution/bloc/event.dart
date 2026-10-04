@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../models/comparison_model/comparison_model.dart';
+import 'repository.dart';
 
 abstract class ComparisonModelEvent extends Equatable {
   @override
@@ -14,7 +14,7 @@ class LoadingComparisonModelData extends ComparisonModelEvent {
 
 class ComparisonModelHasDataEvent extends ComparisonModelEvent {
   ComparisonModelHasDataEvent(this.data);
-  final ComparisonModel data;
+  final DatabaseSolutionResult data;
 
   @override
   List<Object> get props => <Object>[data];

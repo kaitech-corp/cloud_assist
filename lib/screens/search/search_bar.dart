@@ -28,41 +28,49 @@ class CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   void initState() {
-    bloc =
-        BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(context);
+    bloc = BlocProvider.of<GenericBloc<CloudData, CloudDataRepository>>(
+      context,
+    );
     bloc.add(LoadingGenericData());
     _controller = TextEditingController();
     FirestoreDatabase().saveUserInteraction(
-        featureId: FeatureID.search.toString(),
-        startTime: true,
-        endTime: false);
+      featureId: FeatureID.search.toString(),
+      startTime: true,
+      endTime: false,
+    );
     super.initState();
   }
 
   @override
   void dispose() {
-    bloc.close();
     _controller.dispose();
     FirestoreDatabase().saveUserInteraction(
-        featureId: FeatureID.search.toString(),
-        startTime: false,
-        endTime: true);
+      featureId: FeatureID.search.toString(),
+      startTime: false,
+      endTime: true,
+    );
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: BlocBuilder<GenericBloc<CloudData, CloudDataRepository>,
-                GenericState>(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child:
+            BlocBuilder<
+              GenericBloc<CloudData, CloudDataRepository>,
+              GenericState
+            >(
               builder: (BuildContext context, GenericState state) {
                 if (state is LoadingState) {
                   return Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 8.0,
+                        ),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
@@ -123,11 +131,15 @@ class CustomSearchBarState extends State<CustomSearchBar> {
                                       setState(() {
                                         try {
                                           _results = results
-                                              .where((CloudData result) =>
-                                                  result.service
-                                                      .toLowerCase()
-                                                      .contains(_controller.text
-                                                          .toLowerCase()))
+                                              .where(
+                                                (CloudData result) => result
+                                                    .service
+                                                    .toLowerCase()
+                                                    .contains(
+                                                      _controller.text
+                                                          .toLowerCase(),
+                                                    ),
+                                              )
                                               .toList();
                                         } catch (e) {
                                           if (kDebugMode) {
@@ -146,19 +158,22 @@ class CustomSearchBarState extends State<CustomSearchBar> {
                                     try {
                                       // ignore: no_leading_underscores_for_local_identifiers
                                       final CloudData _result = results
-                                          .where((CloudData result) => result
-                                              .service
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()))
+                                          .where(
+                                            (CloudData result) => result.service
+                                                .toLowerCase()
+                                                .contains(value.toLowerCase()),
+                                          )
                                           .first;
-                                      context.goNamed('serviceDetails',
-                                          extra: _result);
+                                      context.goNamed(
+                                        'serviceDetails',
+                                        extra: _result,
+                                      );
                                       FirestoreDatabase().saveUserInteraction(
-                                          serviceId: _result.service,
-                                          featureId:
-                                              FeatureID.search.toString(),
-                                          startTime: true,
-                                          endTime: false);
+                                        serviceId: _result.service,
+                                        featureId: FeatureID.search.toString(),
+                                        startTime: true,
+                                        endTime: false,
+                                      );
                                     } catch (e) {
                                       if (kDebugMode) {
                                         print(e);
@@ -207,13 +222,16 @@ class CustomSearchBarState extends State<CustomSearchBar> {
                                     // // Remove focus from TextField
                                     // FocusScope.of(context).unfocus();
                                   });
-                                  context.goNamed('serviceDetails',
-                                      extra: result);
+                                  context.goNamed(
+                                    'serviceDetails',
+                                    extra: result,
+                                  );
                                   FirestoreDatabase().saveUserInteraction(
-                                      serviceId: result.service,
-                                      featureId: FeatureID.search.toString(),
-                                      startTime: true,
-                                      endTime: false);
+                                    serviceId: result.service,
+                                    featureId: FeatureID.search.toString(),
+                                    startTime: true,
+                                    endTime: false,
+                                  );
                                 },
                               );
                             },
@@ -229,16 +247,17 @@ class CustomSearchBarState extends State<CustomSearchBar> {
                               padding: EdgeInsets.only(left: 16.0),
                               child: Text('Recents'),
                             ),
-                            ...widget.recentResults!
-                                .map((CloudData recent) => ListTile(
-                                      title: Text(recent.service),
-                                      onTap: () {
-                                        setState(() {
-                                          _controller.text = recent.service;
-                                          _results.clear();
-                                        });
-                                      },
-                                    )),
+                            ...widget.recentResults!.map(
+                              (CloudData recent) => ListTile(
+                                title: Text(recent.service),
+                                onTap: () {
+                                  setState(() {
+                                    _controller.text = recent.service;
+                                    _results.clear();
+                                  });
+                                },
+                              ),
+                            ),
                           ],
                         )
                       else
@@ -249,6 +268,8 @@ class CustomSearchBarState extends State<CustomSearchBar> {
                   return nil;
                 }
               },
-            )));
+            ),
+      ),
+    );
   }
 }

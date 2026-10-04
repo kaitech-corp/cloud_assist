@@ -37,7 +37,6 @@ linter:
     - always_declare_return_types
     - always_put_control_body_on_new_line
     # - always_put_required_named_parameters_first # we prefer having parameters in the same order as fields https://github.com/flutter/flutter/issues/10219
-    - always_require_non_null_named_parameters
     - always_specify_types
     # - always_use_package_imports # we do this commonly
     - annotate_overrides
@@ -66,8 +65,6 @@ linter:
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
-    - avoid_returning_null
-    - avoid_returning_null_for_future
     - avoid_returning_null_for_void
     # - avoid_returning_this # there are enough valid reasons to return `this` that this lint ends up with too many false positives
     - avoid_setters_without_getters
@@ -133,7 +130,6 @@ linter:
     # - one_member_abstracts # too many false positives
     - only_throw_errors # this does get disabled in a few places where we have legacy code that uses strings et al
     - overridden_fields
-    - package_api_docs
     - package_names
     - package_prefixed_library_names
     # - parameter_assignments # we do this commonly
@@ -149,7 +145,6 @@ linter:
     # - prefer_constructors_over_static_methods # far too many false positives
     - prefer_contains
     # - prefer_double_quotes # opposite of prefer_single_quotes
-    - prefer_equal_for_default_values
     # - prefer_expression_function_bodies # conflicts with https://github.com/flutter/flutter/wiki/Style-guide-for-Flutter-repo#consider-using--for-short-functions-and-methods
     - prefer_final_fields
     - prefer_final_in_for_each
@@ -214,7 +209,6 @@ linter:
     - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
-    - unsafe_html
     # - use_colored_box # not yet tested
     # - use_decorated_box # not yet tested
     # - use_enums # not yet tested

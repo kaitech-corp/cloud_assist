@@ -4,6 +4,7 @@ import 'package:nil/nil.dart';
 
 import '../../models/comparison_model/comparison_model.dart';
 import '../../services/constants.dart';
+import '../../services/firebase_functions/cloud_functions.dart';
 import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/navigation/navigation.dart';
 import '../../services/service_config/service_config.dart';
@@ -11,6 +12,7 @@ import '../../services/ui/text_styles.dart';
 import '../tabs/components/fade_shimmer.dart';
 import 'bloc/bloc.dart';
 import 'bloc/event.dart';
+import 'bloc/repository.dart';
 import 'bloc/state.dart';
 
 class DatabaseSolutionScreen extends StatefulWidget {
@@ -21,45 +23,23 @@ class DatabaseSolutionScreen extends StatefulWidget {
 }
 
 class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
-  late final ComparisonModelBloc bloc;
-
-  @override
-  void dispose() {
-    bloc.close();
-
-    super.dispose();
-  }
+  bool _startedLoading = false;
 
   @override
   void didChangeDependencies() {
-    bloc = BlocProvider.of<ComparisonModelBloc>(context);
-    bloc.add(LoadingComparisonModelData());
     super.didChangeDependencies();
+    if (_startedLoading) {
+      return;
+    }
+    _startedLoading = true;
+    context.read<ComparisonModelBloc>().add(LoadingComparisonModelData());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ComparisonModelBloc, ComparisonModelState>(
-        builder: (BuildContext context, ComparisonModelState state) {
-      if (state is ComparisonModelLoadingState) {
-        return Scaffold(
-            appBar: AppBar(
-              centerTitle: false,
-              leading: IconButton(
-                onPressed: () {
-                  router.pop();
-                  FirestoreDatabase().saveUserInteraction(
-                      featureId: FeatureID.generatedSolution.toString(),
-                      startTime: true,
-                      endTime: false);
-                },
-                icon: const Icon(Icons.arrow_back_ios),
-              ),
-            ),
-            body: loadingReponseShimmer());
-      } else if (state is ComparisonModelHasDataState) {
-        final ComparisonModel model = state.data;
-        if (model.answer.isEmpty) {
+      builder: (BuildContext context, ComparisonModelState state) {
+        if (state is ComparisonModelLoadingState) {
           return Scaffold(
             appBar: AppBar(
               centerTitle: false,
@@ -67,64 +47,143 @@ class _DatabaseSolutionScreenState extends State<DatabaseSolutionScreen> {
                 onPressed: () {
                   router.pop();
                   FirestoreDatabase().saveUserInteraction(
-                      featureId: FeatureID.generatedSolution.toString(),
-                      startTime: true,
-                      endTime: false);
+                    featureId: FeatureID.generatedSolution.toString(),
+                    startTime: true,
+                    endTime: false,
+                  );
                 },
                 icon: const Icon(Icons.arrow_back_ios),
               ),
             ),
-            body: SizedBox(
-              height: SizeConfig.screenHeight,
-              width: SizeConfig.screenWidth,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text('Generating Solution. Sit tight.',
-                        style: titleLarge(context)),
-                  ),
-                  Expanded(child: loadingReponseShimmer())
-                ],
-              ),
-            ),
+            body: loadingReponseShimmer(),
           );
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: false,
-              title: Text(
-                'Solution',
-                style: headlineMedium(context),
+        } else if (state is ComparisonModelHasDataState) {
+          final DatabaseSolutionResult result = state.data;
+          final ComparisonModel model = result.model;
+          if (result.isFailed) {
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: false,
+                leading: IconButton(
+                  onPressed: () {
+                    router.pop();
+                    FirestoreDatabase().saveUserInteraction(
+                      featureId: FeatureID.generatedSolution.toString(),
+                      startTime: true,
+                      endTime: false,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
               ),
-              leading: IconButton(
-                onPressed: () {
-                  router.pop();
-                  FirestoreDatabase().saveUserInteraction(
+              body: SizedBox(
+                height: SizeConfig.screenHeight,
+                width: SizeConfig.screenWidth,
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Unable to generate solution.',
+                        style: titleLarge(context),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        result.errorMessage ??
+                            'Please try generating this solution again.',
+                        style: titleMedium(context),
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await CloudFunctions().retryDatabaseSolution(
+                            model.docID,
+                          );
+                        },
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          if (!result.isComplete) {
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: false,
+                leading: IconButton(
+                  onPressed: () {
+                    router.pop();
+                    FirestoreDatabase().saveUserInteraction(
+                      featureId: FeatureID.generatedSolution.toString(),
+                      startTime: true,
+                      endTime: false,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
+              ),
+              body: SizedBox(
+                height: SizeConfig.screenHeight,
+                width: SizeConfig.screenWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Generating Solution. Sit tight.',
+                            style: titleLarge(context),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'This usually takes less than a minute.',
+                            style: titleSmall(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(child: loadingReponseShimmer()),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: false,
+                title: Text('Solution', style: headlineMedium(context)),
+                leading: IconButton(
+                  onPressed: () {
+                    router.pop();
+                    FirestoreDatabase().saveUserInteraction(
                       docID: model.docID,
                       featureId: FeatureID.generatedSolution.toString(),
                       startTime: false,
-                      endTime: true);
-                },
-                icon: const Icon(Icons.arrow_back_ios),
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Text(
-                  model.answer,
-                  style: titleMedium(context),
+                      endTime: true,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
               ),
-            ),
-          );
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Text(model.answer, style: titleMedium(context)),
+                ),
+              ),
+            );
+          }
+        } else {
+          return nil;
         }
-      } else {
-        return nil;
-      }
-    });
+      },
+    );
   }
 }
 

@@ -21,18 +21,22 @@ import 'functions.dart';
 
 class FirestoreDatabase {
   // Collection References
-  CollectionReference<Object?> quickFactsCollection =
-      FirebaseFirestore.instance.collection('quickFacts');
-  CollectionReference<Object?> apiStatusCollection =
-      FirebaseFirestore.instance.collection('apiStatus');
-  final CollectionReference<Object?> databaseComparison =
-      FirebaseFirestore.instance.collection('databaseComparison');
-  final CollectionReference<Object?> servicesCollection =
-      FirebaseFirestore.instance.collection('services');
-  final CollectionReference<Object?> usersCollection =
-      FirebaseFirestore.instance.collection('users');
-  final CollectionReference<Object?> reportCollection =
-      FirebaseFirestore.instance.collection('reports');
+  CollectionReference<Object?> quickFactsCollection = FirebaseFirestore.instance
+      .collection('quickFacts');
+  CollectionReference<Object?> apiStatusCollection = FirebaseFirestore.instance
+      .collection('apiStatus');
+  final CollectionReference<Object?> databaseComparison = FirebaseFirestore
+      .instance
+      .collection('databaseComparison');
+  final CollectionReference<Object?> servicesCollection = FirebaseFirestore
+      .instance
+      .collection('services');
+  final CollectionReference<Object?> usersCollection = FirebaseFirestore
+      .instance
+      .collection('users');
+  final CollectionReference<Object?> reportCollection = FirebaseFirestore
+      .instance
+      .collection('reports');
   final CollectionReference<Object?> reportedContentCollection =
       FirebaseFirestore.instance.collection('reportedContent');
   final CollectionReference<Object?> popularServicesCollection =
@@ -54,7 +58,8 @@ class FirestoreDatabase {
       } else {
         final List<String> facts = ref.docs
             .map(
-                (QueryDocumentSnapshot<Object?> item) => item['fact'] as String)
+              (QueryDocumentSnapshot<Object?> item) => item['fact'] as String,
+            )
             .toList();
         return facts;
       }
@@ -77,8 +82,9 @@ class FirestoreDatabase {
       final dynamic storedData = jsonDecode(jsonData!);
       final dynamic dateData = jsonDecode(jsonDateData!);
 
-      final DocumentSnapshot<Object?> apiData =
-          await apiStatusCollection.doc(api).get();
+      final DocumentSnapshot<Object?> apiData = await apiStatusCollection
+          .doc(api)
+          .get();
       final dynamic response = apiData.get('lastUpdated');
       final String timestamp = response.millisecondsSinceEpoch.toString();
       if (kDebugMode) {
@@ -124,8 +130,8 @@ class FirestoreDatabase {
       if (kDebugMode) {
         print('Making api call');
       }
-      final List<CloudData> cloudData =
-          await CloudFunctions().getCombinedCloudData();
+      final List<CloudData> cloudData = await CloudFunctions()
+          .getCombinedCloudData();
       return cloudData;
     } else {
       if (kDebugMode) {
@@ -143,51 +149,26 @@ class FirestoreDatabase {
   }
 
   Future<void> saveAnswers(List<AnswersSelected> answersSelected) async {
-    final String hash = answersSelected.toString().hashCode.toString();
+    final List<Map<String, dynamic>> normalizedAnswers = answersSelected
+        .map((AnswersSelected answer) => answer.toJson())
+        .toList();
+    final String hash = hashToString(normalizedAnswers);
     final bool docExists = await checkDocExists(hash);
     final bool userDocExists = await checkDocExistsInUserDocument(hash);
     if (!docExists) {
       try {
-        final Map<String, List<Map<String, dynamic>>> data =
-            <String, List<Map<String, dynamic>>>{
-          'answersSelected': answersSelected
-              .map((AnswersSelected answer) => answer.toJson())
-              .toList(),
+        final String? uid = locator<UserRepository>().getUserID();
+        final Map<String, dynamic> data = <String, dynamic>{
+          'answer': '',
+          'answersSelected': normalizedAnswers,
+          'createdAt': FieldValue.serverTimestamp(),
+          'docID': hash,
+          'status': 'pending',
+          'uid': uid,
         };
 
         final DocumentReference<Object?> ref = databaseComparison.doc(hash);
-        ref.set(data);
-        ref.update(<String, dynamic>{
-          'docID': hash,
-        });
-
-        int retryCount = 0;
-        bool answerNotEmpty = false;
-
-        while (retryCount < 3 && !answerNotEmpty) {
-          // Wait for 10 seconds
-          await Future<void>.delayed(const Duration(seconds: 20));
-
-          // Check if 'answer' field is non-empty
-          final DocumentSnapshot<Object?> snapshot = await ref.get();
-          final Map<String, dynamic>? data =
-              snapshot.data() as Map<String, dynamic>?;
-          final String answer = data?['answer'] as String? ?? '';
-          answerNotEmpty = answer.isNotEmpty;
-
-          retryCount++;
-        }
-
-        if (answerNotEmpty) {
-          // Copy document to 'generatedSolution' collection in user's document
-          final String? uid = locator<UserRepository>().getUserID();
-          final DocumentSnapshot<Object?> snapshot = await ref.get();
-          final DocumentReference<Object?> userDocRef = usersCollection
-              .doc(uid)
-              .collection('generatedSolution')
-              .doc(hash);
-          await userDocRef.set(snapshot.data());
-        }
+        await ref.set(data);
       } catch (e) {
         if (kDebugMode) {
           print('saveAnswers error in firebase_functions: $e');
@@ -197,8 +178,20 @@ class FirestoreDatabase {
       try {
         final DocumentReference<Object?> ref = databaseComparison.doc(hash);
         final DocumentSnapshot<Object?> snapshot = await ref.get();
+        final Map<String, dynamic> data =
+            snapshot.data() as Map<String, dynamic>;
+        final String answer = data['answer'] as String? ?? '';
+        if (answer.isEmpty) {
+          return;
+        }
         final ComparisonModel model =
-            ComparisonModel.fromJson(snapshot.data() as Map<String, dynamic>);
+            ComparisonModel.fromJson(<String, dynamic>{
+              ...data,
+              'answer': answer,
+              'docID': data['docID'] as String? ?? hash,
+              'answersSelected':
+                  data['answersSelected'] as List<dynamic>? ?? <dynamic>[],
+            });
         saveSolutionToUserDocument(model);
       } catch (e) {
         if (kDebugMode) {
@@ -229,8 +222,9 @@ class FirestoreDatabase {
   }
 
   Future<bool> checkDocExists(String docID) async {
-    final DocumentSnapshot<Object?> ref =
-        await databaseComparison.doc(docID).get();
+    final DocumentSnapshot<Object?> ref = await databaseComparison
+        .doc(docID)
+        .get();
     return ref.exists;
   }
 
@@ -242,8 +236,9 @@ class FirestoreDatabase {
               .collection('users')
               .doc(uid)
               .collection('generatedSolution');
-      final DocumentSnapshot<Object?> ref =
-          await usersGeneratedCollection.doc(docID).get();
+      final DocumentSnapshot<Object?> ref = await usersGeneratedCollection
+          .doc(docID)
+          .get();
       return ref.exists;
     } catch (e) {
       if (kDebugMode) {
@@ -254,21 +249,28 @@ class FirestoreDatabase {
   }
 
   Stream<ComparisonModel> getDatabaseAnswer(
-      List<AnswersSelected> answersSelected) {
-    final String docID = answersSelected.toString().hashCode.toString();
-    final Stream<DocumentSnapshot<Object?>> ref =
-        databaseComparison.doc(docID).snapshots();
+    List<AnswersSelected> answersSelected,
+  ) {
+    final String docID = hashToString(
+      answersSelected.map((AnswersSelected answer) => answer.toJson()).toList(),
+    );
+    final Stream<DocumentSnapshot<Object?>> ref = databaseComparison
+        .doc(docID)
+        .snapshots();
     // Use snapshots() instead of get() to get a Stream<DocumentSnapshot> object
-    return ref.map((DocumentSnapshot<Object?> doc) =>
-        ComparisonModel.fromJson(doc.data()! as Map<String, dynamic>));
+    return ref.map(
+      (DocumentSnapshot<Object?> doc) =>
+          ComparisonModel.fromJson(doc.data()! as Map<String, dynamic>),
+    );
     // Use map() to convert the Stream<DocumentSnapshot> into a Stream<ComparisonModel>
   }
 
   Future<void> writeCloudData(CloudData cloudData) async {
     try {
       final String serviceName = removeCloudAndWhitespace(cloudData.service);
-      final DocumentReference<Object?> ref =
-          servicesCollection.doc(serviceName);
+      final DocumentReference<Object?> ref = servicesCollection.doc(
+        serviceName,
+      );
       final DocumentSnapshot<Object?> exists = await ref.get();
       if (!exists.exists) {
         ref.set(cloudData.toJson());
@@ -283,8 +285,9 @@ class FirestoreDatabase {
   Future<UserModel> getProfileData() async {
     final User? currentUser = locator<UserRepository>().getUser();
     try {
-      final DocumentReference<Object?> ref =
-          usersCollection.doc(currentUser!.uid);
+      final DocumentReference<Object?> ref = usersCollection.doc(
+        currentUser!.uid,
+      );
       final DocumentSnapshot<Object?> doc = await ref.get();
       return UserModel.fromJson(doc.data() as Map<String, dynamic>);
     } catch (e) {
@@ -300,11 +303,14 @@ class FirestoreDatabase {
     final QuerySnapshot<Object?> ref = await usersCollection.get();
     try {
       final List<UserModel> users = ref.docs
-          .map((QueryDocumentSnapshot<Object?> doc) =>
-              UserModel.fromJson(doc.data() as Map<String, dynamic>))
+          .map(
+            (QueryDocumentSnapshot<Object?> doc) =>
+                UserModel.fromJson(doc.data() as Map<String, dynamic>),
+          )
           .toList();
-      users.sort((UserModel a, UserModel b) =>
-          b.dateCreated!.compareTo(a.dateCreated!));
+      users.sort(
+        (UserModel a, UserModel b) => b.dateCreated!.compareTo(a.dateCreated!),
+      );
       return users;
     } catch (e) {
       if (kDebugMode) {
@@ -368,25 +374,27 @@ class FirestoreDatabase {
     // Commit the batch write
     await batch.commit();
   }
-// Batch write a field update
-// Future<void> updateFieldValue() async {
-//   final ref = await servicesCollection.get();
+  // Batch write a field update
+  // Future<void> updateFieldValue() async {
+  //   final ref = await servicesCollection.get();
 
-//   final batch = FirebaseFirestore.instance.batch();
+  //   final batch = FirebaseFirestore.instance.batch();
 
-//   for (final doc in ref.docs) {
-//     batch.update(doc.reference, {'type': ''});
-//   }
+  //   for (final doc in ref.docs) {
+  //     batch.update(doc.reference, {'type': ''});
+  //   }
 
-//   await batch.commit();
-// }
+  //   await batch.commit();
+  // }
 
   Future<List<ReportModel>> getReportsData() async {
     final QuerySnapshot<Object?> ref = await reportCollection.get();
     try {
       final List<ReportModel> report = ref.docs
-          .map((QueryDocumentSnapshot<Object?> doc) =>
-              ReportModel.fromJson(doc.data() as Map<String, dynamic>))
+          .map(
+            (QueryDocumentSnapshot<Object?> doc) =>
+                ReportModel.fromJson(doc.data() as Map<String, dynamic>),
+          )
           .toList();
       return report;
     } catch (e) {
@@ -401,8 +409,10 @@ class FirestoreDatabase {
     final QuerySnapshot<Object?> ref = await quickFactsCollection.get();
     try {
       final List<QuickFact> facts = ref.docs
-          .map((QueryDocumentSnapshot<Object?> doc) =>
-              QuickFact.fromJson(doc.data() as Map<String, dynamic>))
+          .map(
+            (QueryDocumentSnapshot<Object?> doc) =>
+                QuickFact.fromJson(doc.data() as Map<String, dynamic>),
+          )
           .toList();
       return facts;
     } catch (e) {
@@ -417,8 +427,10 @@ class FirestoreDatabase {
     final QuerySnapshot<Object?> ref = await servicesCollection.get();
     try {
       final List<CloudData> facts = ref.docs
-          .map((QueryDocumentSnapshot<Object?> doc) =>
-              CloudData.fromJson(doc.data() as Map<String, dynamic>))
+          .map(
+            (QueryDocumentSnapshot<Object?> doc) =>
+                CloudData.fromJson(doc.data() as Map<String, dynamic>),
+          )
           .toList();
       return facts;
     } catch (e) {
@@ -442,17 +454,19 @@ class FirestoreDatabase {
     }
   }
 
-// This is an asynchronous function that increments the
-// popularity count of a document in a Firestore database.
+  // This is an asynchronous function that increments the
+  // popularity count of a document in a Firestore database.
   Future<void> incrementPopularity(String service) async {
     final String docID = removeCloudAndWhitespace(service);
     final DocumentReference<Object?> documentReference =
         popularServicesCollection.doc(docID);
 
-    await FirebaseFirestore.instance
-        .runTransaction((Transaction transaction) async {
-      final DocumentSnapshot<Object?> documentSnapshot =
-          await transaction.get(documentReference);
+    await FirebaseFirestore.instance.runTransaction((
+      Transaction transaction,
+    ) async {
+      final DocumentSnapshot<Object?> documentSnapshot = await transaction.get(
+        documentReference,
+      );
 
       if (!documentSnapshot.exists) {
         throw Exception('Document does not exist!');
@@ -461,7 +475,7 @@ class FirestoreDatabase {
       final dynamic currentPopularity = documentSnapshot.get('popularity') ?? 0;
       transaction.update(documentReference, <String, dynamic>{
         'popularity': currentPopularity + 1,
-        'lastUpdated': FieldValue.serverTimestamp()
+        'lastUpdated': FieldValue.serverTimestamp(),
       });
     });
   }
@@ -479,27 +493,16 @@ class FirestoreDatabase {
   }
 
   Future<void> reportContent(ReportContent reportContent) async {
-    final String docID = reportedContentCollection.doc().id;
-    final String contentDocID =
-        removeCloudAndWhitespace(reportContent.contentDocID);
-    final String? uid = locator<UserRepository>().getUserID();
-    reportedContentCollection.doc(docID).set(<String, dynamic>{
-      'content': reportContent.content,
-      'contentType': reportContent.reportType,
-      'contentDocID': contentDocID,
-      'contentField': reportContent.contentField,
-      'docID': docID,
-      'timestamp': FieldValue.serverTimestamp(),
-      'uid': uid
-    }).then((value) {
-      FirestoreDatabase().saveUserInteraction(
-        startTime: true,
-        endTime: false,
-        serviceId: reportContent.contentDocID,
-        featureId: reportContent.reportType,
-        docID: docID,
-      );
-    });
+    final String docID = await CloudFunctions().submitContentReport(
+      reportContent,
+    );
+    await saveUserInteraction(
+      startTime: true,
+      endTime: false,
+      serviceId: reportContent.contentDocID,
+      featureId: reportContent.reportType,
+      docID: docID,
+    );
   }
 
   // Function to save user interactions to Firestore

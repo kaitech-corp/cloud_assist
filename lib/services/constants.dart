@@ -27,14 +27,14 @@ enum FeatureID {
   googleSignin,
   appleSignin,
   like,
-  deleteAccount
+  deleteAccount,
 }
 
 List<String> bottomNavItems = <String>[
   'Home',
   'Services',
   'Database',
-  'Settings'
+  'Settings',
 ];
 
 List<String> tabs = <String>[
@@ -42,13 +42,15 @@ List<String> tabs = <String>[
   'Popular Services',
   'AWS',
   'GCP',
-  'GCloud'
+  'Networking',
+  'Security',
+  'GCloud',
 ];
 List<String> serviceDetailItems = <String>[
   'Benefits',
   'Cons',
   'Use Cases',
-  'Docs'
+  'Docs',
 ];
 List<String> quickLinks = <String>[
   'Database Solutions',
@@ -63,21 +65,21 @@ List<String> quickLinks = <String>[
   'Security',
   'Serverless',
   'Storage',
-  'GCloud'
+  'GCloud',
   // 'Resources',
 ];
 List<Icon> bottomNavIcons = const <Icon>[
   Icon(Icons.home),
   Icon(Icons.search),
   Icon(Icons.storage),
-  Icon(Icons.settings)
+  Icon(Icons.settings),
 ];
 
 List<Icon> serviceDetailIcons = const <Icon>[
   Icon(Icons.check),
   Icon(Icons.close),
   Icon(Icons.lightbulb),
-  Icon(Icons.link)
+  Icon(Icons.link),
 ];
 
 List<String> flagTypes = <String>['Incorrect', 'Outdated'];
@@ -85,7 +87,7 @@ List<String> flagTypes = <String>['Incorrect', 'Outdated'];
 List<String> defaultQuickFacts = <String>[
   'Cloud computing is taking the tech industry by storm!',
   'How much do you know about cloud computing?',
-  'Start learning about cloud computing services today!'
+  'Start learning about cloud computing services today!',
 ];
 
 const String signInWithGoogle = ' Sign in with Google';

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -21,10 +22,11 @@ String? formatDate(DateTime? dateTime) {
   if (dateTime == null) {
     return null;
   }
-  
+
   final DateFormat format = DateFormat.MMMMd().add_y();
   return format.format(dateTime);
 }
+
 int randomIndex(List<dynamic> list) {
   final Random random = Random();
   final int count = list.length;
@@ -61,8 +63,41 @@ List<T> getUniqueValues<T>(List<T> uniqueList) {
 }
 
 String hashToString(dynamic hash) {
-  final String docID = hash.toString().hashCode.toString();
-  return docID;
+  final String input = _stableEncode(hash);
+  int value = 0x811c9dc5;
+  for (final int codeUnit in input.codeUnits) {
+    value ^= codeUnit;
+    value = (value * 0x01000193) & 0xffffffff;
+  }
+  return value.toRadixString(16);
+}
+
+String _stableEncode(dynamic value) {
+  if (value is Map) {
+    final List<String> keys =
+        value.keys.map((dynamic key) => key.toString()).toList()..sort();
+    return jsonEncode(<String, dynamic>{
+      for (final String key in keys) key: _stableDecode(value[key]),
+    });
+  }
+  if (value is Iterable) {
+    return jsonEncode(value.map(_stableDecode).toList());
+  }
+  return jsonEncode(value);
+}
+
+dynamic _stableDecode(dynamic value) {
+  if (value is Map) {
+    final List<String> keys =
+        value.keys.map((dynamic key) => key.toString()).toList()..sort();
+    return <String, dynamic>{
+      for (final String key in keys) key: _stableDecode(value[key]),
+    };
+  }
+  if (value is Iterable && value is! String) {
+    return value.map(_stableDecode).toList();
+  }
+  return value;
 }
 
 List<CloudData> transformAndFilter(
@@ -70,11 +105,14 @@ List<CloudData> transformAndFilter(
   List<String> dataList,
 ) {
   final List<CloudData> filteredData = cloudData
-      .where((CloudData item) =>
-          dataList.contains(removeCloudAndWhitespace(item.service)))
+      .where(
+        (CloudData item) =>
+            dataList.contains(removeCloudAndWhitespace(item.service)),
+      )
       .toList();
   return filteredData;
 }
+
 String formatFieldNames(String input) {
   final String output = input.toLowerCase().replaceAll(' ', '_');
   return output;
@@ -85,7 +123,8 @@ bool validateEmail(String? email) {
     return false;
   }
   final RegExp emailRegExp = RegExp(
-      r'^[a-zA-Z0-9.!#$%&\*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    r'^[a-zA-Z0-9.!#$%&\*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
+  );
   if (!emailRegExp.hasMatch(email)) {
     return false;
   }

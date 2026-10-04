@@ -1,0 +1,64 @@
+{
+  "Cloud_Computing_Positions": [
+    {
+      "Position": "Cloud Architect",
+      "Pay_Range": "$98,600 - $221,400",
+      "Requirements": "Strong background in distributed systems, networking, security, identity, data platforms, infrastructure as code, and at least five to eight years of hands-on cloud or enterprise architecture experience. Professional cloud architecture certification is commonly preferred.",
+      "Description": "Cloud Architects design cloud landing zones, migration strategies, application platforms, and governance models. They translate business requirements into secure, reliable, cost-aware architectures and guide implementation teams through tradeoffs across compute, networking, storage, data, and operations."
+    },
+    {
+      "Position": "Cloud Engineer",
+      "Pay_Range": "$90,600 - $202,500",
+      "Requirements": "Experience with Linux, networking, scripting, CI/CD, containers, infrastructure as code, monitoring, and one or more major cloud providers. A bachelor's degree or equivalent practical experience plus two to five years of systems or software engineering experience is typical.",
+      "Description": "Cloud Engineers build and operate cloud infrastructure, automate deployments, configure managed services, troubleshoot production issues, and implement platform standards. The role often bridges infrastructure, DevOps, security, and application teams."
+    },
+    {
+      "Position": "Cloud Security Engineer",
+      "Pay_Range": "$87,000 - $193,600",
+      "Requirements": "Security engineering experience with IAM, network segmentation, vulnerability management, logging, threat detection, encryption, policy-as-code, and incident response. Cloud security or information security certifications are commonly valued.",
+      "Description": "Cloud Security Engineers implement controls that protect cloud workloads and data. They design identity and access policies, secure network paths, tune detections, review architecture risk, and help teams meet compliance and operational security requirements."
+    },
+    {
+      "Position": "Cloud Security Architect",
+      "Pay_Range": "$98,600 - $222,500",
+      "Requirements": "Senior-level security architecture experience across identity, network security, application security, data protection, governance, and regulatory frameworks. Requires the ability to define standards and influence engineering teams across an organization.",
+      "Description": "Cloud Security Architects define security strategy for cloud platforms. They create reference architectures, approve high-risk designs, lead threat modeling, and align platform controls with business, compliance, and resilience goals."
+    },
+    {
+      "Position": "Site Reliability Engineer",
+      "Pay_Range": "$96,500 - $199,100",
+      "Requirements": "Strong software engineering or systems background with observability, incident response, capacity planning, automation, Kubernetes, reliability design, and production operations experience.",
+      "Description": "Site Reliability Engineers improve service reliability through automation, monitoring, SLOs, incident response, and resilient architecture. In cloud environments, they often own scaling, deployment safety, production readiness, and operational excellence."
+    },
+    {
+      "Position": "DevOps Engineer",
+      "Pay_Range": "$83,000 - $193,500",
+      "Requirements": "Hands-on experience with CI/CD, source control, build systems, containers, infrastructure as code, configuration management, cloud services, secrets management, and release automation.",
+      "Description": "DevOps Engineers build the delivery systems that help teams ship software safely and consistently. They automate pipelines, standardize environments, improve developer workflows, and maintain the tools used to deploy and operate cloud applications."
+    },
+    {
+      "Position": "Database Engineer",
+      "Pay_Range": "$83,800 - $203,900",
+      "Requirements": "Experience with relational and NoSQL databases, schema design, query tuning, backup and recovery, replication, data migration, security, and managed cloud database services.",
+      "Description": "Database Engineers design, operate, and optimize database platforms used by applications and analytics systems. In cloud environments, they evaluate managed databases, plan migrations, tune performance, and implement data protection practices."
+    },
+    {
+      "Position": "Database Administrator",
+      "Pay_Range": "$86,100 - $128,000",
+      "Requirements": "Experience administering production databases, managing backups, monitoring performance, applying patches, handling access controls, and supporting recovery processes. SQL expertise and cloud database experience are increasingly important.",
+      "Description": "Database Administrators maintain database availability, performance, security, and recoverability. As teams adopt managed cloud databases, the role shifts toward governance, performance tuning, migration support, and operational oversight."
+    },
+    {
+      "Position": "Data Architect",
+      "Pay_Range": "$95,600 - $177,600",
+      "Requirements": "Experience with data modeling, warehouses, lakehouses, pipelines, governance, metadata, security, analytics platforms, and stakeholder-driven design. Cloud data platform experience is usually expected.",
+      "Description": "Data Architects define how enterprise data is organized, integrated, protected, and used. They design data platforms that support analytics, AI, reporting, and operational systems across cloud and hybrid environments."
+    },
+    {
+      "Position": "AI Engineer",
+      "Pay_Range": "$107,100 - $201,500",
+      "Requirements": "Software engineering experience plus applied knowledge of machine learning, generative AI services, model integration, APIs, data pipelines, vector search, evaluation, and responsible AI practices.",
+      "Description": "AI Engineers build applications that use machine learning and generative AI services. In cloud teams, they integrate models with data platforms, APIs, monitoring, security controls, and production application workflows."
+    }
+  ]
+}

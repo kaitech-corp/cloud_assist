@@ -13,11 +13,16 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 class UserRepository {
   UserRepository() : _firebaseAuth = FirebaseAuth.instance;
   final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   final crashlytics = FirebaseCrashlytics.instance;
+  Future<void>? _googleSignInInitialization;
 
   Future<List<dynamic>> signOut() async {
-    return Future.wait([_firebaseAuth.signOut()]);
+    await _ensureGoogleSignInInitialized();
+    return Future.wait(<Future<void>>[
+      _firebaseAuth.signOut(),
+      googleSignIn.signOut(),
+    ]);
   }
 
   Future<bool> isSignedIn() async {
@@ -28,24 +33,12 @@ class UserRepository {
 // Reset Password
   Future<bool> resetPassword(String email) async {
     try {
-      final isRegisterEmail = await isRegistered(email);
-      if (isRegisterEmail) {
-        await _firebaseAuth.sendPasswordResetEmail(email: email);
-        return true;
-      }
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return true;
     } catch (e) {
       crashlytics.log('Error resetting password: $e');
     }
     return false;
-  }
-
-  Future<bool> isRegistered(String email) async {
-    try {
-      final result = await _firebaseAuth.fetchSignInMethodsForEmail(email);
-      return result.isNotEmpty;
-    } catch (e) {
-      return false;
-    }
   }
 
   User? getUser() {
@@ -105,14 +98,18 @@ class UserRepository {
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
-      final GoogleSignInAuthentication? googleSignInAuthentication =
-          await googleSignInAccount?.authentication;
+      if (kIsWeb) {
+        return await _firebaseAuth.signInWithPopup(GoogleAuthProvider());
+      }
+
+      await _ensureGoogleSignInInitialized();
+      final GoogleSignInAccount googleSignInAccount =
+          await googleSignIn.authenticate();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication?.accessToken,
-        idToken: googleSignInAuthentication?.idToken,
+        idToken: googleSignInAuthentication.idToken,
       );
 
       final UserCredential authResult =
@@ -133,5 +130,9 @@ class UserRepository {
       }
       return null;
     }
+  }
+
+  Future<void> _ensureGoogleSignInInitialized() {
+    return _googleSignInInitialization ??= googleSignIn.initialize();
   }
 }

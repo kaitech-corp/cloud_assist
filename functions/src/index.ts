@@ -10,6 +10,9 @@ export * from "./handlers/users";
 // AI Content Handlers
 export * from "./handlers/ai_content";
 
+// Content Report Handlers
+export * from "./handlers/content_reports";
+
 // Data Fetchers
 export * from "./handlers/data_fetchers";
 

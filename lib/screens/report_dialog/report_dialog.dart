@@ -5,8 +5,12 @@ import '../../services/firebase_functions/firebase_functions.dart';
 import '../../services/ui/text_styles.dart';
 
 class ReportDialog extends StatefulWidget {
-  const ReportDialog(
-      {super.key, required this.content, required this.contentDocID, this.contentField});
+  const ReportDialog({
+    super.key,
+    required this.content,
+    required this.contentDocID,
+    this.contentField,
+  });
   final String content;
   final String contentDocID;
   final String? contentField;
@@ -17,6 +21,7 @@ class ReportDialog extends StatefulWidget {
 
 class ReportDialogState extends State<ReportDialog> {
   ReportType? _selectedType;
+  bool _isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,100 +31,95 @@ class ReportDialogState extends State<ReportDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(widget.content,maxLines: 10,overflow: TextOverflow.ellipsis,),
+          Text(widget.content, maxLines: 10, overflow: TextOverflow.ellipsis),
           const SizedBox(height: 20),
           const Text('Report this text as:'),
-          RadioListTile<ReportType>(
-            title: Text(
-              'Outdated',
-              style: titleMedium(context),
-            ),
-            value: ReportType.outdated,
+          RadioGroup<ReportType>(
             groupValue: _selectedType,
             onChanged: (ReportType? value) {
               setState(() {
                 _selectedType = value;
               });
             },
-          ),
-          RadioListTile<ReportType>(
-            title: Text(
-              'Inaccurate',
-              style: titleMedium(context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                RadioListTile<ReportType>(
+                  title: Text('Outdated', style: titleMedium(context)),
+                  value: ReportType.outdated,
+                ),
+                RadioListTile<ReportType>(
+                  title: Text('Inaccurate', style: titleMedium(context)),
+                  value: ReportType.inaccurate,
+                ),
+                RadioListTile<ReportType>(
+                  title: Text('Incomplete', style: titleMedium(context)),
+                  value: ReportType.incomplete,
+                ),
+                RadioListTile<ReportType>(
+                  title: Text('Irrelevant', style: titleMedium(context)),
+                  value: ReportType.irrelevant,
+                ),
+                RadioListTile<ReportType>(
+                  title: Text('Inappropriate', style: titleMedium(context)),
+                  value: ReportType.inappropriate,
+                ),
+              ],
             ),
-            value: ReportType.inaccurate,
-            groupValue: _selectedType,
-            onChanged: (ReportType? value) {
-              setState(() {
-                _selectedType = value;
-              });
-            },
-          ),
-          RadioListTile<ReportType>(
-            title: Text(
-              'Incomplete',
-              style: titleMedium(context),
-            ),
-            value: ReportType.incomplete,
-            groupValue: _selectedType,
-            onChanged: (ReportType? value) {
-              setState(() {
-                _selectedType = value;
-              });
-            },
-          ),
-          RadioListTile<ReportType>(
-            title: Text(
-              'Irrelevant',
-              style: titleMedium(context),
-            ),
-            value: ReportType.irrelevant,
-            groupValue: _selectedType,
-            onChanged: (ReportType? value) {
-              setState(() {
-                _selectedType = value;
-              });
-            },
-          ),
-          RadioListTile<ReportType>(
-            title: Text(
-              'Inappropriate',
-              style: titleMedium(context),
-            ),
-            value: ReportType.inappropriate,
-            groupValue: _selectedType,
-            onChanged: (ReportType? value) {
-              setState(() {
-                _selectedType = value;
-              });
-            },
           ),
         ],
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(
-            'Cancel',
-            style: titleSmall(context),
-          ),
+          child: Text('Cancel', style: titleSmall(context)),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         TextButton(
-          onPressed: _selectedType == null
+          onPressed: _selectedType == null || _isSubmitting
               ? null
-              : () {
-                  FirestoreDatabase().reportContent(
-                  ReportContent(
-                      content: widget.content,
-                      reportType: _selectedType.toString(),
-                      contentDocID: widget.contentDocID,
-                      contentField: widget.contentField));
-                  Navigator.pop(context);
+              : () async {
+                  setState(() {
+                    _isSubmitting = true;
+                  });
+                  final ScaffoldMessengerState messenger = ScaffoldMessenger.of(
+                    context,
+                  );
+                  final NavigatorState navigator = Navigator.of(context);
+                  try {
+                    await FirestoreDatabase().reportContent(
+                      ReportContent(
+                        content: widget.content,
+                        reportType: _selectedType.toString(),
+                        contentDocID: widget.contentDocID,
+                        contentField: widget.contentField,
+                      ),
+                    );
+                    messenger.showSnackBar(
+                      const SnackBar(
+                        content: Text('Report generated for review.'),
+                      ),
+                    );
+                    navigator.pop();
+                  } catch (error) {
+                    if (!mounted) {
+                      return;
+                    }
+                    setState(() {
+                      _isSubmitting = false;
+                    });
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          error.toString().replaceFirst('Exception: ', ''),
+                        ),
+                      ),
+                    );
+                  }
                 },
           child: Text(
-            'Report',
+            _isSubmitting ? 'Submitting...' : 'Report',
             style: titleSmall(context),
           ),
         ),

@@ -1,8 +1,99 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /services/services/anthos/{docs} {
-      allow read, write: if true;
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Services: Authenticated users can read
+    match /services/{service} {
+      allow read: if isSignedIn();
+      allow write: if false; 
+      
+      match /facts/{fact} {
+        allow read: if isSignedIn();
+        allow write: if false;
+      }
+    }
+    
+    // Reports: Authenticated users can read
+    match /reports/{report} {
+      allow read: if isSignedIn();
+      allow write: if false; 
+    }
+    
+    // QuickFacts: Authenticated users can read
+    match /quickFacts/{fact} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    
+    // Users: Users can read/write their own document
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      match /generatedSolution/{solution} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+    
+    // DatabaseComparison: Users can read/create.
+    // Updates are performed exclusively by Cloud Functions via Admin SDK (bypasses rules).
+    match /databaseComparison/{docId} {
+      allow read, create: if isSignedIn();
+      allow update, delete: if false;
+    }
+    
+    // UserInteraction: Users can read/write their own
+    match /userInteraction/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      match /interactions/{interaction} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+    
+    // PopularServices: Authenticated users can read and increment popularity
+    match /popularServices/{service} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn(); // Transactions require update permission
+    }
+
+    // ReportedContent: created and processed by Cloud Functions
+    match /reportedContent/{reportId} {
+      allow read, write: if false;
+    }
+
+    // Report rate limits: Cloud Functions only
+    match /reportRateLimits/{userId} {
+      allow read, write: if false;
+    }
+
+    // API Status: Authenticated users can read
+    match /apiStatus/{api} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Featured: Authenticated users can read (written by admin via Cloud Functions)
+    match /featured/{serviceId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // chatGPT / failedToSave: internal collections written by Cloud Functions only
+    match /chatGPT/{doc} {
+      allow read, write: if false;
+    }
+
+    match /failedToSave/{doc} {
+      allow read, write: if false;
     }
   }
 }

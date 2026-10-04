@@ -11,6 +11,7 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+.claude
 
 # IntelliJ related
 *.iml
@@ -51,9 +52,17 @@ app.*.map.json
 /ios/build/Pods.build/Release-iphonesimulator/
 
 # API
-/lib/services/api/
+# /lib/services/api/
 ios/Runner/GoogleService-Info.plist
 ios/Runner/Info.plist
 lib/firebase_options.dart
 functions/package-lock.json
 ios/Podfile.lock
+
+resources/
+
+# Agents
+.agents/
+.codex/
+.gemini/
+.vscode/

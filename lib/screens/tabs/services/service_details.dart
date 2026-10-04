@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/cloud_data_model/cloud_data_model.dart';
@@ -12,28 +13,57 @@ import 'components/detail_section.dart';
 import 'components/list_section.dart';
 import 'components/quick_fact.dart';
 
-class ServiceDetails extends StatelessWidget {
+class ServiceDetails extends StatefulWidget {
   const ServiceDetails({super.key, required this.serviceData});
   final CloudData serviceData;
 
   @override
+  State<ServiceDetails> createState() => _ServiceDetailsState();
+}
+
+class _ServiceDetailsState extends State<ServiceDetails> {
+  late final String _serviceDocID;
+
+  @override
+  void initState() {
+    super.initState();
+    _serviceDocID = removeCloudAndWhitespace(widget.serviceData.service);
+    FirestoreDatabase().incrementPopularity(widget.serviceData.service);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    FirestoreDatabase().incrementPopularity(serviceData.service);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          AnimatedIconButton(Icons.auto_awesome,
-              removeCloudAndWhitespace(serviceData.service)),
+          AnimatedIconButton(Icons.auto_awesome, _serviceDocID),
         ],
       ),
       body: SafeArea(
         child: SizedBox(
           height: SizeConfig.screenHeight,
           width: SizeConfig.screenWidth,
-          child: SingleChildScrollView(
-            child: ServiceDetailsScreen(
-              serviceData: serviceData,
-            ),
+          child: StreamBuilder<DocumentSnapshot<Object?>>(
+            stream: FirebaseFirestore.instance
+                .collection('services')
+                .doc(_serviceDocID)
+                .snapshots(),
+            builder:
+                (
+                  BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot<Object?>> snapshot,
+                ) {
+                  final Object? data = snapshot.data?.data();
+                  final CloudData currentServiceData =
+                      data is Map<String, dynamic>
+                      ? CloudData.fromJson(data)
+                      : widget.serviceData;
+                  return SingleChildScrollView(
+                    child: ServiceDetailsScreen(
+                      serviceData: currentServiceData,
+                    ),
+                  );
+                },
           ),
         ),
       ),
@@ -57,19 +87,17 @@ class ServiceDetailsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            serviceData.service,
-            style: headlineMedium(context),
-          ),
+          Text(serviceData.service, style: headlineMedium(context)),
           GestureDetector(
             onLongPress: () {
               showDialog(
-                  context: context,
-                  builder: (BuildContext context) => ReportDialog(
-                        content: serviceData.description,
-                        contentDocID: serviceData.service,
-                        contentField: 'description',
-                      ));
+                context: context,
+                builder: (BuildContext context) => ReportDialog(
+                  content: serviceData.description,
+                  contentDocID: serviceData.service,
+                  contentField: 'description',
+                ),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 5),
@@ -94,18 +122,17 @@ class ServiceDetailsScreen extends StatelessWidget {
             width: SizeConfig.screenWidth,
             color: Colors.grey,
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           GestureDetector(
             onLongPress: () {
               showDialog(
-                  context: context,
-                  builder: (BuildContext context) => ReportDialog(
-                        content: serviceData.detail,
-                        contentDocID: serviceData.service,
-                        contentField: 'detail',
-                      ));
+                context: context,
+                builder: (BuildContext context) => ReportDialog(
+                  content: serviceData.detail,
+                  contentDocID: serviceData.service,
+                  contentField: 'detail',
+                ),
+              );
             },
             child: DetailSection(
               serviceData: serviceData.detail,
@@ -115,12 +142,13 @@ class ServiceDetailsScreen extends StatelessWidget {
           GestureDetector(
             onLongPress: () {
               showDialog(
-                  context: context,
-                  builder: (BuildContext context) => ReportDialog(
-                        content: serviceData.example,
-                        contentDocID: serviceData.service,
-                        contentField: 'example',
-                      ));
+                context: context,
+                builder: (BuildContext context) => ReportDialog(
+                  content: serviceData.example,
+                  contentDocID: serviceData.service,
+                  contentField: 'example',
+                ),
+              );
             },
             child: DetailSection(
               serviceData: serviceData.example,

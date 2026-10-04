@@ -1,0 +1,278 @@
+[
+  {
+    "service": "Virtual Private Cloud",
+    "description": "Global software-defined networking for Google Cloud resources.",
+    "detail": "Virtual Private Cloud (VPC) provides isolated, global private networks for Compute Engine, Google Kubernetes Engine, Cloud Run, and managed services. Teams use it to define subnets, routes, firewall policies, private connectivity, and IP addressing across regions while keeping workloads on Google's backbone.",
+    "benefits": [
+      "Global network with regional subnets",
+      "Granular routing, firewall, and IP address controls",
+      "Private connectivity for Google Cloud and hybrid workloads"
+    ],
+    "cons": [
+      "Requires careful IP address and route planning",
+      "Misconfigured firewall rules can block valid traffic or expose workloads"
+    ],
+    "useCases": [
+      "Isolating production, staging, and shared-service networks",
+      "Running private GKE and Compute Engine workloads",
+      "Building hub-and-spoke network topologies"
+    ],
+    "link": "https://cloud.google.com/vpc",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A SaaS company creates separate VPCs for production and development, connects them through a shared services hub, and applies firewall policies so only approved service ports are reachable."
+  },
+  {
+    "service": "Cloud Load Balancing",
+    "description": "Global and regional load balancing for applications and services.",
+    "detail": "Cloud Load Balancing distributes HTTP(S), TCP, SSL proxy, UDP, and internal traffic across backends. It supports global anycast front ends, health checks, autoscaling integrations, Cloud CDN, Cloud Armor, and private service delivery patterns.",
+    "benefits": [
+      "Global front ends with a single anycast IP",
+      "Built-in health checks and backend failover",
+      "Works with Cloud CDN, Cloud Armor, GKE, Compute Engine, and serverless backends"
+    ],
+    "cons": [
+      "Several load balancer types require correct selection up front",
+      "Advanced routing and certificate setup can add operational complexity"
+    ],
+    "useCases": [
+      "Serving global web applications",
+      "Balancing internal microservice traffic",
+      "Modernizing traffic management across regions"
+    ],
+    "link": "https://cloud.google.com/load-balancing",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "An ecommerce platform uses an external Application Load Balancer with managed certificates, Cloud CDN, and Cloud Armor to serve customers globally while failing over unhealthy backends."
+  },
+  {
+    "service": "Cloud CDN",
+    "description": "Content delivery network for cacheable web and media content.",
+    "detail": "Cloud CDN caches static and dynamic cacheable content at Google's edge locations. It integrates with external Application Load Balancers and backend services to reduce latency, lower origin load, and improve availability for global users.",
+    "benefits": [
+      "Lower latency for global users",
+      "Reduced origin traffic and serving cost",
+      "Integrated with Google Cloud load balancing and security controls"
+    ],
+    "cons": [
+      "Best results require cache-aware application design",
+      "Cache invalidation and TTL settings must be managed carefully"
+    ],
+    "useCases": [
+      "Accelerating images, scripts, downloads, and static assets",
+      "Reducing origin load during traffic spikes",
+      "Serving web applications to distributed users"
+    ],
+    "link": "https://cloud.google.com/cdn",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A training site uses Cloud CDN in front of Cloud Storage and an Application Load Balancer so course videos and assets load quickly for students in different regions."
+  },
+  {
+    "service": "Cloud DNS",
+    "description": "Managed authoritative DNS on Google's infrastructure.",
+    "detail": "Cloud DNS hosts public and private DNS zones with low-latency serving, APIs, IAM controls, DNSSEC support, and integration with VPC private name resolution. It is used to manage production domains, internal service names, and hybrid DNS patterns.",
+    "benefits": [
+      "Reliable managed DNS with API and CLI automation",
+      "Supports public and private zones",
+      "Integrates with VPC and hybrid name resolution"
+    ],
+    "cons": [
+      "DNS design mistakes can affect every dependent service",
+      "Split-horizon and hybrid DNS require disciplined naming conventions"
+    ],
+    "useCases": [
+      "Hosting public application DNS records",
+      "Managing private names for internal services",
+      "Automating DNS changes in deployment pipelines"
+    ],
+    "link": "https://cloud.google.com/dns",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A platform team manages private zones for internal APIs and public zones for customer-facing domains, applying IAM so only deployment automation can change production records."
+  },
+  {
+    "service": "Cloud NAT",
+    "description": "Managed outbound internet access for private resources.",
+    "detail": "Cloud NAT lets private Compute Engine and GKE workloads reach the internet for updates and external APIs without assigning external IP addresses. It is managed, scalable, and configured at the VPC and Cloud Router level.",
+    "benefits": [
+      "Keeps workloads private while allowing controlled egress",
+      "No NAT instances to patch or scale",
+      "Works with Cloud Router and VPC routes"
+    ],
+    "cons": [
+      "Only handles outbound connections and return traffic",
+      "Port allocation and logging settings need review for high-scale workloads"
+    ],
+    "useCases": [
+      "Allowing private VMs to download patches",
+      "Giving private GKE nodes outbound access",
+      "Reducing exposure from public IP addresses"
+    ],
+    "link": "https://cloud.google.com/nat",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A security-conscious team removes external IPs from its worker nodes and uses Cloud NAT for package updates and outbound API calls."
+  },
+  {
+    "service": "Cloud VPN",
+    "description": "Encrypted IPsec VPN connectivity for hybrid networks.",
+    "detail": "Cloud VPN connects Google Cloud VPC networks to on-premises or other cloud networks over IPsec tunnels. HA VPN provides high availability with multiple interfaces and dynamic routing through Cloud Router.",
+    "benefits": [
+      "Encrypted connectivity over the public internet",
+      "High-availability design options",
+      "Useful for quick hybrid or multicloud connections"
+    ],
+    "cons": [
+      "Throughput and latency depend on internet path quality",
+      "Less predictable than dedicated interconnect options"
+    ],
+    "useCases": [
+      "Connecting branch offices to Google Cloud",
+      "Creating backup connectivity for Interconnect",
+      "Linking small hybrid environments quickly"
+    ],
+    "link": "https://cloud.google.com/network-connectivity/docs/vpn",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A company uses HA VPN and dynamic routing to connect a regional office to private services running in a Google Cloud VPC."
+  },
+  {
+    "service": "Cloud Interconnect",
+    "description": "Dedicated or partner-assisted private connectivity to Google Cloud.",
+    "detail": "Cloud Interconnect provides private, high-throughput connectivity between on-premises networks and Google Cloud. Dedicated Interconnect uses physical connections to Google, while Partner Interconnect uses supported service providers for flexible capacity and locations.",
+    "benefits": [
+      "Private connectivity with more predictable performance",
+      "High bandwidth options for enterprise workloads",
+      "Can reduce reliance on public internet paths"
+    ],
+    "cons": [
+      "Requires network provider coordination and lead time",
+      "Costs and redundancy design are higher than simple VPN setups"
+    ],
+    "useCases": [
+      "Hybrid enterprise applications",
+      "Large data transfer and replication",
+      "Private access from data centers to Google Cloud"
+    ],
+    "link": "https://cloud.google.com/network-connectivity/docs/interconnect",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A bank uses redundant Dedicated Interconnect links to connect its data centers to Google Cloud with predictable latency for core application traffic."
+  },
+  {
+    "service": "Private Service Connect",
+    "description": "Private access to Google, third-party, and producer services.",
+    "detail": "Private Service Connect lets consumers privately access services over internal IP addresses while service producers publish managed endpoints. It supports private access to Google APIs, third-party services, and internal services across VPC boundaries.",
+    "benefits": [
+      "Private service access without exposing traffic to the public internet",
+      "Clear producer and consumer network separation",
+      "Works well for managed service and shared platform patterns"
+    ],
+    "cons": [
+      "Endpoint and DNS design must be planned",
+      "Service publishing patterns can be unfamiliar for smaller teams"
+    ],
+    "useCases": [
+      "Privately consuming Google APIs",
+      "Publishing internal platform services",
+      "Connecting tenants to managed services"
+    ],
+    "link": "https://cloud.google.com/vpc/docs/private-service-connect",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A platform team publishes a payments API through Private Service Connect so application teams can consume it privately from separate VPCs."
+  },
+  {
+    "service": "Network Connectivity Center",
+    "description": "Central hub for managing enterprise network connectivity.",
+    "detail": "Network Connectivity Center provides a hub-and-spoke model for connecting VPCs, on-premises networks, branch locations, and other clouds. It helps teams simplify topology management, routing, and operational visibility across distributed networks.",
+    "benefits": [
+      "Centralizes hybrid and multicloud connectivity",
+      "Supports scalable hub-and-spoke architecture",
+      "Improves operational consistency for large networks"
+    ],
+    "cons": [
+      "Requires clear routing and segmentation strategy",
+      "Can be more capability than small deployments need"
+    ],
+    "useCases": [
+      "Enterprise hub-and-spoke networking",
+      "Connecting branch offices and cloud VPCs",
+      "Standardizing network operations across teams"
+    ],
+    "link": "https://cloud.google.com/network-connectivity/docs/network-connectivity-center",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A multinational organization uses Network Connectivity Center as a central hub for regional VPCs, data centers, and branch networks."
+  },
+  {
+    "service": "Cloud Armor",
+    "description": "DDoS defense and web application firewall for internet-facing apps.",
+    "detail": "Cloud Armor protects applications behind supported Google Cloud load balancers with DDoS mitigation, WAF rules, preconfigured protections, rate limiting, geo controls, and adaptive protection features.",
+    "benefits": [
+      "Edge-based DDoS and WAF protection",
+      "Preconfigured and custom security rules",
+      "Integrates with external Application Load Balancers"
+    ],
+    "cons": [
+      "Rules must be tested to avoid blocking valid users",
+      "Advanced policies require ongoing tuning"
+    ],
+    "useCases": [
+      "Protecting public web applications",
+      "Rate limiting abusive clients",
+      "Adding OWASP-style WAF controls"
+    ],
+    "link": "https://cloud.google.com/armor",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A media site uses Cloud Armor preconfigured WAF rules and rate limiting to reduce malicious traffic before requests reach application backends."
+  },
+  {
+    "service": "Cloud NGFW",
+    "description": "Next-generation firewall controls for Google Cloud workloads.",
+    "detail": "Cloud NGFW provides distributed firewall capabilities, hierarchical firewall policies, threat prevention options, and granular network security controls for VPC workloads. It helps enforce consistent segmentation and protection across projects and environments.",
+    "benefits": [
+      "Centralized firewall policy management",
+      "Granular segmentation for cloud workloads",
+      "Advanced threat prevention options"
+    ],
+    "cons": [
+      "Policy hierarchy requires governance",
+      "Advanced inspection features can add cost and design considerations"
+    ],
+    "useCases": [
+      "Enforcing organization-wide firewall rules",
+      "Segmenting application tiers",
+      "Adding intrusion prevention to cloud networks"
+    ],
+    "link": "https://cloud.google.com/firewall",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "A regulated business uses hierarchical firewall policies to enforce baseline deny rules across projects while allowing application teams to manage approved local rules."
+  },
+  {
+    "service": "Network Intelligence Center",
+    "description": "Network observability, diagnostics, and topology analysis.",
+    "detail": "Network Intelligence Center helps teams visualize topology, test connectivity, inspect firewall reachability, monitor performance, and troubleshoot network issues across Google Cloud environments.",
+    "benefits": [
+      "Improves visibility into complex cloud networks",
+      "Helps diagnose routing and firewall issues",
+      "Supports proactive network operations"
+    ],
+    "cons": [
+      "Insights depend on available telemetry and logging",
+      "Teams still need networking expertise to act on findings"
+    ],
+    "useCases": [
+      "Troubleshooting unreachable services",
+      "Validating firewall and route changes",
+      "Monitoring network health and performance"
+    ],
+    "link": "https://cloud.google.com/network-intelligence-center",
+    "provider": "GCP",
+    "type": "Networking",
+    "example": "An operations team uses Connectivity Tests before deploying firewall updates, reducing outages caused by unintended rule changes."
+  }
+]
